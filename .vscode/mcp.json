@@ -1,0 +1,14 @@
+{
+  "servers": {
+    "brainsync": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\AARAV SONI\\.antigravity-ide\\extensions\\dawoodahmad.brainsync-3.0.12-universal\\dist\\mcp-server.js"
+      ],
+      "type": "stdio",
+      "env": {
+        "BRAINSYNC_ENV_FILE": "C:\\Users\\AARAV SONI\\.brainsync\\food-delivery-singlevendor\\mcp-secret-env.json"
+      }
+    }
+  }
+}

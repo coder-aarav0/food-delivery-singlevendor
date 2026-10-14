@@ -1,0 +1,24 @@
+{
+  "project": {
+    "enabled": true,
+    "lastGenerated": "2026-10-14T10:10:30.896Z",
+    "observationCount": 235,
+    "skillCount": 0,
+    "domain": "project",
+    "triggerGlobs": [
+      "**/*"
+    ],
+    "description": "Project for food-delivery-singlevendor. 19 gotchas, 216 conventions."
+  },
+  "typescript-react": {
+    "enabled": true,
+    "lastGenerated": "2026-10-14T10:10:30.897Z",
+    "observationCount": 2,
+    "skillCount": 0,
+    "domain": "typescript-react",
+    "triggerGlobs": [
+      "**/*.tsx"
+    ],
+    "description": "Typescript React for food-delivery-singlevendor. 2 conventions."
+  }
+}

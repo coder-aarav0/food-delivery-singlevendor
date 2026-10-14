@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Secrets & Local Configurations
+.mcp.json
+.env
+.env.*
+!.env.example
+
+# Build Artifacts
+dist/
+build/
+.cache/
+
+# Agent Memory & IDE configs
+.agent-mem/
+.brainsync/
+AGENT.md
+CLAUDE.md
+
+# Cloned Reference Repositories
+reference/
+
+
