@@ -10,10 +10,10 @@
 
 | Field | Value |
 | :--- | :--- |
-| **Active Phase** | **Phase 0: Foundations, Data Schemas & Design Tokens** |
-| **Current Target** | Establishing Supabase SQL migration, TypeScript contracts, and Master UI tokens |
-| **Last Updated** | 2026-10-14 (Initial Environment & Context Setup) |
-| **Overall Completion** | **12%** (All 9 Context Files & Master Instructions Configured) |
+| **Active Phase** | **Phase 1: Core Service Clients & Server Actions** |
+| **Current Target** | Setting up Supabase SSR server/client, Razorpay webhook, and Cart/Order Server Actions |
+| **Last Updated** | 2026-10-14 (Phase 0 Complete - Foundations, DB Schema, Types & Next.js 16 App Shell) |
+| **Overall Completion** | **25%** (Phase 0 Complete; Ready for Phase 1 Core Services) |
 
 ---
 
@@ -22,10 +22,10 @@
 ### Phase 0: Foundations, Data Schemas & Design Tokens
 - [x] **0.0 Setup Stack & Install Skill Packs** (239 skills installed including REA, CLI tools verified, reference repos cloned into `reference/`)
 - [x] **0.1 Create All 9 Project Context Files** (`project-overview.md` through `progress-tracker.md`)
-- [ ] **0.2 Supabase Schema Migration** (`supabase/migrations/20261014_init_schema.sql` written)
-- [ ] **0.3 TypeScript Database & Model Types** (`types/database.types.ts`, `types/models.ts`, `types/events.ts`)
-- [ ] **0.4 Global Design Tokens & Typography** (`app/globals.css` with 3-layer CSS variables)
-- [ ] **0.5 PWA Web App Manifests** (`public/manifest.json` for customer, `public/rider-manifest.json` for rider)
+- [x] **0.2 Supabase Schema Migration** (`supabase/migrations/20261014_init_schema.sql` written)
+- [x] **0.3 TypeScript Database & Model Types** (`types/database.types.ts`, `types/models.ts`, `types/events.ts`)
+- [x] **0.4 Global Design Tokens & Typography** (`app/globals.css` with 3-layer CSS variables, Next.js 16 + React 19 app shell verified)
+- [x] **0.5 PWA Web App Manifests** (`public/manifest.json` for customer, `public/rider-manifest.json` for rider)
 
 ---
 

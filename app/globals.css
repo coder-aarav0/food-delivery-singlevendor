@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* =========================================================================
+     1. WHITE-LABEL REBRANDING HOOKS (Injected from Store DB or fallback)
+     ========================================================================= */
+  --brand-primary: #15803D;        /* Primary Supermarket Brand Green */
+  --brand-primary-hover: #166534;  /* Darker Shade for Active/Hover */
+  --brand-primary-light: #DCFCE7;  /* 10% Tint for Badges & Accents */
+  --brand-accent: #EA580C;         /* High-Contrast Accent (Orange/Amber for CTAs) */
+  --brand-accent-hover: #C2410C;
+  --brand-accent-light: #FFEDD5;
+
+  /* =========================================================================
+     2. SEMANTIC SURFACE & BACKGROUND TOKENS
+     ========================================================================= */
+  --bg-app: #F8FAFC;               /* Clean Hyperlocal Canvas (Slate 50) */
+  --bg-surface: #FFFFFF;           /* Card & Sheet Background */
+  --bg-surface-elevated: #FFFFFF;  /* Modals & Popovers */
+  --bg-muted: #F1F5F9;             /* Skeletons, Pills, Secondary Chips */
+  --bg-input: #FFFFFF;             /* Text Inputs & Search Bars */
+
+  /* =========================================================================
+     3. SEMANTIC TEXT & INK TOKENS
+     ========================================================================= */
+  --text-ink: #0F172A;             /* Slate 900 (High contrast headers & titles) */
+  --text-body: #334155;            /* Slate 700 (Readable descriptions & labels) */
+  --text-muted: #64748B;           /* Slate 500 (Timestamps, units, grammage) */
+  --text-inverse: #FFFFFF;         /* White text on dark/brand backgrounds */
+
+  /* =========================================================================
+     4. SEMANTIC BORDERS & DIVIDERS
+     ========================================================================= */
+  --border-subtle: #E2E8F0;        /* Card Outlines & Dividers (Slate 200) */
+  --border-strong: #CBD5E1;        /* Form Inputs & Active Outlines */
+  --border-focus: var(--brand-primary);
+
+  /* =========================================================================
+     5. FEEDBACK & ORDER STATUS PALETTE
+     ========================================================================= */
+  --status-pending-bg: #FEF3C7;    --status-pending-text: #92400E;
+  --status-preparing-bg: #E0E7FF;  --status-preparing-text: #3730A3;
+  --status-ready-bg: #CFFAFE;      --status-ready-text: #155E75;
+  --status-dispatched-bg: #FCE7F3; --status-dispatched-text: #9D174D;
+  --status-delivered-bg: #DCFCE7;  --status-delivered-text: #166534;
+  --status-cancelled-bg: #FEE2E2;  --status-cancelled-text: #991B1B;
+
+  /* =========================================================================
+     6. TYPOGRAPHY SCALES
+     ========================================================================= */
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* =========================================================================
+     7. RADII & ELEVATIONS
+     ========================================================================= */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-elevated: 0 12px 24px -4px rgba(0, 0, 0, 0.10), 0 4px 8px -2px rgba(0, 0, 0, 0.05);
+  --shadow-sticky-bar: 0 -4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Base Body Styles */
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-app);
+  color: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--text-ink);
+  letter-spacing: -0.02em;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 9999px;
+}
+
+/* Mobile Safe Padding */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
