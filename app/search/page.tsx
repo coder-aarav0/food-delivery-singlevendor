@@ -133,7 +133,7 @@ export default function SearchPage() {
                   key={term}
                   type="button"
                   onClick={() => setQuery(term)}
-                  className="px-4 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:border-[var(--brand-primary)] hover:bg-emerald-50/50 text-xs md:text-sm font-semibold text-[var(--text-ink)] transition-all select-none active:scale-95"
+                  className="px-4 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:border-[#febb2c] hover:bg-[#fff1d4]/50 text-xs md:text-sm font-semibold text-[var(--text-ink)] transition-all select-none active:scale-95"
                 >
                   {term}
                 </button>

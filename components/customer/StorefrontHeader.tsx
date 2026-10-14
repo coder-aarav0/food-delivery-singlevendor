@@ -74,37 +74,39 @@ export function StorefrontHeader() {
               <Search className="w-4 h-4" />
             </Link>
 
-            {/* Quick Admin Shortcut */}
-            <Link
-              href="/admin"
-              title="Admin Dispatch Station"
-              className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
-              <span>Admin</span>
-            </Link>
-
-            {/* Quick Rider Shortcut */}
-            <Link
-              href="/rider"
-              title="Rider Delivery App"
-              className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors"
-            >
-              <Bike className="w-3.5 h-3.5 text-[var(--brand-accent)]" />
-              <span>Rider</span>
-            </Link>
+            {/* Development-Only Portal Switchers (Hidden in Production) */}
+            {process.env.NODE_ENV === 'development' && (
+              <div className="hidden lg:flex items-center gap-1.5 p-1 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                <Link
+                  href="/admin"
+                  title="Admin Dispatch Station (Dev Only)"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-700 hover:bg-white transition-colors"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
+                  <span>Admin</span>
+                </Link>
+                <Link
+                  href="/rider"
+                  title="Rider Delivery App (Dev Only)"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-700 hover:bg-white transition-colors"
+                >
+                  <Bike className="w-3.5 h-3.5 text-amber-600" />
+                  <span>Rider</span>
+                </Link>
+              </div>
+            )}
 
             {/* Cart Trigger */}
             <button
               type="button"
               onClick={() => setIsCartOpen(true)}
               aria-label="Open cart"
-              className="relative flex items-center gap-2 bg-[var(--brand-primary)] text-white px-3.5 py-2.5 rounded-2xl font-bold text-xs md:text-sm hover:bg-[var(--brand-primary-hover)] active:scale-95 transition-all shadow-sm min-h-[44px]"
+              className="relative flex items-center gap-2 bg-[var(--brand-primary)] text-slate-950 px-4 py-2.5 rounded-2xl font-black text-xs md:text-sm hover:bg-[var(--brand-primary-hover)] active:scale-95 transition-all shadow-sm min-h-[44px]"
             >
-              <ShoppingBag className="w-4 h-4" />
+              <ShoppingBag className="w-4 h-4 text-slate-950" />
               <span className="hidden sm:inline">Cart</span>
               {totalItems > 0 && (
-                <span className="px-1.5 py-0.2 rounded-full bg-[var(--brand-accent)] text-white text-[11px] font-black">
+                <span className="px-2 py-0.5 rounded-full bg-slate-950 text-white text-[11px] font-black">
                   {totalItems}
                 </span>
               )}

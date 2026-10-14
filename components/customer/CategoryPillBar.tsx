@@ -35,7 +35,7 @@ export function CategoryPillBar({
           className={cn(
             'flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-xs md:text-sm font-bold transition-all duration-150 min-h-[44px] select-none border',
             selectedSlug === null
-              ? 'bg-[var(--brand-primary)] text-white border-[var(--brand-primary)] shadow-sm'
+              ? 'bg-[var(--brand-primary)] text-slate-950 font-black border-[var(--brand-primary)] shadow-sm'
               : 'bg-[var(--bg-surface)] text-[var(--text-body)] border-[var(--border-subtle)] hover:border-[var(--brand-primary)] hover:bg-[var(--bg-muted)]'
           )}
         >
@@ -54,7 +54,7 @@ export function CategoryPillBar({
               className={cn(
                 'flex items-center gap-2.5 px-3.5 py-2 rounded-2xl text-xs md:text-sm font-semibold transition-all duration-150 min-h-[44px] select-none border',
                 isSelected
-                  ? 'bg-[var(--brand-primary)] text-white border-[var(--brand-primary)] shadow-sm'
+                  ? 'bg-[var(--brand-primary)] text-slate-950 font-black border-[var(--brand-primary)] shadow-sm'
                   : 'bg-[var(--bg-surface)] text-[var(--text-body)] border-[var(--border-subtle)] hover:border-[var(--brand-primary)] hover:bg-[var(--bg-muted)]'
               )}
             >

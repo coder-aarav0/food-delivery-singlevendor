@@ -17,10 +17,10 @@ export function StoreSettingsForm({ store }: StoreSettingsFormProps) {
   const [phone, setPhone] = useState(store?.phone || '+91 98765 43210');
   const [email, setEmail] = useState(store?.email || 'hello@freshmart.local');
   const [primaryColor, setPrimaryColor] = useState(
-    store?.brand_primary_hex || '#10b981'
+    store?.brand_primary_hex || '#febb2c'
   );
   const [accentColor, setAccentColor] = useState(
-    store?.brand_accent_hex || '#f59e0b'
+    store?.brand_accent_hex || '#00b9c6'
   );
   const [openingTime, setOpeningTime] = useState(store?.opening_time || '07:00:00');
   const [closingTime, setClosingTime] = useState(store?.closing_time || '23:00:00');
@@ -58,7 +58,7 @@ export function StoreSettingsForm({ store }: StoreSettingsFormProps) {
         {/* Store Details Card */}
         <div className="p-6 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-4">
           <div className="flex items-center gap-2 pb-3 border-b border-[var(--border-subtle)]">
-            <Store className="w-5 h-5 text-indigo-600" />
+            <Store className="w-5 h-5 text-[#f5a623]" />
             <h2 className="text-base font-bold text-[var(--text-ink)]">
               Store Identity
             </h2>

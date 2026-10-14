@@ -27,31 +27,31 @@ export function StickyCartBar({ onOpenCart }: StickyCartBarProps) {
       <button
         type="button"
         onClick={handleClick}
-        className="w-full bg-[var(--brand-primary)] text-white px-5 py-3.5 rounded-2xl shadow-elevated hover:bg-[var(--brand-primary-hover)] active:scale-[0.99] transition-all flex items-center justify-between min-h-[56px] select-none border border-emerald-400/30"
+        className="w-full bg-[var(--brand-primary)] text-slate-950 px-5 py-3.5 rounded-2xl shadow-elevated hover:bg-[var(--brand-primary-hover)] active:scale-[0.99] transition-all flex items-center justify-between min-h-[56px] select-none border border-amber-400/40"
       >
         {/* Left: Bag Icon & Item Counter */}
         <div className="flex items-center gap-3">
-          <div className="relative w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-            <ShoppingBag className="w-5 h-5 stroke-[2.2]" />
-            <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[var(--brand-accent)] text-white text-[11px] font-black flex items-center justify-center shadow-sm">
+          <div className="relative w-10 h-10 rounded-xl bg-slate-950/10 flex items-center justify-center shrink-0">
+            <ShoppingBag className="w-5 h-5 text-slate-950 stroke-[2.2]" />
+            <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-slate-950 text-white text-[11px] font-black flex items-center justify-center shadow-sm">
               {totalItems}
             </span>
           </div>
 
           <div className="text-left">
-            <span className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 block">
+            <span className="text-[11px] uppercase font-black tracking-wider text-slate-800 block">
               {totalItems} {totalItems === 1 ? 'Item' : 'Items'}
             </span>
-            <span className="text-base font-extrabold tracking-tight">
+            <span className="text-base font-black tracking-tight text-slate-950">
               {formatCurrency(subtotal)}
             </span>
           </div>
         </div>
 
         {/* Right: CTA Arrow */}
-        <div className="flex items-center gap-1.5 font-bold text-sm bg-white/10 px-3.5 py-1.5 rounded-xl border border-white/20">
+        <div className="flex items-center gap-1.5 font-black text-xs uppercase tracking-wide bg-slate-950 text-white px-3.5 py-2 rounded-xl shadow-xs">
           <span>View Cart</span>
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-3.5 h-3.5" />
         </div>
       </button>
     </div>

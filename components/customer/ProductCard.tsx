@@ -194,9 +194,9 @@ export function ProductCard({
             ) : (
               <Button
                 size="sm"
-                variant="outline"
+                variant="primary"
                 onClick={handleAddClick}
-                className="border-[var(--brand-primary)] text-[var(--brand-primary)] hover:bg-[var(--brand-primary)] hover:text-white font-bold h-8 min-h-[36px] px-3 transition-colors flex items-center gap-1"
+                className="bg-[var(--brand-primary)] text-slate-950 hover:bg-[var(--brand-primary-hover)] font-black h-8 min-h-[36px] px-3 shadow-xs transition-colors flex items-center gap-1 active:scale-95"
               >
                 <span>ADD</span>
                 <Plus className="w-3.5 h-3.5 stroke-[3]" />

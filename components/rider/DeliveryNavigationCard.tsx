@@ -195,7 +195,7 @@ export function DeliveryNavigationCard({
             <Button
               onClick={handleConfirmPickup}
               disabled={isDispatching}
-              className="w-full h-13 text-sm font-black gap-2 bg-amber-500 hover:bg-amber-600 text-white shadow-lg shadow-amber-500/20"
+              className="w-full h-13 text-sm font-black gap-2 bg-[#febb2c] hover:bg-[#f5a623] text-slate-950 shadow-lg shadow-[#febb2c]/20"
             >
               <PackageCheck className="w-5 h-5" />
               {isDispatching ? 'Confirming...' : 'I Have Picked Up All Items'}
@@ -273,7 +273,7 @@ export function DeliveryNavigationCard({
                 href={customerNavUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-700 shadow-md shadow-indigo-600/20"
+                className="flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#00b9c6] text-white font-bold text-xs hover:bg-[#00a3ae] shadow-md shadow-[#00b9c6]/20"
               >
                 <Navigation className="w-4 h-4" />
                 <span>Open Google Maps</span>
@@ -297,7 +297,7 @@ export function DeliveryNavigationCard({
             {/* Verify Handover OTP Trigger Button */}
             <Button
               onClick={() => setIsOtpModalOpen(true)}
-              className="w-full h-14 text-sm font-black gap-2 bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20"
+              className="w-full h-14 text-sm font-black gap-2 bg-[#febb2c] hover:bg-[#f5a623] text-slate-950 shadow-lg shadow-[#febb2c]/20"
             >
               <KeyRound className="w-5 h-5" />
               Arrived & Verify Handover OTP

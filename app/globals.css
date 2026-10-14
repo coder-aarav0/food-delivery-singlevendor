@@ -6,48 +6,50 @@
 
 :root {
   /* =========================================================================
-     1. WHITE-LABEL REBRANDING HOOKS (Injected from Store DB or fallback)
+     1. ENATEGA BRAND PALETTE & WHITE-LABEL HOOKS
      ========================================================================= */
-  --brand-primary: #15803D;        /* Primary Supermarket Brand Green */
-  --brand-primary-hover: #166534;  /* Darker Shade for Active/Hover */
-  --brand-primary-light: #DCFCE7;  /* 10% Tint for Badges & Accents */
-  --brand-accent: #EA580C;         /* High-Contrast Accent (Orange/Amber for CTAs) */
-  --brand-accent-hover: #C2410C;
-  --brand-accent-light: #FFEDD5;
+  --brand-primary: #febb2c;        /* Enatega Signature Golden Yellow */
+  --brand-primary-hover: #f5a623;  /* Warm Amber for Active/Hover */
+  --brand-primary-light: #fff1d4;  /* Enatega Cream/Yellow Tint for Badges */
+  --brand-accent: #00b9c6;         /* Enatega Cyan/Teal Blue */
+  --brand-accent-hover: #0cc8d5;
+  --brand-accent-light: #e6f8fa;
+  --brand-navy: #172b4d;           /* Argon Admin Dark Navy Sidebar */
+  --brand-dark: #0b0b0b;
 
   /* =========================================================================
      2. SEMANTIC SURFACE & BACKGROUND TOKENS
      ========================================================================= */
-  --bg-app: #F8FAFC;               /* Clean Hyperlocal Canvas (Slate 50) */
+  --bg-app: #f8f9fa;               /* Enatega Light Neutral Canvas */
   --bg-surface: #FFFFFF;           /* Card & Sheet Background */
   --bg-surface-elevated: #FFFFFF;  /* Modals & Popovers */
-  --bg-muted: #F1F5F9;             /* Skeletons, Pills, Secondary Chips */
+  --bg-muted: #f2f4f5;             /* Enatega Medium Blue-Shade Grey */
   --bg-input: #FFFFFF;             /* Text Inputs & Search Bars */
 
   /* =========================================================================
      3. SEMANTIC TEXT & INK TOKENS
      ========================================================================= */
-  --text-ink: #0F172A;             /* Slate 900 (High contrast headers & titles) */
-  --text-body: #334155;            /* Slate 700 (Readable descriptions & labels) */
-  --text-muted: #64748B;           /* Slate 500 (Timestamps, units, grammage) */
+  --text-ink: #0b0b0b;             /* Enatega Primary Black */
+  --text-body: #333333;            /* Enatega Dark Grey */
+  --text-muted: #7F7F7F;           /* Enatega Whitish Grey */
   --text-inverse: #FFFFFF;         /* White text on dark/brand backgrounds */
 
   /* =========================================================================
      4. SEMANTIC BORDERS & DIVIDERS
      ========================================================================= */
-  --border-subtle: #E2E8F0;        /* Card Outlines & Dividers (Slate 200) */
-  --border-strong: #CBD5E1;        /* Form Inputs & Active Outlines */
+  --border-subtle: #e7e5e4;        /* Enatega Line Grey */
+  --border-strong: #d1d5db;        /* Form Inputs & Active Outlines */
   --border-focus: var(--brand-primary);
 
   /* =========================================================================
-     5. FEEDBACK & ORDER STATUS PALETTE
+     5. FEEDBACK & ORDER STATUS PALETTE (Matching Enatega)
      ========================================================================= */
-  --status-pending-bg: #FEF3C7;    --status-pending-text: #92400E;
-  --status-preparing-bg: #E0E7FF;  --status-preparing-text: #3730A3;
-  --status-ready-bg: #CFFAFE;      --status-ready-text: #155E75;
-  --status-dispatched-bg: #FCE7F3; --status-dispatched-text: #9D174D;
-  --status-delivered-bg: #DCFCE7;  --status-delivered-text: #166534;
-  --status-cancelled-bg: #FEE2E2;  --status-cancelled-text: #991B1B;
+  --status-pending-bg: #fff1d4;    --status-pending-text: #b45309;
+  --status-preparing-bg: #e6f8fa;  --status-preparing-text: #00838f;
+  --status-ready-bg: #fef3c7;      --status-ready-text: #92400e;
+  --status-dispatched-bg: #e0f2fe; --status-dispatched-text: #0369a1;
+  --status-delivered-bg: #e8f5e9;  --status-delivered-text: #2e7d32;
+  --status-cancelled-bg: #ffebee;  --status-cancelled-text: #c62828;
 
   /* =========================================================================
      6. TYPOGRAPHY SCALES

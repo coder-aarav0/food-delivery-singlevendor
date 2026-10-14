@@ -114,16 +114,16 @@ export function DutyToggleHeader({ rider }: DutyToggleHeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[var(--bg-surface)] border-b border-[var(--border-subtle)] px-4 py-3 shadow-sm">
+    <header className="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-3 shadow-xs">
       <div className="max-w-md mx-auto flex items-center justify-between gap-3">
         {/* Rider Identification */}
         <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center font-black text-base shrink-0 border border-amber-500/20">
+          <div className="w-10 h-10 rounded-2xl bg-[#fff1d4] text-[#f5a623] flex items-center justify-center font-black text-base shrink-0 border border-[#febb2c]/30 shadow-xs">
             <Bike className="w-5 h-5" />
           </div>
           <div className="truncate">
             <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-sm text-[var(--text-ink)] truncate">
+              <span className="font-black text-sm text-[#0b0b0b] truncate">
                 {rider.fullName}
               </span>
               {gpsActive ? (
@@ -132,12 +132,12 @@ export function DutyToggleHeader({ rider }: DutyToggleHeaderProps) {
                   GPS
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-[var(--text-muted)]">
+                <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-slate-400">
                   <Navigation className="w-2.5 h-2.5" />
                 </span>
               )}
             </div>
-            <p className="text-[11px] text-[var(--text-muted)] truncate">
+            <p className="text-[11px] text-slate-500 font-medium truncate">
               {rider.vehicleNumber} • {rider.vehicleType}
             </p>
           </div>

@@ -52,7 +52,7 @@ export default function CheckoutPage() {
           </p>
           <Link
             href="/"
-            className="px-5 py-2.5 rounded-xl bg-[var(--brand-primary)] text-white text-xs font-bold"
+            className="px-5 py-2.5 rounded-xl bg-[#febb2c] hover:bg-[#f5a623] text-slate-950 text-xs font-black shadow-sm"
           >
             Go to Catalog
           </Link>

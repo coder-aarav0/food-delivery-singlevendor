@@ -47,52 +47,53 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
   return (
     <>
       {/* Mobile Top Header */}
-      <div className="md:hidden flex items-center justify-between p-4 bg-[var(--bg-surface)] border-b border-[var(--border-subtle)]">
+      <div className="md:hidden flex items-center justify-between p-4 bg-white border-b border-slate-200">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white font-bold flex items-center justify-center">
-            A
+          <div className="w-8 h-8 rounded-xl bg-[#febb2c] text-slate-950 font-black flex items-center justify-center shadow-sm">
+            E
           </div>
-          <span className="font-bold text-sm text-[var(--text-ink)]">
+          <span className="font-extrabold text-sm text-[#0b0b0b]">
             FreshMart Admin
           </span>
         </div>
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-2 rounded-xl border border-[var(--border-subtle)] text-[var(--text-ink)]"
+          aria-label="Toggle mobile navigation menu"
+          className="p-2 rounded-xl border border-slate-200 text-[#333333]"
         >
           {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
-      {/* Sidebar Container */}
+      {/* Argon Admin Sidebar Container */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 md:static w-64 bg-[var(--bg-surface)] border-r border-[var(--border-subtle)] flex flex-col justify-between p-5 transition-transform duration-200 ${
+        className={`fixed inset-y-0 left-0 z-40 md:static w-64 bg-white border-r border-slate-200 flex flex-col justify-between p-5 transition-transform duration-200 shadow-sm ${
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
         <div className="space-y-6">
           {/* Brand Header */}
-          <div className="flex items-center justify-between">
-            <Link href="/admin" className="flex items-center gap-2.5 select-none">
-              <div className="w-10 h-10 rounded-2xl bg-indigo-600 text-white font-black text-xl flex items-center justify-center shadow-sm">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+            <Link href="/admin" className="flex items-center gap-3 select-none">
+              <div className="w-10 h-10 rounded-2xl bg-[#febb2c] text-slate-950 font-black text-xl flex items-center justify-center shadow-sm">
                 F
               </div>
               <div>
-                <span className="font-extrabold text-base text-[var(--text-ink)] block leading-none">
+                <span className="font-black text-base text-[#0b0b0b] block leading-none">
                   FreshMart
                 </span>
-                <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider">
-                  Admin Station
+                <span className="text-[10px] font-bold text-[#f5a623] uppercase tracking-wider">
+                  Admin Dashboard
                 </span>
               </div>
             </Link>
           </div>
 
           {/* Master Store Open / Closed Switch */}
-          <div className="p-3.5 rounded-2xl bg-[var(--bg-app)] border border-[var(--border-subtle)] space-y-2">
+          <div className="p-3.5 rounded-2xl bg-[#f8f9fa] border border-slate-200 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[var(--text-ink)]">
+              <span className="text-xs font-bold text-[#333333]">
                 Store Status
               </span>
               <span
@@ -113,7 +114,7 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
               className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                 isOpen
                   ? 'bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200'
-                  : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                  : 'bg-[#febb2c] text-slate-950 hover:bg-[#f5a623] font-black'
               }`}
             >
               <Power className="w-3.5 h-3.5" />
@@ -121,7 +122,7 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
             </button>
           </div>
 
-          {/* Navigation Links */}
+          {/* Navigation Links with Argon Styling */}
           <nav className="space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -131,17 +132,17 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs md:text-sm font-bold transition-all min-h-[44px] ${
+                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all min-h-[44px] ${
                     isActive
-                      ? 'bg-indigo-600 text-white shadow-sm'
-                      : 'text-[var(--text-body)] hover:bg-[var(--bg-muted)] hover:text-[var(--text-ink)]'
+                      ? 'bg-[#fff1d4] text-[#0b0b0b] font-black border-l-4 border-[#febb2c] shadow-xs'
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <Icon className="w-4 h-4" />
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#f5a623]' : 'text-[#febb2c]'}`} />
                     <span>{item.label}</span>
                   </div>
-                  {isActive && <ChevronRight className="w-4 h-4" />}
+                  {isActive && <ChevronRight className="w-4 h-4 text-[#f5a623]" />}
                 </Link>
               );
             })}
@@ -149,12 +150,12 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
         </div>
 
         {/* Footer Shortcut to Customer Storefront */}
-        <div className="pt-4 border-t border-[var(--border-subtle)]">
+        <div className="pt-4 border-t border-slate-200">
           <Link
             href="/"
-            className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+            className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-950 hover:bg-slate-100 transition-colors"
           >
-            <ShoppingBag className="w-4 h-4 text-[var(--brand-primary)]" />
+            <ShoppingBag className="w-4 h-4 text-[#febb2c]" />
             <span>View Customer Storefront</span>
           </Link>
         </div>
@@ -162,3 +163,4 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
     </>
   );
 }
+

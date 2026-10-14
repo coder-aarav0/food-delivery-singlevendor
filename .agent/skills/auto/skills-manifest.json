@@ -1,7 +1,7 @@
 {
   "project": {
     "enabled": true,
-    "lastGenerated": "2026-10-14T13:20:31.150Z",
+    "lastGenerated": "2026-10-14T15:50:31.390Z",
     "observationCount": 235,
     "skillCount": 0,
     "domain": "project",
@@ -12,7 +12,7 @@
   },
   "typescript-react": {
     "enabled": true,
-    "lastGenerated": "2026-10-14T13:20:31.153Z",
+    "lastGenerated": "2026-10-14T15:50:31.392Z",
     "observationCount": 2,
     "skillCount": 0,
     "domain": "typescript-react",

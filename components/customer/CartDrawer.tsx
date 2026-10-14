@@ -256,17 +256,17 @@ export function CartDrawer() {
             <Link
               href="/checkout"
               onClick={() => setIsCartOpen(false)}
-              className="w-full bg-[var(--brand-primary)] text-white py-3.5 px-5 rounded-2xl font-bold flex items-center justify-between shadow-elevated hover:bg-[var(--brand-primary-hover)] active:scale-[0.99] transition-all min-h-[52px]"
+              className="w-full bg-[var(--brand-primary)] text-slate-950 py-3.5 px-5 rounded-2xl font-black flex items-center justify-between shadow-elevated hover:bg-[var(--brand-primary-hover)] active:scale-[0.99] transition-all min-h-[52px]"
             >
               <div className="flex flex-col text-left">
-                <span className="text-xs uppercase text-emerald-100 font-extrabold">
+                <span className="text-[11px] uppercase text-slate-800 font-extrabold">
                   {totalItems} Items
                 </span>
                 <span className="text-base font-black">
                   {formatCurrency(subtotal + (isFreeDelivery ? 0 : 30))}
                 </span>
               </div>
-              <div className="flex items-center gap-1.5 text-sm bg-white/20 px-3 py-1.5 rounded-xl">
+              <div className="flex items-center gap-1.5 text-xs uppercase tracking-wide bg-slate-950 text-white px-3 py-2 rounded-xl shadow-xs">
                 <span>Proceed to Checkout</span>
                 <ArrowRight className="w-4 h-4" />
               </div>

@@ -60,26 +60,26 @@ export default async function RiderEarningsPage() {
       {/* 2. Top Summary Metrics */}
       <div className="grid grid-cols-2 gap-3">
         {/* Earnings Card */}
-        <div className="p-4 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-1">
-          <div className="flex items-center justify-between text-xs text-[var(--text-muted)]">
+        <div className="p-4 rounded-3xl bg-white border border-slate-200 space-y-1 shadow-xs">
+          <div className="flex items-center justify-between text-xs text-slate-500">
             <span>Today&apos;s Earnings</span>
             <TrendingUp className="w-4 h-4 text-emerald-600" />
           </div>
-          <p className="text-2xl font-black text-emerald-600">
+          <p className="text-2xl font-black text-[#0b0b0b]">
             ₹{totalEarnedToday.toFixed(2)}
           </p>
-          <span className="text-[11px] text-[var(--text-muted)] block">
+          <span className="text-[11px] text-slate-500 block">
             {deliveredCount} completed @ ₹{incentivePerOrder}/drop
           </span>
         </div>
 
         {/* Deliveries Count */}
-        <div className="p-4 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-1">
-          <div className="flex items-center justify-between text-xs text-[var(--text-muted)]">
+        <div className="p-4 rounded-3xl bg-white border border-slate-200 space-y-1 shadow-xs">
+          <div className="flex items-center justify-between text-xs text-slate-500">
             <span>Completed Drops</span>
-            <Bike className="w-4 h-4 text-amber-500" />
+            <Bike className="w-4 h-4 text-[#f5a623]" />
           </div>
-          <p className="text-2xl font-black text-[var(--text-ink)]">
+          <p className="text-2xl font-black text-[#0b0b0b]">
             {deliveredCount}
           </p>
           <span className="text-[11px] text-emerald-600 font-semibold block">
@@ -92,8 +92,8 @@ export default async function RiderEarningsPage() {
       <div
         className={`p-5 rounded-3xl border space-y-3 ${
           cashInHand > 0
-            ? 'bg-amber-500/10 border-amber-500/25'
-            : 'bg-emerald-500/10 border-emerald-500/20'
+            ? 'bg-[#fff1d4]/60 border-[#febb2c]/40'
+            : 'bg-emerald-50 border-emerald-200'
         }`}
       >
         <div className="flex items-center justify-between">
@@ -101,24 +101,24 @@ export default async function RiderEarningsPage() {
             <div
               className={`w-9 h-9 rounded-2xl flex items-center justify-center font-bold ${
                 cashInHand > 0
-                  ? 'bg-amber-500 text-white'
+                  ? 'bg-[#febb2c] text-slate-950 font-black'
                   : 'bg-emerald-600 text-white'
               }`}
             >
               <Banknote className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[10px] uppercase font-bold tracking-wider text-[var(--text-muted)] block">
+              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-600 block">
                 Cash in Hand (Store Deposit)
               </span>
-              <p className="text-xl font-black text-[var(--text-ink)]">
+              <p className="text-xl font-black text-[#0b0b0b]">
                 ₹{cashInHand.toFixed(2)}
               </p>
             </div>
           </div>
 
           {cashInHand > 0 ? (
-            <span className="text-xs font-black px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-400">
+            <span className="text-xs font-black px-2.5 py-1 rounded-full bg-[#febb2c] text-slate-950">
               Pending Handover
             </span>
           ) : (
@@ -129,7 +129,7 @@ export default async function RiderEarningsPage() {
           )}
         </div>
 
-        <p className="text-xs text-[var(--text-muted)] pt-1 border-t border-[var(--border-subtle)]">
+        <p className="text-xs text-slate-600 pt-1 border-t border-slate-200">
           {cashInHand > 0
             ? 'Please deposit this cash amount with the FreshMart store manager at the end of your shift.'
             : 'All Cash on Delivery collections have been settled with the store cash register.'}

@@ -90,7 +90,7 @@ export function LiveDispatchKanban({
       icon: Inbox,
       count: newOrders.length,
       orders: newOrders,
-      badgeColor: 'bg-indigo-100 text-indigo-900 border-indigo-200',
+      badgeColor: 'bg-[#fff1d4] text-[#0b0b0b] border-[#febb2c]',
     },
     {
       id: 'preparing',
@@ -121,16 +121,16 @@ export function LiveDispatchKanban({
   return (
     <div className="space-y-4">
       {/* Top Station Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-xs">
+      <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-3xl bg-white border border-slate-200 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg">
+          <div className="w-10 h-10 rounded-2xl bg-[#fff1d4] text-[#f5a623] flex items-center justify-center font-black text-lg shadow-xs">
             ⚡
           </div>
           <div>
-            <h1 className="text-lg md:text-xl font-black text-[var(--text-ink)] leading-none">
+            <h1 className="text-lg md:text-xl font-black text-[#0b0b0b] leading-none">
               Live Dispatch Command Center
             </h1>
-            <span className="text-xs text-[var(--text-muted)] font-medium mt-0.5 block">
+            <span className="text-xs text-slate-500 font-medium mt-0.5 block">
               Auto-updating via Supabase Realtime • {orders.length} Total Orders Tracked
             </span>
           </div>
@@ -143,13 +143,13 @@ export function LiveDispatchKanban({
             onClick={() => setAudioEnabled(!audioEnabled)}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all border ${
               audioEnabled
-                ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                ? 'bg-[#fff1d4] text-[#0b0b0b] border-[#febb2c]'
                 : 'bg-slate-100 text-slate-500 border-slate-200'
             }`}
           >
             {audioEnabled ? (
               <>
-                <Volume2 className="w-4 h-4 text-[var(--brand-primary)]" />
+                <Volume2 className="w-4 h-4 text-[#f5a623]" />
                 <span>Audio Alert ON</span>
               </>
             ) : (

@@ -82,8 +82,8 @@ export function SKUTable({ initialItems, categories }: SKUTableProps) {
             onClick={() => setSelectedCategory(null)}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
               selectedCategory === null
-                ? 'bg-indigo-600 text-white'
-                : 'bg-[var(--bg-app)] text-[var(--text-body)] hover:bg-slate-200'
+                ? 'bg-[#febb2c] text-slate-950 font-black shadow-xs'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
             }`}
           >
             All ({items.length})
@@ -95,8 +95,8 @@ export function SKUTable({ initialItems, categories }: SKUTableProps) {
               onClick={() => setSelectedCategory(cat.name)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                 selectedCategory === cat.name
-                  ? 'bg-indigo-600 text-white'
-                  : 'bg-[var(--bg-app)] text-[var(--text-body)] hover:bg-slate-200'
+                  ? 'bg-[#febb2c] text-slate-950 font-black shadow-xs'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
               {cat.name}

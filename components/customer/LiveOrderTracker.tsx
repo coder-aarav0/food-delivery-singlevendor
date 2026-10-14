@@ -98,8 +98,8 @@ export function LiveOrderTracker({ initialOrder }: LiveOrderTrackerProps) {
           </div>
 
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 self-start">
-            <Clock className="w-4 h-4 text-[var(--brand-primary)]" />
-            <span className="text-xs font-bold">
+            <Clock className="w-4 h-4 text-[#f5a623]" />
+            <span className="text-xs font-bold text-[#0b0b0b]">
               {isDelivered ? 'Delivered' : 'Est. Delivery: ~15 mins'}
             </span>
           </div>
@@ -115,7 +115,7 @@ export function LiveOrderTracker({ initialOrder }: LiveOrderTrackerProps) {
                   <div
                     className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-all ${
                       step.completed
-                        ? 'bg-[var(--brand-primary)] text-white shadow-sm'
+                        ? 'bg-[#febb2c] text-slate-950 font-black shadow-sm'
                         : 'bg-slate-100 text-slate-400'
                     }`}
                   >
@@ -137,20 +137,20 @@ export function LiveOrderTracker({ initialOrder }: LiveOrderTrackerProps) {
         </div>
 
         {/* CRITICAL SECURITY FEATURE: 4-Digit Delivery Handover OTP */}
-        <div className="py-6 border-b border-[var(--border-subtle)] bg-amber-50/70 -mx-6 px-6 my-2">
+        <div className="py-6 border-b border-[var(--border-subtle)] bg-[#fff1d4]/70 -mx-6 px-6 my-2">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="max-w-md">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-900 mb-1">
-                <ShieldCheck className="w-4 h-4 text-amber-700" />
+              <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#0b0b0b] mb-1">
+                <ShieldCheck className="w-4 h-4 text-[#f5a623]" />
                 <span>Delivery Handover Security OTP</span>
               </div>
-              <p className="text-xs text-amber-800 leading-relaxed">
+              <p className="text-xs text-slate-700 leading-relaxed font-medium">
                 Share this 4-digit code with the delivery rider only when you receive your package.
               </p>
             </div>
 
             {/* OTP Numbers Box */}
-            <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-2xl border-2 border-amber-300 shadow-sm self-start">
+            <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-2xl border-2 border-[#febb2c] shadow-sm self-start">
               {String(order.delivery_otp || '----')
                 .split('')
                 .map((digit, i) => (
