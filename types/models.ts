@@ -156,13 +156,18 @@ export interface Order {
   rider_id: string | null;
   address_id: string;
   delivery_address_snapshot: {
-    title: string;
-    address_line: string;
+    title?: string;
+    label?: string;
+    address_line?: string;
+    address_line_1?: string;
+    address_line_2?: string | null;
     landmark?: string | null;
+    city?: string;
+    pincode?: string;
     latitude: number;
     longitude: number;
-    phone: string;
-    customer_name: string;
+    phone?: string;
+    customer_name?: string;
   };
   status: OrderStatus;
   payment_method: PaymentMethod;

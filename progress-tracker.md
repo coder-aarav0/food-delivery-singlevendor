@@ -10,10 +10,10 @@
 
 | Field | Value |
 | :--- | :--- |
-| **Active Phase** | **Phase 2: Customer Progressive Web App (PWA)** |
-| **Current Target** | Storefront shell, Category pill navigation, Product cards & Cart drawer |
-| **Last Updated** | 2026-10-14 (Phase 1 Complete - Supabase Clients, Razorpay Webhook, Server Actions & Seed Data) |
-| **Overall Completion** | **45%** (Phase 0 & Phase 1 Complete; DB Seeded & Verified) |
+| **Active Phase** | **Phase 3: Store Owner & Admin Panel** |
+| **Current Target** | Live Kanban Packing Station, Audio Alerts, Catalog SKU Manager & Theme Customizer |
+| **Last Updated** | 2026-10-14 (Phase 2 Complete - Customer PWA Storefront, Cart, Checkout & Live Tracking) |
+| **Overall Completion** | **65%** (Phase 0, 1 & 2 Complete; All Customer Flows Verified) |
 
 ---
 
@@ -43,16 +43,16 @@
 ---
 
 ### Phase 2: Customer Progressive Web App (PWA)
-- [ ] **2.1 Customer PWA Root Layout** (`app/(customer)/layout.tsx` + sticky cart indicator)
-- [ ] **2.2 Storefront Landing Page** (`app/(customer)/page.tsx` with hero banner & featured shelves)
-- [ ] **2.3 Category Navigation Rail** (`components/customer/CategoryPillBar.tsx`)
-- [ ] **2.4 Product Cards & Grid** (`components/customer/ProductCard.tsx` with 1:1 image and price hierarchy)
-- [ ] **2.5 Product Variation Modal** (`components/customer/ProductDetailModal.tsx` grammage picker)
-- [ ] **2.6 Instant Debounced Search** (`app/(customer)/search/page.tsx`)
-- [ ] **2.7 Cart Review Screen** (`app/(customer)/cart/page.tsx` + substitution options)
-- [ ] **2.8 Checkout Flow** (`app/(customer)/checkout/page.tsx` + address picker & Razorpay trigger)
-- [ ] **2.9 Realtime Order Tracking** (`app/(customer)/order/[id]/page.tsx` + live status stepper & OTP)
-- [ ] **2.10 Live Rider Location Map** (`components/customer/LiveRiderMap.tsx`)
+- [x] **2.1 Customer PWA Root Layout** (`app/layout.tsx` + `CartProvider` + `StorefrontHeader`)
+- [x] **2.2 Storefront Landing Page** (`app/page.tsx` with hero banner, category pills & live shelves)
+- [x] **2.3 Category Navigation Rail** (`components/customer/CategoryPillBar.tsx`)
+- [x] **2.4 Product Cards & Grid** (`components/customer/ProductCard.tsx` with 1:1 image and price hierarchy)
+- [x] **2.5 Product Variation Modal** (`components/customer/ProductDetailModal.tsx` grammage picker)
+- [x] **2.6 Instant Debounced Search** (`app/search/page.tsx` with 4-state screens & trending chips)
+- [x] **2.7 Cart Review Screen** (`app/cart/page.tsx` + `components/customer/CartDrawer.tsx` + substitution options)
+- [x] **2.8 Checkout Flow** (`app/checkout/page.tsx` + address picker & Razorpay/COD trigger)
+- [x] **2.9 Realtime Order Tracking** (`app/order/[id]/page.tsx` + live status stepper & 4-digit OTP)
+- [x] **2.10 Live Rider Location Map** (`components/customer/LiveRiderMap.tsx`)
 
 ---
 

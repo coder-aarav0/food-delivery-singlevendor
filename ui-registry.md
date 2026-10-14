@@ -21,13 +21,11 @@
 
 | Component Name | File Path | Status | Key Props / Purpose |
 | :--- | :--- | :--- | :--- |
-| **`Button`** | `components/ui/Button.tsx` | 🟡 `PLANNED` | `variant` (`primary`, `secondary`, `destructive`, `ghost`), `size` (`sm`, `md`, `lg`), `isLoading` |
-| **`Input`** | `components/ui/Input.tsx` | 🟡 `PLANNED` | Form text input with label, error text, and prefix icon |
-| **`Badge`** | `components/ui/Badge.tsx` | 🟡 `PLANNED` | Status pill (`PENDING`, `PREPARING`, `DISPATCHED`, `DELIVERED`) |
-| **`Modal`** | `components/ui/Modal.tsx` | 🟡 `PLANNED` | Accessible dialog with backdrop blur, focus trap, and close on escape |
-| **`Drawer`** | `components/ui/Drawer.tsx` | 🟡 `PLANNED` | Mobile bottom sheet with swipe-down gesture to dismiss |
-| **`Skeleton`** | `components/ui/Skeleton.tsx` | 🟡 `PLANNED` | Animated shimmer placeholder matching target element dimensions |
-| **`QuantityStepper`** | `components/ui/QuantityStepper.tsx` | 🟡 `PLANNED` | `+` and `-` quantity controls with 44px touch targets |
+| **`Button`** | `components/ui/Button.tsx` | 🟢 `READY` | `variant` (`primary`, `secondary`, `accent`, `destructive`, `outline`, `ghost`), `size` (`sm`, `md`, `lg`), `isLoading` |
+| **`Badge`** | `components/ui/Badge.tsx` | 🟢 `READY` | Status pill (`PENDING`, `PREPARING`, `DISPATCHED`, `DELIVERED`, `discount`, `outOfStock`) |
+| **`Modal`** | `components/ui/Modal.tsx` | 🟢 `READY` | Accessible dialog with backdrop blur, focus trap, and close on escape |
+| **`Skeleton`** | `components/ui/Skeleton.tsx` | 🟢 `READY` | Animated shimmer placeholder matching target element dimensions |
+| **`QuantityStepper`** | `components/ui/QuantityStepper.tsx` | 🟢 `READY` | `+` and `-` quantity controls with 44px touch targets |
 
 ---
 
@@ -35,16 +33,15 @@
 
 | Component Name | File Path | Status | Key Props / Purpose |
 | :--- | :--- | :--- | :--- |
-| **`ProductCard`** | `components/customer/ProductCard.tsx` | 🟡 `PLANNED` | 1:1 image, title, grammage, pricing, stock check, Add trigger |
-| **`ProductShelf`** | `components/customer/ProductShelf.tsx` | 🟡 `PLANNED` | Horizontal scroll or grid container with section title and "View All" |
-| **`CategoryPillBar`** | `components/customer/CategoryPillBar.tsx` | 🟡 `PLANNED` | Fast horizontal scroll rail of circular category icons + label |
-| **`StickyCartBar`** | `components/customer/StickyCartBar.tsx` | 🟡 `PLANNED` | Floating bottom bar showing item count, total price, and "View Cart →" |
-| **`ProductDetailModal`** | `components/customer/ProductDetailModal.tsx` | 🟡 `PLANNED` | Full product view with grammage variation selector and details |
-| **`CartItemRow`** | `components/customer/CartItemRow.tsx` | 🟡 `PLANNED` | Cart list row with image, stepper, substitution dropdown, line total |
-| **`AddressPickerModal`** | `components/customer/AddressPickerModal.tsx` | 🟡 `PLANNED` | Saved addresses selection, "Add New" with Google Maps pin |
-| **`DeliverySlotPicker`** | `components/customer/DeliverySlotPicker.tsx` | 🟡 `PLANNED` | Express (30 min) vs Scheduled morning/evening slots |
-| **`LiveOrderStatusCard`**| `components/customer/LiveOrderStatusCard.tsx` | 🟡 `PLANNED` | Realtime status stepper, estimated arrival, and 4-digit OTP |
-| **`LiveRiderMap`** | `components/customer/LiveRiderMap.tsx` | 🟡 `PLANNED` | Map view showing store, customer house, and animated rider marker |
+| **`ProductCard`** | `components/customer/ProductCard.tsx` | 🟢 `READY` | 1:1 image, title, grammage, pricing, stock check, Add trigger |
+| **`CategoryPillBar`** | `components/customer/CategoryPillBar.tsx` | 🟢 `READY` | Fast horizontal scroll rail of circular category icons + label |
+| **`StickyCartBar`** | `components/customer/StickyCartBar.tsx` | 🟢 `READY` | Floating bottom bar showing item count, total price, and "View Cart →" |
+| **`ProductDetailModal`** | `components/customer/ProductDetailModal.tsx` | 🟢 `READY` | Full product view with grammage variation selector and details |
+| **`StorefrontHero`** | `components/customer/StorefrontHero.tsx` | 🟢 `READY` | High-impact hero banner with copyable coupon pills & delivery SLA |
+| **`StorefrontHeader`** | `components/customer/StorefrontHeader.tsx` | 🟢 `READY` | Top header with address badge, search input, and cart button |
+| **`CartDrawer`** | `components/customer/CartDrawer.tsx` | 🟢 `READY` | Slide-over cart review with free delivery bar & substitution preferences |
+| **`LiveOrderTracker`**| `components/customer/LiveOrderTracker.tsx` | 🟢 `READY` | Realtime status stepper, estimated arrival, and 4-digit OTP box |
+| **`LiveRiderMap`** | `components/customer/LiveRiderMap.tsx` | 🟢 `READY` | Simulated route waypoint view connecting store, rider, and house |
 
 ---
 

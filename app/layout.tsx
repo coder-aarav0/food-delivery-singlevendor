@@ -20,6 +20,8 @@ export const viewport: Viewport = {
   userScalable: false,
 };
 
+import { CartProvider } from '@/context/CartContext';
+
 export default function RootLayout({
   children,
 }: {
@@ -35,7 +37,7 @@ export default function RootLayout({
         {process.env.NODE_ENV === 'development' && (
           <Agentation endpoint="http://localhost:4747" />
         )}
-        {children}
+        <CartProvider>{children}</CartProvider>
       </body>
     </html>
   );

@@ -1,119 +1,99 @@
+import React from 'react';
+import { createServerClient } from '@/lib/supabase/server';
+import { StorefrontHeader } from '@/components/customer/StorefrontHeader';
+import { StorefrontView } from '@/components/customer/StorefrontView';
 import Link from 'next/link';
-import { ShoppingBag, ShieldCheck, Bike, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Bike, Sparkles, MapPin, Phone, Mail } from 'lucide-react';
 
-export default function Home() {
+export const revalidate = 60; // ISR cache for 60 seconds
+
+export default async function HomePage() {
+  const supabase = await createServerClient();
+
+  // 1. Fetch Categories
+  const { data: categories } = await supabase
+    .from('categories')
+    .select('id, name, slug, image_url')
+    .eq('is_active', true)
+    .order('display_order', { ascending: true });
+
+  // 2. Fetch Products with Variations
+  const { data: products } = await supabase
+    .from('products')
+    .select(`
+      id,
+      category_id,
+      name,
+      slug,
+      description,
+      image_url,
+      is_featured,
+      product_variations (
+        id,
+        product_id,
+        title,
+        price,
+        discounted_price,
+        stock_quantity,
+        is_in_stock
+      )
+    `)
+    .eq('is_active', true)
+    .order('display_order', { ascending: true });
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-6 md:p-12 max-w-5xl mx-auto">
+    <div className="min-h-screen flex flex-col bg-[var(--bg-app)] text-[var(--text-body)]">
       {/* Top Header */}
-      <header className="w-full flex items-center justify-between py-4 border-b border-[var(--border-subtle)]">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-[var(--brand-primary)] flex items-center justify-center text-white font-bold text-xl shadow-sm">
-            F
+      <StorefrontHeader />
+
+      {/* Main Content Area */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-8 pt-4 md:pt-6">
+        <StorefrontView
+          categories={categories || []}
+          products={(products as any) || []}
+        />
+      </main>
+
+      {/* Modern Supermarket Footer */}
+      <footer className="w-full bg-[var(--bg-surface)] border-t border-[var(--border-subtle)] mt-12 py-10 px-4 md:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-[var(--text-muted)]">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-[var(--brand-primary)] text-white font-black text-lg flex items-center justify-center">
+              F
+            </div>
+            <div>
+              <span className="font-bold text-sm text-[var(--text-ink)] block">
+                FreshMart Supermarket
+              </span>
+              <span>Hyperlocal 15-Minute Grocery Delivery</span>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight text-[var(--text-ink)]">
-              FreshMart
-            </h1>
-            <p className="text-xs text-[var(--text-muted)] font-medium">
-              Hyperlocal Grocery Delivery
-            </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-6 font-semibold">
+            <Link
+              href="/admin"
+              className="flex items-center gap-1.5 text-indigo-600 hover:text-indigo-700"
+            >
+              <ShieldCheck className="w-4 h-4" />
+              <span>Admin Station</span>
+            </Link>
+            <Link
+              href="/rider"
+              className="flex items-center gap-1.5 text-[var(--brand-accent)] hover:brightness-95"
+            >
+              <Bike className="w-4 h-4" />
+              <span>Rider App</span>
+            </Link>
+            <Link href="/search" className="hover:text-[var(--text-ink)]">
+              Search Catalog
+            </Link>
+          </div>
+
+          <div className="text-center md:text-right">
+            <span>© 2026 FreshMart. Powered by Next.js 16 & Supabase.</span>
           </div>
         </div>
-
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-            <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
-            Store Open
-          </span>
-        </div>
-      </header>
-
-      {/* Hero Section */}
-      <section className="my-auto py-12 text-center max-w-2xl">
-        <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-[var(--brand-primary-light)] text-[var(--brand-primary)] mb-4">
-          White-Label Hyperlocal Platform
-        </span>
-        <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--text-ink)] leading-tight mb-4">
-          Fresh Groceries Delivered in 30 Minutes
-        </h2>
-        <p className="text-base md:text-lg text-[var(--text-muted)] mb-8">
-          A production-grade, 3-portal delivery management system connecting Customers, Supermarket Owners, and Delivery Riders.
-        </p>
-
-        {/* 3 Portal Navigation Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
-          {/* Customer Portal */}
-          <Link
-            href="/catalog"
-            className="group relative p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-card hover:border-[var(--brand-primary)] hover:shadow-elevated transition-all duration-200 flex flex-col justify-between"
-          >
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-[var(--brand-primary)] flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                <ShoppingBag className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold text-[var(--text-ink)] mb-1">
-                Customer PWA
-              </h3>
-              <p className="text-xs text-[var(--text-muted)] leading-relaxed">
-                Browse catalog, manage cart, express checkout, and track delivery live.
-              </p>
-            </div>
-            <div className="mt-4 pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs font-semibold text-[var(--brand-primary)]">
-              <span>Launch Storefront</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
-
-          {/* Admin Station */}
-          <Link
-            href="/admin"
-            className="group relative p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-card hover:border-indigo-500 hover:shadow-elevated transition-all duration-200 flex flex-col justify-between"
-          >
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold text-[var(--text-ink)] mb-1">
-                Admin Station
-              </h3>
-              <p className="text-xs text-[var(--text-muted)] leading-relaxed">
-                Live packing Kanban board, SKU catalog, fleet management & white-label theming.
-              </p>
-            </div>
-            <div className="mt-4 pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs font-semibold text-indigo-600">
-              <span>Enter Dispatch</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
-
-          {/* Rider App */}
-          <Link
-            href="/rider"
-            className="group relative p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-card hover:border-[var(--brand-accent)] hover:shadow-elevated transition-all duration-200 flex flex-col justify-between"
-          >
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-orange-50 text-[var(--brand-accent)] flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                <Bike className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold text-[var(--text-ink)] mb-1">
-                Rider Portal
-              </h3>
-              <p className="text-xs text-[var(--text-muted)] leading-relaxed">
-                Accept order alerts, GPS turn-by-turn routing, customer OTP handover & cash log.
-              </p>
-            </div>
-            <div className="mt-4 pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs font-semibold text-[var(--brand-accent)]">
-              <span>Open Rider App</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="w-full text-center py-4 border-t border-[var(--border-subtle)] text-xs text-[var(--text-muted)]">
-        White-Label Hyperlocal Delivery Platform • Next.js 16 + React 19 + Supabase
       </footer>
-    </main>
+    </div>
   );
 }
