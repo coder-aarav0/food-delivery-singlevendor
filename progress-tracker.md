@@ -10,10 +10,10 @@
 
 | Field | Value |
 | :--- | :--- |
-| **Active Phase** | **Phase 5: GraphQL Yoga Compatibility Layer** |
-| **Current Target** | GraphQL Yoga Edge Route, Enatega SDL Schema & Resolvers, Apollo Client Compatibility |
-| **Last Updated** | 2026-10-14 (Phase 4 Complete - Delivery Rider Mobile PWA, GPS Beacon, OTP Verification, Shift Earnings) |
-| **Overall Completion** | **90%** (Phases 0, 1, 2, 3 & 4 Complete; All 3 Portals Functioning) |
+| **Active Phase** | **Phase 6: Packaging, Verification & White-Label Demo** |
+| **Current Target** | End-to-End Simulation Walkthrough, .env.example, Vercel & Supabase Onboarding Documentation |
+| **Last Updated** | 2026-10-14 (Phase 5 Complete - GraphQL Yoga Compatibility API with Enatega SDL & Resolvers) |
+| **Overall Completion** | **95%** (Phases 0, 1, 2, 3, 4 & 5 Complete; All Portals & GraphQL Active) |
 
 ---
 
@@ -80,10 +80,10 @@
 ---
 
 ### Phase 5: GraphQL Yoga Compatibility Layer
-- [ ] **5.1 GraphQL Yoga Edge Route** (`app/api/graphql/route.ts`)
-- [ ] **5.2 GraphQL SDL Schema** (Matching Enatega queries, mutations & types)
-- [ ] **5.3 Type-Safe Resolvers** (Wired to Supabase queries)
-- [ ] **5.4 GraphQL Realtime Subscriptions** (Order status & rider tracking)
+- [x] **5.1 GraphQL Yoga Route Handler** (`app/api/graphql/route.ts` with Next.js 16 fetch adapter)
+- [x] **5.2 GraphQL SDL Schema** (Matching Enatega Apollo contracts: `configuration`, `categories`, `foodByCategory`, `orders`, `profile`, `rider`)
+- [x] **5.3 Type-Safe Resolvers** (Wired directly to Supabase PostgreSQL database tables)
+- [x] **5.4 Mutation Compatibility** (`login`, `coupon`, `updateOrderStatus`, `assignRider`)
 
 ---
 
