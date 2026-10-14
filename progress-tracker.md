@@ -10,10 +10,10 @@
 
 | Field | Value |
 | :--- | :--- |
-| **Active Phase** | **Phase 4: Delivery Rider Mobile PWA** |
-| **Current Target** | Mobile-first Duty Toggle, Incoming Order Modal (60s countdown), GPS Broadcaster, Turn-by-Turn Navigation & OTP Handover |
-| **Last Updated** | 2026-10-14 (Phase 3 Complete - Store Admin Station, Live Kanban, SKU Manager, Geofencing & Fleet Manager) |
-| **Overall Completion** | **80%** (Phases 0, 1, 2 & 3 Complete; All Admin & Store Operations Verified) |
+| **Active Phase** | **Phase 5: GraphQL Yoga Compatibility Layer** |
+| **Current Target** | GraphQL Yoga Edge Route, Enatega SDL Schema & Resolvers, Apollo Client Compatibility |
+| **Last Updated** | 2026-10-14 (Phase 4 Complete - Delivery Rider Mobile PWA, GPS Beacon, OTP Verification, Shift Earnings) |
+| **Overall Completion** | **90%** (Phases 0, 1, 2, 3 & 4 Complete; All 3 Portals Functioning) |
 
 ---
 
@@ -70,12 +70,12 @@
 ---
 
 ### Phase 4: Delivery Rider Mobile PWA
-- [ ] **4.1 Rider Mobile Shell** (`app/(rider)/rider/layout.tsx` + duty toggle `Online`/`Offline`)
-- [ ] **4.2 Realtime GPS Broadcast** (Background location broadcaster to Supabase Realtime)
-- [ ] **4.3 Incoming Order Alert Modal** (`components/rider/IncomingOrderModal.tsx` 60s countdown + audio)
-- [ ] **4.4 Turn-by-Turn Navigation Screen** (`app/(rider)/rider/order/[id]/page.tsx` Google Maps deep-links)
-- [ ] **4.5 4-Digit Delivery OTP Handover** (`components/rider/OtpVerificationModal.tsx`)
-- [ ] **4.6 Daily Shift Earnings Ledger** (`app/(rider)/rider/earnings/page.tsx` + COD cash-in-hand)
+- [x] **4.1 Rider Mobile Shell** (`app/rider/layout.tsx` + `components/rider/DutyToggleHeader.tsx` duty toggle `Online`/`Offline`)
+- [x] **4.2 Realtime GPS Broadcast** (Background location broadcaster watching geolocation to Supabase Realtime)
+- [x] **4.3 Incoming Order Alert Modal** (`components/rider/IncomingOrderModal.tsx` 60s countdown + synthesized chime)
+- [x] **4.4 Turn-by-Turn Navigation Screen** (`app/rider/order/[id]/page.tsx` Google Maps deep-links + packing checklist)
+- [x] **4.5 4-Digit Delivery OTP Handover** (`components/rider/OtpVerificationModal.tsx` numeric keypad + COD collection prompt)
+- [x] **4.6 Daily Shift Earnings Ledger** (`app/rider/earnings/page.tsx` daily drops payout + COD cash-in-hand)
 
 ---
 

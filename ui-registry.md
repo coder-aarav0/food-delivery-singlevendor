@@ -64,11 +64,12 @@
 
 | Component Name | File Path | Status | Key Props / Purpose |
 | :--- | :--- | :--- | :--- |
-| **`DutyToggleHeader`** | `components/rider/DutyToggleHeader.tsx` | 🟡 `PLANNED` | High-contrast `Go Online` / `Go Offline` switch + GPS indicator |
-| **`IncomingOrderModal`** | `components/rider/IncomingOrderModal.tsx` | 🟡 `PLANNED` | 60-second countdown alert with sound, distance, and Accept button |
-| **`DeliveryNavigationCard`**| `components/rider/DeliveryNavigationCard.tsx`| 🟡 `PLANNED` | Customer address, phone call trigger, Google Maps navigation button |
-| **`OtpVerificationModal`**| `components/rider/OtpVerificationModal.tsx`| 🟡 `PLANNED` | 4-digit PIN keypad to enter customer delivery OTP |
-| **`CashHandoverLedger`** | `components/rider/CashHandoverLedger.tsx` | 🟡 `PLANNED` | Summary of today's completed orders and COD cash held |
+| **`DutyToggleHeader`** | `components/rider/DutyToggleHeader.tsx` | 🟢 `READY` | High-contrast `Go Online` / `Go Offline` switch + GPS broadcaster + battery gauge |
+| **`IncomingOrderModal`** | `components/rider/IncomingOrderModal.tsx` | 🟢 `READY` | 60-second countdown alert with synthesized chime, distance, and one-tap Accept |
+| **`DeliveryNavigationCard`**| `components/rider/DeliveryNavigationCard.tsx`| 🟢 `READY` | Turn-by-turn navigation, packing checklist, call customer, and Google Maps deep-links |
+| **`OtpVerificationModal`**| `components/rider/OtpVerificationModal.tsx`| 🟢 `READY` | 4-digit PIN keypad to enter customer delivery OTP + COD cash collection prompt |
+| **`RiderDashboard`** | `components/rider/RiderDashboard.tsx` | 🟢 `READY` | Active delivery card, live dispatch feed, and Supabase Realtime dispatch listener |
+| **`RiderBottomNav`** | `components/rider/RiderBottomNav.tsx` | 🟢 `READY` | Mobile bottom navigation between Deliveries feed and Shift Earnings ledger |
 
 ---
 

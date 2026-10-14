@@ -57,3 +57,42 @@ export function playNewOrderChime() {
     console.warn('Audio chime playback blocked or not supported:', err);
   }
 }
+
+/**
+ * Plays an urgent pulsating alert for incoming rider dispatch orders.
+ */
+export function playRiderAlertChime() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+
+    // Pulse 1 (880 Hz - A5)
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = 'triangle';
+    osc1.frequency.setValueAtTime(880, now);
+    gain1.gain.setValueAtTime(0.4, now);
+    gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.18);
+
+    // Pulse 2 (1174.66 Hz - D6)
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = 'triangle';
+    osc2.frequency.setValueAtTime(1174.66, now + 0.18);
+    gain2.gain.setValueAtTime(0.45, now + 0.18);
+    gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(now + 0.18);
+    osc2.stop(now + 0.4);
+  } catch (err) {
+    console.warn('Rider alert audio blocked:', err);
+  }
+}
+
