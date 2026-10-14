@@ -49,14 +49,14 @@
 
 | Component Name | File Path | Status | Key Props / Purpose |
 | :--- | :--- | :--- | :--- |
-| **`LiveDispatchKanban`** | `components/admin/LiveDispatchKanban.tsx` | 🟡 `PLANNED` | 4-column packing station with audio chime on `INSERT` |
-| **`KanbanOrderCard`** | `components/admin/KanbanOrderCard.tsx` | 🟡 `PLANNED` | Elapsed timer, item checklist, Accept button, Rider picker |
-| **`ThermalSlipDialog`** | `components/admin/ThermalSlipDialog.tsx` | 🟡 `PLANNED` | Printable 80mm thermal receipt format for store packing staff |
-| **`SKUTable`** | `components/admin/SKUTable.tsx` | 🟡 `PLANNED` | Paginated product table with one-click `In Stock` / `Out of Stock` |
-| **`VariationEditor`** | `components/admin/VariationEditor.tsx` | 🟡 `PLANNED` | Add/edit pack sizes (500g, 1kg) and prices per product |
-| **`RiderRosterTable`** | `components/admin/RiderRosterTable.tsx` | 🟡 `PLANNED` | Active fleet status (Online/Busy), battery level, cash in hand |
-| **`GeofenceZoneMap`** | `components/admin/GeofenceZoneMap.tsx` | 🟡 `PLANNED` | Interactive delivery radius / polygon editor with fee sliders |
-| **`BrandThemeCustomizer`**| `components/admin/BrandThemeCustomizer.tsx`| 🟡 `PLANNED` | Color pickers for primary/accent, logo upload, live preview |
+| **`AdminSidebar`** | `components/admin/AdminSidebar.tsx` | 🟢 `READY` | Navigation sidebar with live store open/closed toggle switch |
+| **`LiveDispatchKanban`** | `components/admin/LiveDispatchKanban.tsx` | 🟢 `READY` | 4-column packing station with audio chime on `INSERT` |
+| **`KanbanOrderCard`** | `components/admin/KanbanOrderCard.tsx` | 🟢 `READY` | Elapsed timer, item checklist, Accept button, Rider picker |
+| **`ThermalSlipDialog`** | `components/admin/ThermalSlipDialog.tsx` | 🟢 `READY` | Printable 80mm thermal receipt format for store packing staff |
+| **`SKUTable`** | `components/admin/SKUTable.tsx` | 🟢 `READY` | Paginated product table with one-click `In Stock` / `Out of Stock` |
+| **`RiderFleetManager`** | `components/admin/RiderFleetManager.tsx` | 🟢 `READY` | Active fleet status (Online/Busy), coordinates, cash in hand settlement |
+| **`GeofenceManager`** | `components/admin/GeofenceManager.tsx` | 🟢 `READY` | Interactive delivery radius slider, base fee, and free delivery thresholds |
+| **`StoreSettingsForm`** | `components/admin/StoreSettingsForm.tsx` | 🟢 `READY` | Color pickers for primary/accent, store identity, operating hours |
 
 ---
 

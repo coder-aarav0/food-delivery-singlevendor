@@ -10,10 +10,10 @@
 
 | Field | Value |
 | :--- | :--- |
-| **Active Phase** | **Phase 3: Store Owner & Admin Panel** |
-| **Current Target** | Live Kanban Packing Station, Audio Alerts, Catalog SKU Manager & Theme Customizer |
-| **Last Updated** | 2026-10-14 (Phase 2 Complete - Customer PWA Storefront, Cart, Checkout & Live Tracking) |
-| **Overall Completion** | **65%** (Phase 0, 1 & 2 Complete; All Customer Flows Verified) |
+| **Active Phase** | **Phase 4: Delivery Rider Mobile PWA** |
+| **Current Target** | Mobile-first Duty Toggle, Incoming Order Modal (60s countdown), GPS Broadcaster, Turn-by-Turn Navigation & OTP Handover |
+| **Last Updated** | 2026-10-14 (Phase 3 Complete - Store Admin Station, Live Kanban, SKU Manager, Geofencing & Fleet Manager) |
+| **Overall Completion** | **80%** (Phases 0, 1, 2 & 3 Complete; All Admin & Store Operations Verified) |
 
 ---
 
@@ -57,15 +57,15 @@
 ---
 
 ### Phase 3: Store Owner & Admin Panel
-- [ ] **3.1 Admin Desktop Shell** (`app/(admin)/admin/layout.tsx` + persistent audio alert daemon)
-- [ ] **3.2 Live Orders Dispatch Station** (`app/(admin)/admin/page.tsx` 4-column Kanban board)
-- [ ] **3.3 Kanban Order Cards** (`components/admin/KanbanOrderCard.tsx` with elapsed timer & color alert)
-- [ ] **3.4 Printable Packing Slip** (`components/admin/ThermalSlipDialog.tsx`)
-- [ ] **3.5 Product Catalog Manager** (`app/(admin)/admin/products/page.tsx` SKU table + stock toggle)
-- [ ] **3.6 Product & Variation Editor** (`app/(admin)/admin/products/[id]/page.tsx`)
-- [ ] **3.7 Rider Fleet Dispatch** (`app/(admin)/admin/riders/page.tsx` roster + cash reconciliation)
-- [ ] **3.8 Delivery Geofencing Manager** (`app/(admin)/admin/zones/page.tsx` radius/polygon mapping)
-- [ ] **3.9 White-Label Theme Customizer** (`app/(admin)/admin/settings/page.tsx` live color picker & logo)
+- [x] **3.1 Admin Desktop Shell** (`app/admin/layout.tsx` + `components/admin/AdminSidebar.tsx` + Web Audio synthesized alert daemon)
+- [x] **3.2 Live Orders Dispatch Station** (`app/admin/page.tsx` 4-column Kanban board with Supabase Realtime)
+- [x] **3.3 Kanban Order Cards** (`components/admin/KanbanOrderCard.tsx` with elapsed timer & color alert)
+- [x] **3.4 Printable Packing Slip** (`components/admin/ThermalSlipDialog.tsx` 80mm ESC/POS styled slip)
+- [x] **3.5 Product Catalog Manager** (`app/admin/products/page.tsx` SKU table + stock toggle)
+- [x] **3.6 Product & Variation Stock Editor** (`components/admin/SKUTable.tsx` + `actions/admin-actions.ts`)
+- [x] **3.7 Rider Fleet Dispatch** (`app/admin/riders/page.tsx` + `components/admin/RiderFleetManager.tsx` roster + cash reconciliation)
+- [x] **3.8 Delivery Geofencing Manager** (`app/admin/zones/page.tsx` + `components/admin/GeofenceManager.tsx`)
+- [x] **3.9 White-Label Theme Customizer** (`app/admin/settings/page.tsx` + `components/admin/StoreSettingsForm.tsx`)
 
 ---
 
