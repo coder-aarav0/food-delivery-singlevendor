@@ -10,10 +10,10 @@
 
 | Field | Value |
 | :--- | :--- |
-| **Active Phase** | **Phase 1: Core Service Clients & Server Actions** |
-| **Current Target** | Setting up Supabase SSR server/client, Razorpay webhook, and Cart/Order Server Actions |
-| **Last Updated** | 2026-10-14 (Phase 0 Complete - Foundations, DB Schema, Types & Next.js 16 App Shell) |
-| **Overall Completion** | **25%** (Phase 0 Complete; Ready for Phase 1 Core Services) |
+| **Active Phase** | **Phase 2: Customer Progressive Web App (PWA)** |
+| **Current Target** | Storefront shell, Category pill navigation, Product cards & Cart drawer |
+| **Last Updated** | 2026-10-14 (Phase 1 Complete - Supabase Clients, Razorpay Webhook, Server Actions & Seed Data) |
+| **Overall Completion** | **45%** (Phase 0 & Phase 1 Complete; DB Seeded & Verified) |
 
 ---
 
@@ -22,7 +22,7 @@
 ### Phase 0: Foundations, Data Schemas & Design Tokens
 - [x] **0.0 Setup Stack & Install Skill Packs** (239 skills installed including REA, CLI tools verified, reference repos cloned into `reference/`)
 - [x] **0.1 Create All 9 Project Context Files** (`project-overview.md` through `progress-tracker.md`)
-- [x] **0.2 Supabase Schema Migration** (`supabase/migrations/20261014_init_schema.sql` written)
+- [x] **0.2 Supabase Schema Migration** (`supabase/migrations/20261014_init_schema.sql` written & executed in Supabase)
 - [x] **0.3 TypeScript Database & Model Types** (`types/database.types.ts`, `types/models.ts`, `types/events.ts`)
 - [x] **0.4 Global Design Tokens & Typography** (`app/globals.css` with 3-layer CSS variables, Next.js 16 + React 19 app shell verified)
 - [x] **0.5 PWA Web App Manifests** (`public/manifest.json` for customer, `public/rider-manifest.json` for rider)
@@ -30,15 +30,15 @@
 ---
 
 ### Phase 1: Core Service Clients & Server Actions
-- [ ] **1.1 Supabase Server Client** (`lib/supabase/server.ts` with cookie auth)
-- [ ] **1.2 Supabase Browser Client** (`lib/supabase/client.ts` for Realtime listeners)
-- [ ] **1.3 Supabase Admin Service Client** (`lib/supabase/admin.ts` for webhooks)
-- [ ] **1.4 Razorpay Integration** (`lib/razorpay.ts` order generator + `/api/webhooks/razorpay` HMAC validator)
-- [ ] **1.5 Cloudinary Image Helper** (`lib/cloudinary.ts` auto-WebP URL transformer)
-- [ ] **1.6 PostHog Analytics Client** (`lib/posthog.ts` event tracking wrapper)
-- [ ] **1.7 Cart Pricing Server Action** (`actions/cart-actions.ts` authoritative calculation)
-- [ ] **1.8 Order Lifecycle Server Actions** (`actions/order-actions.ts` place, accept, cancel)
-- [ ] **1.9 Rider Dispatch Server Actions** (`actions/rider-actions.ts` accept, verify OTP, complete)
+- [x] **1.1 Supabase Server Client** (`lib/supabase/server.ts` with cookie auth)
+- [x] **1.2 Supabase Browser Client** (`lib/supabase/client.ts` for Realtime listeners)
+- [x] **1.3 Supabase Admin Service Client** (`lib/supabase/admin.ts` for webhooks)
+- [x] **1.4 Razorpay Integration** (`lib/razorpay.ts` order generator + `/api/webhooks/razorpay` HMAC validator)
+- [x] **1.5 Cloudinary Image Helper** (`lib/cloudinary.ts` auto-WebP URL transformer)
+- [x] **1.6 PostHog Analytics Client** (`lib/posthog.ts` event tracking wrapper)
+- [x] **1.7 Cart Pricing Server Action** (`actions/cart-actions.ts` authoritative calculation)
+- [x] **1.8 Order Lifecycle Server Actions** (`actions/order-actions.ts` place, accept, cancel)
+- [x] **1.9 Rider Dispatch Server Actions** (`actions/rider-actions.ts` accept, verify OTP, complete)
 
 ---
 
@@ -88,7 +88,7 @@
 ---
 
 ### Phase 6: Packaging, Verification & White-Label Demo
-- [ ] **6.1 Demo Supermarket Seed Data** (`supabase/seed.sql` 8 categories, 50+ real grocery SKUs)
+- [x] **6.1 Demo Supermarket Seed Data** (`supabase/seed.sql` 8 categories, 26 SKU variations, 2 coupons live in DB)
 - [ ] **6.2 End-to-End Simulation Walkthrough** (Customer order → Store accept → Rider deliver)
 - [ ] **6.3 Production Deployment & `.env.example`** (Vercel & Supabase guide)
 - [ ] **6.4 Lighthouse Mobile Performance Audit** (≥ 90 score validation)

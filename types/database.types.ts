@@ -11,6 +11,19 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
+export type UserRole = 'customer' | 'admin' | 'rider';
+export type OrderStatus =
+  | 'PENDING'
+  | 'PAID'
+  | 'ACCEPTED'
+  | 'PREPARING'
+  | 'READY_FOR_PICKUP'
+  | 'DISPATCHED'
+  | 'DELIVERED'
+  | 'CANCELLED';
+export type PaymentMethod = 'RAZORPAY' | 'COD';
+export type PaymentStatus = 'UNPAID' | 'PAID' | 'REFUNDED' | 'FAILED';
+
 export interface Database {
   public: {
     Tables: {
@@ -68,11 +81,12 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Database['public']['Tables']['stores']['Insert']>;
+        Relationships: [];
       };
       profiles: {
         Row: {
           id: string;
-          role: 'customer' | 'admin' | 'rider';
+          role: UserRole;
           full_name: string | null;
           phone: string | null;
           email: string | null;
@@ -83,7 +97,7 @@ export interface Database {
         };
         Insert: {
           id: string;
-          role?: 'customer' | 'admin' | 'rider';
+          role?: UserRole;
           full_name?: string | null;
           phone?: string | null;
           email?: string | null;
@@ -93,14 +107,18 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Database['public']['Tables']['profiles']['Insert']>;
+        Relationships: [];
       };
       addresses: {
         Row: {
           id: string;
           user_id: string;
-          title: string;
-          address_line: string;
+          label: string;
+          address_line_1: string;
+          address_line_2: string | null;
           landmark: string | null;
+          city: string;
+          pincode: string;
           latitude: number;
           longitude: number;
           is_default: boolean;
@@ -109,15 +127,19 @@ export interface Database {
         Insert: {
           id?: string;
           user_id: string;
-          title?: string;
-          address_line: string;
+          label: string;
+          address_line_1: string;
+          address_line_2?: string | null;
           landmark?: string | null;
+          city: string;
+          pincode: string;
           latitude: number;
           longitude: number;
           is_default?: boolean;
           created_at?: string;
         };
         Update: Partial<Database['public']['Tables']['addresses']['Insert']>;
+        Relationships: [];
       };
       categories: {
         Row: {
@@ -141,6 +163,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database['public']['Tables']['categories']['Insert']>;
+        Relationships: [];
       };
       products: {
         Row: {
@@ -172,6 +195,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Database['public']['Tables']['products']['Insert']>;
+        Relationships: [];
       };
       product_variations: {
         Row: {
@@ -201,6 +225,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Database['public']['Tables']['product_variations']['Insert']>;
+        Relationships: [];
       };
       rider_profiles: {
         Row: {
@@ -228,6 +253,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database['public']['Tables']['rider_profiles']['Insert']>;
+        Relationships: [];
       };
       coupons: {
         Row: {
@@ -255,6 +281,7 @@ export interface Database {
           is_active?: boolean;
         };
         Update: Partial<Database['public']['Tables']['coupons']['Insert']>;
+        Relationships: [];
       };
       orders: {
         Row: {
@@ -265,9 +292,9 @@ export interface Database {
           rider_id: string | null;
           address_id: string;
           delivery_address_snapshot: Json;
-          status: 'PENDING' | 'PAID' | 'ACCEPTED' | 'PREPARING' | 'READY_FOR_PICKUP' | 'DISPATCHED' | 'DELIVERED' | 'CANCELLED';
-          payment_method: 'RAZORPAY' | 'COD';
-          payment_status: 'UNPAID' | 'PAID' | 'REFUNDED' | 'FAILED';
+          status: OrderStatus;
+          payment_method: PaymentMethod;
+          payment_status: PaymentStatus;
           items_subtotal: number;
           delivery_fee: number;
           discount_amount: number;
@@ -293,9 +320,9 @@ export interface Database {
           rider_id?: string | null;
           address_id: string;
           delivery_address_snapshot: Json;
-          status?: 'PENDING' | 'PAID' | 'ACCEPTED' | 'PREPARING' | 'READY_FOR_PICKUP' | 'DISPATCHED' | 'DELIVERED' | 'CANCELLED';
-          payment_method: 'RAZORPAY' | 'COD';
-          payment_status?: 'UNPAID' | 'PAID' | 'REFUNDED' | 'FAILED';
+          status?: OrderStatus;
+          payment_method: PaymentMethod;
+          payment_status?: PaymentStatus;
           items_subtotal: number;
           delivery_fee?: number;
           discount_amount?: number;
@@ -314,6 +341,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Database['public']['Tables']['orders']['Insert']>;
+        Relationships: [];
       };
       order_items: {
         Row: {
@@ -343,13 +371,14 @@ export interface Database {
           substitution_preference?: string;
         };
         Update: Partial<Database['public']['Tables']['order_items']['Insert']>;
+        Relationships: [];
       };
       order_status_logs: {
         Row: {
           id: string;
           order_id: string;
-          previous_status: string | null;
-          new_status: string;
+          previous_status: OrderStatus | null;
+          new_status: OrderStatus;
           changed_by: string | null;
           notes: string | null;
           created_at: string;
@@ -357,20 +386,30 @@ export interface Database {
         Insert: {
           id?: string;
           order_id: string;
-          previous_status?: string | null;
-          new_status: string;
+          previous_status?: OrderStatus | null;
+          new_status: OrderStatus;
           changed_by?: string | null;
           notes?: string | null;
           created_at?: string;
         };
         Update: Partial<Database['public']['Tables']['order_status_logs']['Insert']>;
+        Relationships: [];
       };
     };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
+    };
     Enums: {
-      user_role: 'customer' | 'admin' | 'rider';
-      order_status: 'PENDING' | 'PAID' | 'ACCEPTED' | 'PREPARING' | 'READY_FOR_PICKUP' | 'DISPATCHED' | 'DELIVERED' | 'CANCELLED';
-      payment_method: 'RAZORPAY' | 'COD';
-      payment_status: 'UNPAID' | 'PAID' | 'REFUNDED' | 'FAILED';
+      user_role: UserRole;
+      order_status: OrderStatus;
+      payment_method: PaymentMethod;
+      payment_status: PaymentStatus;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
     };
   };
 }
