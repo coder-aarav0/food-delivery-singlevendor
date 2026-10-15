@@ -41,7 +41,10 @@
 | **`StorefrontHeader`** | `components/customer/StorefrontHeader.tsx` | 🟢 `READY` | Top header with address badge, search input, and cart button |
 | **`CartDrawer`** | `components/customer/CartDrawer.tsx` | 🟢 `READY` | Slide-over cart review with free delivery bar & substitution preferences |
 | **`LiveOrderTracker`**| `components/customer/LiveOrderTracker.tsx` | 🟢 `READY` | Realtime status stepper, estimated arrival, and 4-digit OTP box |
-| **`LiveRiderMap`** | `components/customer/LiveRiderMap.tsx` | 🟢 `READY` | Simulated route waypoint view connecting store, rider, and house |
+| **`LiveRiderMap`** | `components/customer/LiveRiderMap.tsx` | 🟢 `READY` | 100% Free Leaflet + OpenStreetMap road map with animated rider marker & telemetry |
+| **`AddressSelectModal`** | `components/customer/AddressSelectModal.tsx` | 🟢 `READY` | Modal to switch saved delivery addresses or add a new address during checkout |
+| **`CheckoutCrossSell`** | `components/customer/CheckoutCrossSell.tsx` | 🟢 `READY` | Impulse cross-sell grocery shelf ("You Might Also Like") with 1-tap cart integration |
+| **`PackagingSelector`** | `components/customer/PackagingSelector.tsx` | 🟢 `READY` | Packaging preferences (Eco Bag, Zero Waste, Premium Gift Wrap + personalized note) |
 
 ---
 
