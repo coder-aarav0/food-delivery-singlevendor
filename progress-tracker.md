@@ -52,7 +52,7 @@
 - [x] **2.7 Cart Review Screen** (`app/cart/page.tsx` + `components/customer/CartDrawer.tsx` + substitution options)
 - [x] **2.8 Checkout Flow** (`app/checkout/page.tsx` + address picker & Razorpay/COD trigger)
 - [x] **2.9 Realtime Order Tracking** (`app/order/[id]/page.tsx` + live status stepper & 4-digit OTP)
-- [x] **2.10 Live Rider Location Map** (`components/customer/LiveRiderMap.tsx`)
+- [x] **2.10 Live Rider Location Map** (`components/customer/LiveRiderMap.tsx` - 100% Free Leaflet + OpenStreetMap road tiles, glowing route polyline, moving rider icon with radar ping, and Rapido telemetry HUD)
 
 ---
 
