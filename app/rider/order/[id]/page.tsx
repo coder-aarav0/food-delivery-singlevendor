@@ -62,24 +62,25 @@ export default async function RiderOrderExecutionPage({ params }: PageProps) {
   // If already delivered, show completion view
   if (orderData.status === 'DELIVERED') {
     return (
-      <div className="p-8 text-center rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-4">
-        <div className="w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-500/20">
+      <div className="p-8 text-center rounded-3xl bg-[#1c1c1e] border border-[#2c2c2e] space-y-4 shadow-xl">
+        <div className="w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/20">
           <CheckCircle className="w-8 h-8" />
         </div>
-        <h2 className="font-black text-xl text-[var(--text-ink)]">
+        <h2 className="font-black text-xl text-white">
           Delivery Completed!
         </h2>
-        <p className="text-xs text-[var(--text-muted)] max-w-xs mx-auto">
+        <p className="text-xs text-gray-400 max-w-xs mx-auto">
           Order #{orderData.order_number} has been delivered and verified via customer OTP.
         </p>
         <Link
           href="/rider"
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-[var(--brand-primary)] text-white font-bold text-xs shadow-md"
+          className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#febb2c] hover:bg-[#f5a623] text-slate-950 font-black text-xs shadow-md transition"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Deliveries Feed
         </Link>
       </div>
+
     );
   }
 

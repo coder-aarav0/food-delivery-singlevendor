@@ -12,6 +12,8 @@ node_modules/
 dist/
 build/
 .cache/
+*.tsbuildinfo
+*.bak
 
 # Agent Memory & IDE configs
 .agent-mem/
@@ -23,3 +25,14 @@ CLAUDE.md
 reference/
 
 
+
+# Auto-generated agent rules (personalized per developer)
+.brainsync/agent-rules.md
+
+# Auto-generated AI agent exclusions
+.cursorrules
+.clineRules
+.agent/
+.windsurfrules
+.gemini/
+.cline/

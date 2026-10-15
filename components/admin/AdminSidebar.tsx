@@ -3,13 +3,23 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+
 import { toggleStoreStatusAction } from '@/actions/admin-actions';
+import { EnategaLogo } from '@/components/ui/EnategaLogo';
 import {
-  Inbox,
-  Package,
+  Tv2,
+  PieChart,
+  UtensilsCrossed,
+  Truck,
+  Users,
+  Star,
   Bike,
-  MapPin,
   Settings,
+  Palette,
+  Layers,
+  Ticket,
+  Bell,
+  Kanban,
   ShoppingBag,
   Power,
   ChevronRight,
@@ -28,11 +38,18 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { label: 'Live Orders Kanban', href: '/admin', icon: Inbox },
-    { label: 'Products & Stock', href: '/admin/products', icon: Package },
-    { label: 'Rider Fleet', href: '/admin/riders', icon: Bike },
-    { label: 'Geofence & Zones', href: '/admin/zones', icon: MapPin },
-    { label: 'White-Label Branding', href: '/admin/settings', icon: Settings },
+    { label: 'Dashboard', href: '/admin', icon: Tv2 },
+    { label: 'Category', href: '/admin/category', icon: PieChart },
+    { label: 'Food', href: '/admin/food', icon: UtensilsCrossed },
+    { label: 'Orders', href: '/admin/orders', icon: Truck },
+    { label: 'Users', href: '/admin/users', icon: Users },
+    { label: 'Ratings', href: '/admin/ratings', icon: Star },
+    { label: 'Riders', href: '/admin/riders', icon: Bike },
+    { label: 'Configuration', href: '/admin/configuration', icon: Settings },
+    { label: 'Option', href: '/admin/option', icon: Palette },
+    { label: 'Addons', href: '/admin/addons', icon: Layers },
+    { label: 'Coupons', href: '/admin/coupons', icon: Ticket },
+    { label: 'Notifications', href: '/admin/notifications', icon: Bell },
   ];
 
   const handleToggleStore = async () => {
@@ -48,14 +65,7 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
     <>
       {/* Mobile Top Header */}
       <div className="md:hidden flex items-center justify-between p-4 bg-white border-b border-slate-200">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-[#febb2c] text-slate-950 font-black flex items-center justify-center shadow-sm">
-            E
-          </div>
-          <span className="font-extrabold text-sm text-[#0b0b0b]">
-            FreshMart Admin
-          </span>
-        </div>
+        <EnategaLogo size="sm" />
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -68,36 +78,26 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
 
       {/* Argon Admin Sidebar Container */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 md:static w-64 bg-white border-r border-slate-200 flex flex-col justify-between p-5 transition-transform duration-200 shadow-sm ${
+        className={`fixed inset-y-0 left-0 z-40 md:static w-64 bg-white border-r border-slate-200 flex flex-col justify-between p-4 transition-transform duration-200 shadow-sm overflow-y-auto max-h-screen ${
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
-        <div className="space-y-6">
+        <div className="space-y-4">
           {/* Brand Header */}
-          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-            <Link href="/admin" className="flex items-center gap-3 select-none">
-              <div className="w-10 h-10 rounded-2xl bg-[#febb2c] text-slate-950 font-black text-xl flex items-center justify-center shadow-sm">
-                F
-              </div>
-              <div>
-                <span className="font-black text-base text-[#0b0b0b] block leading-none">
-                  FreshMart
-                </span>
-                <span className="text-[10px] font-bold text-[#f5a623] uppercase tracking-wider">
-                  Admin Dashboard
-                </span>
-              </div>
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <Link href="/admin" className="block select-none">
+              <EnategaLogo size="md" />
             </Link>
           </div>
 
           {/* Master Store Open / Closed Switch */}
-          <div className="p-3.5 rounded-2xl bg-[#f8f9fa] border border-slate-200 space-y-2">
+          <div className="p-3 rounded-2xl bg-[#f8f9fa] border border-slate-200 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#333333]">
+              <span className="text-[11px] font-bold text-[#333333]">
                 Store Status
               </span>
               <span
-                className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
+                className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full ${
                   isOpen
                     ? 'bg-emerald-100 text-emerald-800'
                     : 'bg-rose-100 text-rose-800'
@@ -111,10 +111,10 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
               type="button"
               disabled={isToggling}
               onClick={handleToggleStore}
-              className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                 isOpen
                   ? 'bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200'
-                  : 'bg-[#febb2c] text-slate-950 hover:bg-[#f5a623] font-black'
+                  : 'bg-[#fb6340] text-white hover:bg-[#fa3a0e] font-black'
               }`}
             >
               <Power className="w-3.5 h-3.5" />
@@ -122,40 +122,59 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
             </button>
           </div>
 
-          {/* Navigation Links with Argon Styling */}
-          <nav className="space-y-1">
+          {/* Navigation Links with Enatega Argon Styling */}
+          <nav className="space-y-0.5">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href;
+              const isActive =
+                item.href === '/admin'
+                  ? pathname === '/admin'
+                  : pathname.startsWith(item.href);
+
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all min-h-[44px] ${
+                  className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-all min-h-[40px] ${
                     isActive
-                      ? 'bg-[#fff1d4] text-[#0b0b0b] font-black border-l-4 border-[#febb2c] shadow-xs'
+                      ? 'bg-[#fff1d4] text-[#0b0b0b] font-black border-l-4 border-[#fb6340] shadow-xs'
                       : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#f5a623]' : 'text-[#febb2c]'}`} />
+                    <Icon
+                      className={`w-4 h-4 shrink-0 ${
+                        isActive ? 'text-[#fb6340]' : 'text-[#f5593d]'
+                      }`}
+                    />
                     <span>{item.label}</span>
                   </div>
-                  {isActive && <ChevronRight className="w-4 h-4 text-[#f5a623]" />}
+                  {isActive && <ChevronRight className="w-3.5 h-3.5 text-[#fb6340]" />}
                 </Link>
               );
             })}
           </nav>
         </div>
 
-        {/* Footer Shortcut to Customer Storefront */}
-        <div className="pt-4 border-t border-slate-200">
+        {/* Footer Shortcuts */}
+        <div className="pt-3 border-t border-slate-200 space-y-1">
+          <Link
+            href="/admin/kanban"
+            className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-colors ${
+              pathname === '/admin/kanban'
+                ? 'bg-[#172b4d] text-white'
+                : 'text-indigo-600 hover:bg-indigo-50'
+            }`}
+          >
+            <Kanban className="w-4 h-4 text-indigo-500" />
+            <span>Live Dispatch Kanban</span>
+          </Link>
           <Link
             href="/"
-            className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-950 hover:bg-slate-100 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-950 hover:bg-slate-100 transition-colors"
           >
-            <ShoppingBag className="w-4 h-4 text-[#febb2c]" />
+            <ShoppingBag className="w-4 h-4 text-[#fb6340]" />
             <span>View Customer Storefront</span>
           </Link>
         </div>

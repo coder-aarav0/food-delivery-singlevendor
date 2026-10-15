@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { toggleRiderDutyAction, updateRiderLocationAction } from '@/actions/rider-actions';
+import { RiderDrawer } from './RiderDrawer';
 import {
   Bike,
   Power,
@@ -12,6 +13,7 @@ import {
   Radio,
   Wifi,
   WifiOff,
+  Menu,
 } from 'lucide-react';
 
 export interface RiderProfileData {
@@ -32,10 +34,12 @@ export interface DutyToggleHeaderProps {
 export function DutyToggleHeader({ rider }: DutyToggleHeaderProps) {
   const [isOnline, setIsOnline] = useState(rider.isOnline);
   const [isToggling, setIsToggling] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [batteryLevel, setBatteryLevel] = useState<number | null>(null);
   const [isCharging, setIsCharging] = useState(false);
   const [gpsActive, setGpsActive] = useState(false);
   const [lastCoords, setLastCoords] = useState<{ lat: number; lng: number } | null>(null);
+
 
   const watchIdRef = useRef<number | null>(null);
   const lastSentRef = useRef<number>(0);
@@ -114,75 +118,96 @@ export function DutyToggleHeader({ rider }: DutyToggleHeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-3 shadow-xs">
-      <div className="max-w-md mx-auto flex items-center justify-between gap-3">
-        {/* Rider Identification */}
-        <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-10 h-10 rounded-2xl bg-[#fff1d4] text-[#f5a623] flex items-center justify-center font-black text-base shrink-0 border border-[#febb2c]/30 shadow-xs">
-            <Bike className="w-5 h-5" />
-          </div>
-          <div className="truncate">
-            <div className="flex items-center gap-1.5">
-              <span className="font-black text-sm text-[#0b0b0b] truncate">
-                {rider.fullName}
-              </span>
-              {gpsActive ? (
-                <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-emerald-600">
-                  <Radio className="w-3 h-3 animate-pulse" />
-                  GPS
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-slate-400">
-                  <Navigation className="w-2.5 h-2.5" />
-                </span>
-              )}
-            </div>
-            <p className="text-[11px] text-slate-500 font-medium truncate">
-              {rider.vehicleNumber} • {rider.vehicleType}
-            </p>
-          </div>
-        </div>
+    <>
+      <RiderDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        riderName={rider.fullName}
+        riderPhone={rider.phone}
+        isOnline={isOnline}
+      />
 
-        {/* Battery & Online Duty Switch */}
-        <div className="flex items-center gap-2 shrink-0">
-          {batteryLevel !== null && (
-            <div
-              className={`flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-lg border ${
-                batteryLevel < 20
-                  ? 'bg-rose-500/10 text-rose-600 border-rose-500/20'
-                  : 'bg-[var(--bg-app)] text-[var(--text-muted)] border-[var(--border-subtle)]'
-              }`}
-              title={isCharging ? 'Charging' : 'Battery Level'}
+      <header className="sticky top-0 z-40 bg-[#181818] border-b border-[#2a2a2a] px-4 py-3 shadow-md">
+        <div className="max-w-md mx-auto flex items-center justify-between gap-3">
+          {/* Rider Identification & Hamburger */}
+          <div className="flex items-center gap-2.5 min-w-0">
+            {/* Hamburger Button matching rider2.jpeg */}
+            <button
+              type="button"
+              onClick={() => setIsDrawerOpen(true)}
+              aria-label="Open rider menu"
+              className="w-10 h-10 rounded-2xl bg-[#242424] hover:bg-[#2e2e2e] text-white flex items-center justify-center transition cursor-pointer shrink-0 border border-[#333333]"
             >
-              {isCharging ? (
-                <BatteryCharging className="w-3.5 h-3.5 text-emerald-600 animate-pulse" />
-              ) : (
-                <Battery className="w-3.5 h-3.5" />
-              )}
-              <span>{batteryLevel}%</span>
-            </div>
-          )}
+              <Menu className="w-5 h-5 stroke-[2.5]" />
+            </button>
 
-          {/* Master Online/Offline Pill Switch */}
-          <button
-            type="button"
-            onClick={handleToggleDuty}
-            disabled={isToggling}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full font-bold text-xs transition-all duration-200 select-none shadow-sm ${
-              isOnline
-                ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-300'
-            }`}
-          >
-            <span
-              className={`w-2 h-2 rounded-full ${
-                isOnline ? 'bg-white animate-pulse' : 'bg-zinc-400'
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#fb6340] to-[#febb2c] text-slate-950 flex items-center justify-center font-black text-base shrink-0 shadow-xs">
+              <Bike className="w-5 h-5" />
+            </div>
+            <div className="truncate">
+              <div className="flex items-center gap-1.5">
+                <span className="font-black text-sm text-white truncate">
+                  {rider.fullName}
+                </span>
+                {gpsActive ? (
+                  <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-[#2dce89]">
+                    <Radio className="w-3 h-3 animate-pulse" />
+                    GPS
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-gray-500">
+                    <Navigation className="w-2.5 h-2.5" />
+                  </span>
+                )}
+              </div>
+              <p className="text-[11px] text-gray-400 font-medium truncate">
+                {rider.vehicleNumber} • {rider.vehicleType}
+              </p>
+            </div>
+          </div>
+
+          {/* Battery & Online Duty Switch matching rider2.jpeg */}
+          <div className="flex items-center gap-2 shrink-0">
+            {batteryLevel !== null && (
+              <div
+                className={`flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-lg border ${
+                  batteryLevel < 20
+                    ? 'bg-rose-500/10 text-rose-400 border-rose-500/20'
+                    : 'bg-[#242424] text-gray-300 border-[#333333]'
+                }`}
+                title={isCharging ? 'Charging' : 'Battery Level'}
+              >
+                {isCharging ? (
+                  <BatteryCharging className="w-3.5 h-3.5 text-[#2dce89] animate-pulse" />
+                ) : (
+                  <Battery className="w-3.5 h-3.5" />
+                )}
+                <span>{batteryLevel}%</span>
+              </div>
+            )}
+
+            {/* Master Online/Offline Pill Switch */}
+            <button
+              type="button"
+              onClick={handleToggleDuty}
+              disabled={isToggling}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full font-black text-xs transition-all duration-200 select-none shadow-sm cursor-pointer ${
+                isOnline
+                  ? 'bg-[#2dce89] hover:bg-[#26af74] text-slate-950'
+                  : 'bg-[#2a2a2a] text-gray-400 hover:bg-[#333333]'
               }`}
-            />
-            <span>{isOnline ? 'ON DUTY' : 'OFFLINE'}</span>
-          </button>
+            >
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  isOnline ? 'bg-slate-950 animate-pulse' : 'bg-gray-500'
+                }`}
+              />
+              <span>{isOnline ? 'ONLINE' : 'OFFLINE'}</span>
+            </button>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }
+

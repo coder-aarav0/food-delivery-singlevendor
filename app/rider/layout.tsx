@@ -24,7 +24,7 @@ export default async function RiderLayout({
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-app)] text-[var(--text-ink)] flex flex-col justify-between">
+    <div className="min-h-screen bg-[#111111] text-white flex flex-col justify-between">
       <div>
         <DutyToggleHeader rider={defaultRider} />
         <main className="max-w-md mx-auto p-4 pb-28">{children}</main>
@@ -33,3 +33,4 @@ export default async function RiderLayout({
     </div>
   );
 }
+

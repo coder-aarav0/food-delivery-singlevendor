@@ -87,6 +87,12 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
 }
 
+/* Ensure headings inside text-white containers or with text-white class stay white */
+.text-white h1, .text-white h2, .text-white h3, .text-white h4, .text-white h5, .text-white h6,
+h1.text-white, h2.text-white, h3.text-white, h4.text-white, h5.text-white, h6.text-white {
+  color: #ffffff;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -106,3 +112,54 @@ h1, h2, h3, h4, h5, h6 {
 .pb-safe {
   padding-bottom: env(safe-area-inset-bottom, 16px);
 }
+
+/* Enatega Argon Design System Utilities */
+.bg-argon-gradient {
+  background: linear-gradient(87deg, #fb6340 0%, #fbb140 50%, #febb2c 100%);
+}
+
+.bg-argon-navy {
+  background-color: #172b4d;
+}
+
+.bg-argon-navy-card {
+  background-color: #1f355b;
+}
+
+/* Header Overlap for Stat Cards */
+.mt-neg-argon {
+  margin-top: -3.5rem;
+}
+
+@media (min-width: 768px) {
+  .mt-neg-argon {
+    margin-top: -4.5rem;
+  }
+}
+
+/* Perforated Coupon / Ticket Metaphor for Rider Orders */
+.ticket-perforated {
+  position: relative;
+  border: 1.5px dashed #d1d5db;
+}
+
+.ticket-perforated::before,
+.ticket-perforated::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background-color: #111111;
+  transform: translateY(-50%);
+}
+
+.ticket-perforated::before {
+  left: -8px;
+}
+
+.ticket-perforated::after {
+  right: -8px;
+}
+

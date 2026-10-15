@@ -24,7 +24,7 @@ export function RiderBottomNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-4 py-2 shadow-lg">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#181818] border-t border-[#2a2a2a] px-4 py-2 shadow-2xl">
       <div className="max-w-md mx-auto grid grid-cols-2 gap-2">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -34,11 +34,11 @@ export function RiderBottomNav() {
               href={item.href}
               className={`flex flex-col items-center justify-center py-2 rounded-2xl transition-all select-none ${
                 item.active
-                  ? 'bg-[#fff1d4] text-[#0b0b0b] font-black border border-[#febb2c]/40 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900 font-semibold'
+                  ? 'bg-[#242424] text-[#febb2c] font-black border border-[#333333] shadow-md'
+                  : 'text-gray-400 hover:text-white font-semibold'
               }`}
             >
-              <Icon className={`w-5 h-5 mb-0.5 ${item.active ? 'text-[#f5a623]' : 'text-slate-400'}`} />
+              <Icon className={`w-5 h-5 mb-0.5 ${item.active ? 'text-[#febb2c]' : 'text-gray-500'}`} />
               <span className="text-[11px]">{item.label}</span>
             </Link>
           );
@@ -47,3 +47,4 @@ export function RiderBottomNav() {
     </nav>
   );
 }
+

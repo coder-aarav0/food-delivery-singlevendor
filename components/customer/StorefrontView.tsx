@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { CategoryPillBar, CategoryItem } from './CategoryPillBar';
+import { CategoryCardFeed } from './CategoryCardFeed';
 import { ProductCard, ProductCardProps } from './ProductCard';
 import { ProductDetailModal } from './ProductDetailModal';
 import { StorefrontHero } from './StorefrontHero';
@@ -45,18 +46,26 @@ export function StorefrontView({ categories, products }: StorefrontViewProps) {
   }, [categories, selectedCategorySlug]);
 
   return (
-    <div className="w-full pb-24 md:pb-16">
+    <div className="w-full pb-24 md:pb-16 space-y-8">
       {/* Hero Banner */}
       <StorefrontHero />
 
       {/* Category Horizontal Pill Bar */}
-      <div className="sticky top-[65px] z-20 bg-[var(--bg-app)]/95 backdrop-blur-md py-2 mb-4 border-b border-[var(--border-subtle)]">
+      <div className="sticky top-[65px] z-20 bg-[var(--bg-app)]/95 backdrop-blur-md py-2 border-b border-[var(--border-subtle)]">
         <CategoryPillBar
           categories={categories}
           selectedSlug={selectedCategorySlug}
           onSelectCategory={(slug) => setSelectedCategorySlug(slug)}
         />
       </div>
+
+      {/* Visual Photographic Category Feed (Matching customer2.jpeg) */}
+      {!selectedCategorySlug && (
+        <section>
+          <CategoryCardFeed categories={categories} />
+        </section>
+      )}
+
 
       {/* Spotlight / Featured Shelf (Only shown when "All Items" is active) */}
       {!selectedCategorySlug && featuredProducts.length > 0 && (

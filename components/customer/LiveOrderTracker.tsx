@@ -83,27 +83,43 @@ export function LiveOrderTracker({ initialOrder }: LiveOrderTrackerProps) {
         </Badge>
       </div>
 
-      {/* Main Order Card */}
-      <div className="p-6 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-card">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-[var(--border-subtle)]">
+      {/* Thank You Celebration Banner matching Screenshot 2026-10-15 100247.png */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#00b9c6] via-[#11cdef] to-[#1171ef] p-6 text-white shadow-xl">
+        {/* Organic fluid blobs in background */}
+        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/20 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#febb2c]/30 rounded-full blur-xl pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <span className="text-xs text-[var(--text-muted)] font-bold uppercase tracking-wider block">
-              Order #{order.order_number || initialOrder.id?.slice(0, 8)}
-            </span>
-            <h1 className="text-xl md:text-2xl font-black text-[var(--text-ink)]">
-              {isDelivered
-                ? 'Order Delivered Successfully 🎉'
-                : 'Your Groceries Are On The Way!'}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-black uppercase tracking-wider mb-2">
+              <span>Order #{order.order_number || initialOrder.id?.slice(0, 8)}</span>
+              <span>•</span>
+              <span>15-Min Express</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight">
+              Thank You! 🎉
             </h1>
+            <p className="text-white/90 text-xs sm:text-sm mt-1 max-w-md">
+              {isDelivered
+                ? 'Your order has been delivered! Enjoy your fresh groceries.'
+                : 'Your fresh grocery basket has been placed and is being packed.'}
+            </p>
           </div>
 
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 self-start">
-            <Clock className="w-4 h-4 text-[#f5a623]" />
-            <span className="text-xs font-bold text-[#0b0b0b]">
-              {isDelivered ? 'Delivered' : 'Est. Delivery: ~15 mins'}
+          <div className="bg-white/20 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/30 self-start sm:self-auto text-center shrink-0">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-white/80 block">
+              Estimated Handover
+            </span>
+            <span className="text-lg font-black text-white">
+              {isDelivered ? 'COMPLETED' : '~15 Minutes'}
             </span>
           </div>
         </div>
+      </div>
+
+      {/* Main Order Details Card */}
+      <div className="p-6 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-card">
+
 
         {/* 4-Step Status Stepper */}
         <div className="py-6 border-b border-[var(--border-subtle)]">
