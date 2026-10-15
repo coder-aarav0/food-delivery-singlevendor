@@ -5,6 +5,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRealtimeOrder } from '@/hooks/useRealtimeOrder';
 import { LiveRiderMap } from '@/components/customer/LiveRiderMap';
+import {
+  ForgotSomethingShelf,
+  ForgotItem,
+} from '@/components/customer/ForgotSomethingShelf';
+import { ReportIssueDialog } from '@/components/customer/ReportIssueDialog';
 import { Badge } from '@/components/ui/Badge';
 import { formatCurrency } from '@/lib/utils';
 import { getOptimizedImageUrl } from '@/lib/cloudinary';
@@ -19,6 +24,7 @@ import {
   Phone,
   ArrowLeft,
   ShoppingBag,
+  AlertCircle,
 } from 'lucide-react';
 
 export interface OrderItemDetail {
@@ -41,7 +47,23 @@ export interface LiveOrderTrackerProps {
 
 export function LiveOrderTracker({ initialOrder }: LiveOrderTrackerProps) {
   const order = useRealtimeOrder(initialOrder);
-  const orderItems = initialOrder.order_items || [];
+  const [itemsList, setItemsList] = React.useState<OrderItemDetail[]>(
+    initialOrder.order_items || []
+  );
+  const [isReportIssueOpen, setIsReportIssueOpen] = React.useState(false);
+
+  const handleGraceItemAdded = (item: ForgotItem) => {
+    const newItem: OrderItemDetail = {
+      id: `grace_${Date.now()}`,
+      product_name: item.name,
+      variation_title: item.unit,
+      unit_price: item.price,
+      quantity: 1,
+      total_price: item.price,
+      image_url: item.imageUrl,
+    };
+    setItemsList((prev) => [...prev, newItem]);
+  };
 
   const isDelivered = order.status === 'DELIVERED';
   const isDispatched = order.status === 'DISPATCHED' || isDelivered;
@@ -181,8 +203,15 @@ export function LiveOrderTracker({ initialOrder }: LiveOrderTrackerProps) {
           </div>
         </div>
 
+        {/* Post-Checkout 180-Sec "Forgot Something?" Grace Window Shelf */}
+        <ForgotSomethingShelf
+          orderId={order.id}
+          orderStatus={order.status}
+          onItemAdded={handleGraceItemAdded}
+        />
+
         {/* Live Rider Map Simulation */}
-        <div className="py-4">
+        <div className="py-2">
           <LiveRiderMap
             storeName="FreshMart Galleria"
             orderStatus={order.status}
@@ -192,7 +221,7 @@ export function LiveOrderTracker({ initialOrder }: LiveOrderTrackerProps) {
 
         {/* Contact Help Buttons */}
         <div className="pt-4 border-t border-[var(--border-subtle)] flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <a
               href="tel:+919876543210"
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[var(--bg-muted)] hover:bg-slate-200 text-xs font-bold text-[var(--text-ink)] transition-colors"
@@ -200,6 +229,15 @@ export function LiveOrderTracker({ initialOrder }: LiveOrderTrackerProps) {
               <Phone className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
               <span>Call Store Helpdesk</span>
             </a>
+
+            <button
+              type="button"
+              onClick={() => setIsReportIssueOpen(true)}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-xs font-bold text-rose-700 transition-colors border border-rose-200 shadow-xs"
+            >
+              <AlertCircle className="w-3.5 h-3.5 text-rose-600" />
+              <span>Snap & Instant Refund ⚡</span>
+            </button>
           </div>
 
           <div className="text-xs text-[var(--text-muted)] font-medium">
@@ -213,12 +251,17 @@ export function LiveOrderTracker({ initialOrder }: LiveOrderTrackerProps) {
 
       {/* Itemized Order Breakdown */}
       <div className="p-6 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-4">
-        <h2 className="text-base font-bold text-[var(--text-ink)]">
-          Ordered Items
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-base font-bold text-[var(--text-ink)]">
+            Ordered Items ({itemsList.length})
+          </h2>
+          <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+            Live Ticket
+          </span>
+        </div>
 
         <div className="divide-y divide-[var(--border-subtle)]">
-          {orderItems.map((item) => (
+          {itemsList.map((item) => (
             <div key={item.id} className="py-3 first:pt-0 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="relative w-12 h-12 rounded-xl bg-slate-50 overflow-hidden shrink-0 border border-[var(--border-subtle)]">
@@ -252,32 +295,60 @@ export function LiveOrderTracker({ initialOrder }: LiveOrderTrackerProps) {
           ))}
         </div>
 
-        {/* Bill Total */}
-        <div className="pt-3 border-t border-[var(--border-subtle)] space-y-1.5 text-xs text-[var(--text-muted)]">
-          <div className="flex justify-between">
-            <span>Items Subtotal</span>
-            <span>{formatCurrency(order.items_subtotal)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Delivery Fee</span>
-            <span>
-              {order.delivery_fee === 0 ? 'FREE' : formatCurrency(order.delivery_fee)}
-            </span>
-          </div>
-          {order.discount_amount > 0 && (
-            <div className="flex justify-between text-emerald-600 font-semibold">
-              <span>Coupon Discount</span>
-              <span>-{formatCurrency(order.discount_amount)}</span>
+        {/* Dynamic Bill Total */}
+        {(() => {
+          const currentSubtotal = itemsList.reduce((sum, item) => sum + item.total_price, 0);
+          const deliveryFee = order.delivery_fee;
+          const discount = order.discount_amount || 0;
+          const currentTotal = currentSubtotal + deliveryFee - discount;
+
+          return (
+            <div className="pt-3 border-t border-[var(--border-subtle)] space-y-1.5 text-xs text-[var(--text-muted)]">
+              <div className="flex justify-between">
+                <span>Items Subtotal</span>
+                <span className="font-semibold text-slate-800">{formatCurrency(currentSubtotal)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Delivery Fee</span>
+                <span>
+                  {deliveryFee === 0 ? (
+                    <span className="text-emerald-600 font-bold">FREE</span>
+                  ) : (
+                    formatCurrency(deliveryFee)
+                  )}
+                </span>
+              </div>
+              {discount > 0 && (
+                <div className="flex justify-between text-emerald-600 font-semibold">
+                  <span>Coupon Discount</span>
+                  <span>-{formatCurrency(discount)}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-sm font-extrabold text-[var(--text-ink)] pt-2 border-t border-[var(--border-subtle)]">
+                <span>Grand Total</span>
+                <span className="text-base text-[var(--brand-primary)] font-black">
+                  {formatCurrency(currentTotal)}
+                </span>
+              </div>
             </div>
-          )}
-          <div className="flex justify-between text-sm font-extrabold text-[var(--text-ink)] pt-2 border-t border-[var(--border-subtle)]">
-            <span>Grand Total</span>
-            <span className="text-base text-[var(--brand-primary)]">
-              {formatCurrency(order.total_amount)}
-            </span>
-          </div>
-        </div>
+          );
+        })()}
       </div>
+
+      {/* Snap & Instant Refund Dialog */}
+      <ReportIssueDialog
+        isOpen={isReportIssueOpen}
+        onClose={() => setIsReportIssueOpen(false)}
+        orderId={order.id}
+        orderNumber={String(order.order_number || initialOrder.id?.slice(0, 8))}
+        items={itemsList.map((item) => ({
+          id: item.id,
+          product_name: item.product_name,
+          unit_price: item.unit_price,
+          quantity: item.quantity,
+          image_url: item.image_url,
+        }))}
+      />
     </div>
   );
 }

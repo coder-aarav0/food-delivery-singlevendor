@@ -45,6 +45,9 @@
 | **`AddressSelectModal`** | `components/customer/AddressSelectModal.tsx` | 🟢 `READY` | Modal to switch saved delivery addresses or add a new address during checkout |
 | **`CheckoutCrossSell`** | `components/customer/CheckoutCrossSell.tsx` | 🟢 `READY` | Impulse cross-sell grocery shelf ("You Might Also Like") with 1-tap cart integration |
 | **`PackagingSelector`** | `components/customer/PackagingSelector.tsx` | 🟢 `READY` | Packaging preferences (Eco Bag, Zero Waste, Premium Gift Wrap + personalized note) |
+| **`PhoneAuthModal`** | `components/customer/PhoneAuthModal.tsx` | 🟢 `READY` | 10-digit Indian phone login + 4-digit SMS OTP with 30s resend & 1-tap demo credentials |
+| **`ForgotSomethingShelf`**| `components/customer/ForgotSomethingShelf.tsx` | 🟢 `READY` | 180s post-checkout countdown grace rail to append forgotten essentials with 0 delivery fee |
+| **`ReportIssueDialog`** | `components/customer/ReportIssueDialog.tsx` | 🟢 `READY` | Snap & Instant Refund 60s automated AI quality check, wallet credit, and apology voucher |
 
 ---
 
@@ -60,6 +63,7 @@
 | **`RiderFleetManager`** | `components/admin/RiderFleetManager.tsx` | 🟢 `READY` | Active fleet status (Online/Busy), coordinates, cash in hand settlement |
 | **`GeofenceManager`** | `components/admin/GeofenceManager.tsx` | 🟢 `READY` | Interactive delivery radius slider, base fee, and free delivery thresholds |
 | **`StoreSettingsForm`** | `components/admin/StoreSettingsForm.tsx` | 🟢 `READY` | Color pickers for primary/accent, store identity, operating hours |
+| **`BarcodeScannerModal`** | `components/admin/BarcodeScannerModal.tsx` | 🟢 `READY` | Optical reticle barcode scanner for store pickers with 1-tap verify & SKU checklist |
 
 ---
 

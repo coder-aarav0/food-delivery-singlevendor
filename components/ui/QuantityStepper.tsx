@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { sound } from '@/lib/sound';
 import { Plus, Minus, Trash2 } from 'lucide-react';
 
 export interface QuantityStepperProps {
@@ -52,12 +53,14 @@ export function QuantityStepper({
         type="button"
         onClick={(e) => {
           e.stopPropagation();
+          sound.playPopSound();
+          sound.triggerHaptic(12);
           onDecrement();
         }}
         disabled={isMin && !allowDeleteOnZero}
         aria-label="Decrease quantity"
         className={cn(
-          'flex items-center justify-center transition-colors hover:bg-[var(--brand-primary-hover)] active:scale-95 disabled:opacity-40 disabled:pointer-events-none',
+          'flex items-center justify-center transition-colors hover:bg-[var(--brand-primary-hover)] active:scale-95 disabled:opacity-40 disabled:pointer-events-none cursor-pointer',
           buttonSizeStyles[size]
         )}
       >
@@ -76,12 +79,14 @@ export function QuantityStepper({
         type="button"
         onClick={(e) => {
           e.stopPropagation();
+          sound.playPopSound();
+          sound.triggerHaptic(15);
           onIncrement();
         }}
         disabled={isMax}
         aria-label="Increase quantity"
         className={cn(
-          'flex items-center justify-center transition-colors hover:bg-[var(--brand-primary-hover)] active:scale-95 disabled:opacity-40 disabled:pointer-events-none',
+          'flex items-center justify-center transition-colors hover:bg-[var(--brand-primary-hover)] active:scale-95 disabled:opacity-40 disabled:pointer-events-none cursor-pointer',
           buttonSizeStyles[size]
         )}
       >

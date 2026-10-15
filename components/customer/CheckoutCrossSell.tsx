@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 import { formatCurrency } from '@/lib/utils';
+import { sound } from '@/lib/sound';
 import { Sparkles, Plus, Minus, Check } from 'lucide-react';
 
 interface CrossSellProduct {
@@ -160,7 +161,9 @@ export function CheckoutCrossSell() {
                 {qty === 0 ? (
                   <button
                     type="button"
-                    onClick={() =>
+                    onClick={() => {
+                      sound.playPopSound();
+                      sound.triggerHaptic(15);
                       addItem({
                         productId: item.productId,
                         variationId: item.variationId,
@@ -170,8 +173,8 @@ export function CheckoutCrossSell() {
                         originalPrice: item.originalPrice,
                         imageUrl: item.imageUrl,
                         stockQuantity: item.stockQuantity,
-                      })
-                    }
+                      });
+                    }}
                     className="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-500 text-emerald-700 font-extrabold text-[11px] flex items-center gap-1 transition shrink-0 cursor-pointer shadow-2xs"
                   >
                     <Plus className="w-3 h-3" />
@@ -181,7 +184,11 @@ export function CheckoutCrossSell() {
                   <div className="flex items-center gap-1.5 bg-emerald-600 text-white rounded-lg px-2 py-0.5 shadow-xs">
                     <button
                       type="button"
-                      onClick={() => updateQuantity(item.variationId, qty - 1)}
+                      onClick={() => {
+                        sound.playPopSound();
+                        sound.triggerHaptic(12);
+                        updateQuantity(item.variationId, qty - 1);
+                      }}
                       className="p-0.5 hover:bg-emerald-700 rounded transition cursor-pointer"
                     >
                       <Minus className="w-3 h-3" />
@@ -189,7 +196,11 @@ export function CheckoutCrossSell() {
                     <span className="font-extrabold text-xs px-1">{qty}</span>
                     <button
                       type="button"
-                      onClick={() => updateQuantity(item.variationId, qty + 1)}
+                      onClick={() => {
+                        sound.playPopSound();
+                        sound.triggerHaptic(15);
+                        updateQuantity(item.variationId, qty + 1);
+                      }}
                       className="p-0.5 hover:bg-emerald-700 rounded transition cursor-pointer"
                     >
                       <Plus className="w-3 h-3" />

@@ -123,6 +123,19 @@
 
 ---
 
+### Phase 8: Beyond Blinkit Standards ("Blinkit-Killer" Execution Roadmap)
+- [x] **8.1 Phone Number + 4-Digit SMS OTP Authentication** (`components/customer/PhoneAuthModal.tsx` with +91 flag, auto-advancing 4-digit boxes, 30s resend timer, 1-tap demo credentials)
+- [x] **8.2 Web Audio Tactile Synthesizer & Mobile Haptics** (`lib/sound.ts` with zero external audio assets, 80ms frequency-swept bubble-pop on `+ Add`, 4-note major triad celebration chime, and `navigator.vibrate` haptic triggers)
+- [x] **8.3 Time-of-Day Dynamic Shelves Engine** (`components/customer/StorefrontView.tsx` with Morning Chai & Breakfast Essentials [6–11:30 AM], Quick Lunch [11:30–4:30 PM], Evening Chai [4:30–7:30 PM], and Late Night Munchies [7:30 PM–1 AM])
+- [x] **8.4 180-Second "Forgot Something?" Post-Checkout Grace Window** (`components/customer/ForgotSomethingShelf.tsx` + `components/customer/LiveOrderTracker.tsx` with animated progress timer and 1-tap addition of essentials with 0 delivery fee)
+- [x] **8.5 1-Tap Express Order Flow** (`components/customer/CartDrawer.tsx` instant checkout transition)
+- [x] **8.6 Native Web Speech Voice Search** (`components/customer/StorefrontHeader.tsx` microphone button with Web Speech API for English & Hinglish voice recognition)
+- [x] **8.7 Zero Surge Pricing Neighborhood Guarantee** (Trust badge on `StorefrontView.tsx`)
+- [x] **8.8 Optical Reticle Barcode Scanner for Store Pickers** (`components/admin/BarcodeScannerModal.tsx` + `KanbanOrderCard.tsx` with animated laser scan line, live SKU checklist, manual gun input, and 1-tap verification)
+- [x] **8.9 "Snap & Refund" 60-Second Wallet Resolution** (`components/customer/ReportIssueDialog.tsx` with instant AI quality check simulation, wallet refund credit, and `FRESHSORRY50` apology gift voucher)
+
+---
+
 ## 🚧 3. Blockers & Technical Decisions Log
 
 | Date | Category | Decision / Resolution | Status |

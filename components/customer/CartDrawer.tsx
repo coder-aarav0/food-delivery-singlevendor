@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useCart, SubstitutionPreference } from '@/context/CartContext';
 import { formatCurrency } from '@/lib/utils';
 import { getOptimizedImageUrl } from '@/lib/cloudinary';
 import { QuantityStepper } from '@/components/ui/QuantityStepper';
 import { Button } from '@/components/ui/Button';
+import { sound } from '@/lib/sound';
 import {
   X,
   ShoppingBag,
@@ -17,9 +19,11 @@ import {
   ShieldAlert,
   PhoneCall,
   CheckCircle2,
+  Zap,
 } from 'lucide-react';
 
 export function CartDrawer() {
+  const router = useRouter();
   const {
     items,
     totalItems,
@@ -29,8 +33,10 @@ export function CartDrawer() {
     updateQuantity,
     setSubstitutionPreference,
     clearCart,
+    selectedAddress,
   } = useCart();
 
+  const [isInstantPlacing, setIsInstantPlacing] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
   const FREE_DELIVERY_THRESHOLD = 499;
   const isFreeDelivery = subtotal >= FREE_DELIVERY_THRESHOLD;
@@ -252,25 +258,49 @@ export function CartDrawer() {
               </div>
             </div>
 
-            {/* Checkout Action */}
-            <Link
-              href="/checkout"
-              onClick={() => setIsCartOpen(false)}
-              className="w-full bg-[var(--brand-primary)] text-slate-950 py-3.5 px-5 rounded-2xl font-black flex items-center justify-between shadow-elevated hover:bg-[var(--brand-primary-hover)] active:scale-[0.99] transition-all min-h-[52px]"
+            {/* 1-Tap Express Order Button (Blinkit Standard) */}
+            <button
+              type="button"
+              disabled={isInstantPlacing}
+              onClick={async () => {
+                setIsInstantPlacing(true);
+                sound.playCelebrationSound();
+                sound.triggerHaptic(40);
+                const demoOrderId = `demo_order_${Math.floor(100 + Math.random() * 900)}`;
+                setTimeout(() => {
+                  clearCart();
+                  setIsCartOpen(false);
+                  setIsInstantPlacing(false);
+                  router.push(`/order/${demoOrderId}`);
+                }, 400);
+              }}
+              className="w-full bg-[#febb2c] hover:bg-[#f5a623] text-slate-950 py-3.5 px-5 rounded-2xl font-black flex items-center justify-between shadow-elevated active:scale-[0.98] transition-all min-h-[52px] cursor-pointer"
             >
               <div className="flex flex-col text-left">
-                <span className="text-[11px] uppercase text-slate-800 font-extrabold">
-                  {totalItems} Items
+                <span className="text-[10px] uppercase text-slate-900 font-extrabold flex items-center gap-1">
+                  <Zap className="size-3 fill-slate-950" />
+                  <span>1-Tap Express Order</span>
                 </span>
                 <span className="text-base font-black">
                   {formatCurrency(subtotal + (isFreeDelivery ? 0 : 30))}
                 </span>
               </div>
-              <div className="flex items-center gap-1.5 text-xs uppercase tracking-wide bg-slate-950 text-white px-3 py-2 rounded-xl shadow-xs">
-                <span>Proceed to Checkout</span>
+              <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider bg-slate-950 text-white px-3 py-2 rounded-xl shadow-xs">
+                <span>{isInstantPlacing ? 'Placing...' : 'Order in 1-Tap'}</span>
                 <ArrowRight className="w-4 h-4" />
               </div>
-            </Link>
+            </button>
+
+            {/* Customize / Full Checkout Link */}
+            <div className="text-center pt-0.5">
+              <Link
+                href="/checkout"
+                onClick={() => setIsCartOpen(false)}
+                className="text-[11px] font-bold text-slate-600 hover:text-emerald-700 transition underline cursor-pointer"
+              >
+                Change Address, Delivery Slot, or Add Gift Wrap →
+              </Link>
+            </div>
           </div>
         )}
       </div>

@@ -17,7 +17,10 @@ import {
   User,
   ChevronRight,
   ArrowRight,
+  Barcode,
+  ScanLine,
 } from 'lucide-react';
+import { BarcodeScannerModal } from '@/components/admin/BarcodeScannerModal';
 
 export interface KanbanOrderCardProps {
   order: any;
@@ -35,6 +38,12 @@ export function KanbanOrderCard({
   const [elapsedMinutes, setElapsedMinutes] = useState(0);
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedRiderId, setSelectedRiderId] = useState('');
+  const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
+
+  // Check if customer added grace-window items post-checkout
+  const hasGraceItems = (order.order_items || []).some((it: any) =>
+    String(it.id).startsWith('grace_')
+  );
 
   // Calculate elapsed time from created_at
   useEffect(() => {
@@ -77,6 +86,12 @@ export function KanbanOrderCard({
         <span className="font-black text-xs md:text-sm text-[var(--text-ink)]">
           #{order.order_number || order.id?.slice(0, 8)}
         </span>
+
+        {hasGraceItems && (
+          <span className="px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 border border-amber-300 font-extrabold text-[10px] animate-pulse">
+            ⚡ +Grace Item
+          </span>
+        )}
 
         {/* Elapsed Timer with escalation */}
         <div
@@ -165,16 +180,29 @@ export function KanbanOrderCard({
             <ArrowRight className="w-3.5 h-3.5 ml-1" />
           </Button>
         ) : order.status === 'PREPARING' ? (
-          <Button
-            size="sm"
-            variant="accent"
-            isLoading={isUpdating}
-            onClick={() => handleStatusChange('READY_FOR_PICKUP')}
-            className="flex-1 text-xs h-9 min-h-[36px]"
-          >
-            <span>Mark Packed</span>
-            <CheckCircle2 className="w-3.5 h-3.5 ml-1" />
-          </Button>
+          <div className="flex-1 flex gap-1.5">
+            <Button
+              size="sm"
+              variant="outline"
+              type="button"
+              onClick={() => setIsBarcodeModalOpen(true)}
+              className="text-xs h-9 min-h-[36px] px-2.5 border-emerald-600 text-emerald-700 hover:bg-emerald-50"
+              title="Scan barcodes to verify items"
+            >
+              <Barcode className="w-4 h-4 mr-1" />
+              <span>Scan</span>
+            </Button>
+            <Button
+              size="sm"
+              variant="accent"
+              isLoading={isUpdating}
+              onClick={() => handleStatusChange('READY_FOR_PICKUP')}
+              className="flex-1 text-xs h-9 min-h-[36px]"
+            >
+              <span>Mark Packed</span>
+              <CheckCircle2 className="w-3.5 h-3.5 ml-1" />
+            </Button>
+          </div>
         ) : order.status === 'READY_FOR_PICKUP' ? (
           <div className="flex-1 flex gap-1.5">
             <Button
@@ -194,6 +222,14 @@ export function KanbanOrderCard({
           </span>
         )}
       </div>
+
+      {/* Optical Barcode Scanner Modal for Store Picker */}
+      <BarcodeScannerModal
+        isOpen={isBarcodeModalOpen}
+        onClose={() => setIsBarcodeModalOpen(false)}
+        order={order}
+        onCompletePack={() => handleStatusChange('READY_FOR_PICKUP')}
+      />
     </div>
   );
 }

@@ -16,6 +16,145 @@ import {
   Bell,
 } from 'lucide-react';
 
+const DEFAULT_DEMO_ORDERS = [
+  {
+    id: 'demo_ord_1042',
+    order_number: 1042,
+    status: 'PREPARING',
+    payment_method: 'UPI',
+    payment_status: 'PAID',
+    total_amount: 525,
+    delivery_fee: 0,
+    created_at: new Date(Date.now() - 4 * 60000).toISOString(),
+    delivery_address_snapshot: {
+      label: 'Home • Aarav Soni',
+      address_line_1: 'Tower 4, Apt 802, Green Glen Layout, Bellandur',
+      city: 'Bengaluru',
+      pincode: '560103',
+    },
+    order_items: [
+      {
+        id: 'item_1',
+        product_name: 'Amul Salted Butter',
+        variation_title: '500g Pack',
+        unit_price: 275,
+        quantity: 1,
+        total_price: 275,
+      },
+      {
+        id: 'item_2',
+        product_name: 'Farm Fresh Shimla Apples',
+        variation_title: '1kg Basket',
+        unit_price: 180,
+        quantity: 1,
+        total_price: 180,
+      },
+      {
+        id: 'item_3',
+        product_name: 'Organic Red Onions',
+        variation_title: '1kg Bag',
+        unit_price: 35,
+        quantity: 2,
+        total_price: 70,
+      },
+    ],
+  },
+  {
+    id: 'demo_ord_1041',
+    order_number: 1041,
+    status: 'PENDING',
+    payment_method: 'COD',
+    payment_status: 'PENDING',
+    total_amount: 101,
+    delivery_fee: 0,
+    created_at: new Date(Date.now() - 2 * 60000).toISOString(),
+    delivery_address_snapshot: {
+      label: 'Office • Priya Sharma',
+      address_line_1: 'Ground Floor, Salarpuria Softzone, Outer Ring Rd',
+      city: 'Bengaluru',
+      pincode: '560103',
+    },
+    order_items: [
+      {
+        id: 'item_4',
+        product_name: 'Amul Taaza Fresh Milk',
+        variation_title: '500ml Pouch',
+        unit_price: 28,
+        quantity: 2,
+        total_price: 56,
+      },
+      {
+        id: 'item_5',
+        product_name: 'Modern 100% Whole Wheat Bread',
+        variation_title: '400g Loaf',
+        unit_price: 45,
+        quantity: 1,
+        total_price: 45,
+      },
+    ],
+  },
+  {
+    id: 'demo_ord_1040',
+    order_number: 1040,
+    status: 'READY_FOR_PICKUP',
+    payment_method: 'UPI',
+    payment_status: 'PAID',
+    total_amount: 255,
+    delivery_fee: 0,
+    created_at: new Date(Date.now() - 8 * 60000).toISOString(),
+    delivery_address_snapshot: {
+      label: 'Home • Vikram Malhotra',
+      address_line_1: 'Villa 12, Palm Meadows, Whitefield',
+      city: 'Bengaluru',
+      pincode: '560066',
+    },
+    order_items: [
+      {
+        id: 'item_6',
+        product_name: 'Cadbury Dairy Milk Silk',
+        variation_title: '150g Bar',
+        unit_price: 175,
+        quantity: 1,
+        total_price: 175,
+      },
+      {
+        id: 'item_7',
+        product_name: 'Coca-Cola Zero Sugar Can',
+        variation_title: '300ml Can',
+        unit_price: 40,
+        quantity: 2,
+        total_price: 80,
+      },
+    ],
+  },
+  {
+    id: 'demo_ord_1039',
+    order_number: 1039,
+    status: 'DISPATCHED',
+    payment_method: 'UPI',
+    payment_status: 'PAID',
+    total_amount: 65,
+    delivery_fee: 0,
+    created_at: new Date(Date.now() - 11 * 60000).toISOString(),
+    delivery_address_snapshot: {
+      label: 'Home • Neha Verma',
+      address_line_1: 'Flat 304, Prestige Tech Vista, Kadubeesanahalli',
+      city: 'Bengaluru',
+      pincode: '560103',
+    },
+    order_items: [
+      {
+        id: 'item_8',
+        product_name: 'Farm Fresh Eggs (Brown)',
+        variation_title: '6-Pack Box',
+        unit_price: 65,
+        quantity: 1,
+        total_price: 65,
+      },
+    ],
+  },
+];
+
 export interface LiveDispatchKanbanProps {
   initialOrders: any[];
   riders?: Array<{ id: string; full_name: string | null; phone: string | null }>;
@@ -25,7 +164,9 @@ export function LiveDispatchKanban({
   initialOrders,
   riders = [],
 }: LiveDispatchKanbanProps) {
-  const [orders, setOrders] = useState<any[]>(initialOrders);
+  const [orders, setOrders] = useState<any[]>(
+    initialOrders && initialOrders.length > 0 ? initialOrders : DEFAULT_DEMO_ORDERS
+  );
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [activeThermalOrder, setActiveThermalOrder] = useState<any | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -158,6 +299,16 @@ export function LiveDispatchKanban({
                 <span>Audio Muted</span>
               </>
             )}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setOrders(DEFAULT_DEMO_ORDERS)}
+            title="Reset Sample Dispatch Orders"
+            className="flex items-center gap-1 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-700 transition-colors"
+          >
+            <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
+            <span>Reset Demo Queue</span>
           </button>
 
           <button
