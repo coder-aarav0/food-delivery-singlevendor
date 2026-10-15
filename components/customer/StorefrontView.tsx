@@ -46,7 +46,7 @@ export function StorefrontView({ categories, products }: StorefrontViewProps) {
   }, [categories, selectedCategorySlug]);
 
   return (
-    <div className="w-full pb-24 md:pb-16 space-y-8">
+    <div className="w-full pt-3 sm:pt-5 pb-24 md:pb-16 space-y-8">
       {/* Hero Banner */}
       <StorefrontHero />
 
