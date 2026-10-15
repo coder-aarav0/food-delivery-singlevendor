@@ -7,13 +7,14 @@ import {
   Home,
   ShoppingBag,
   Heart,
-  MessageSquare,
   Settings,
   HelpCircle,
+  MapPin,
+  User,
   LogOut,
   ChevronRight,
   ShieldCheck,
-  User,
+  Bike,
 } from 'lucide-react';
 import { EnategaLogo } from '@/components/ui/EnategaLogo';
 
@@ -32,17 +33,19 @@ export function CustomerDrawer({
 }: CustomerDrawerProps) {
   if (!isOpen) return null;
 
+  // Exact 6 core items matching customer1.jpeg + Favorites
   const menuItems = [
     { label: 'Home', href: '/', icon: Home },
     { label: 'My Orders', href: '/orders', icon: ShoppingBag },
+    { label: 'My Addresses', href: '/addresses', icon: MapPin },
+    { label: 'Profile', href: '/profile', icon: User },
     { label: 'Favorite Foods', href: '/favorites', icon: Heart },
-    { label: 'Live Chat Support', href: '/support', icon: MessageSquare },
-    { label: 'Settings', href: '/profile', icon: Settings },
     { label: 'Help & FAQ', href: '/help', icon: HelpCircle },
+    { label: 'Settings', href: '/settings', icon: Settings },
   ];
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden font-sans">
+    <div className="fixed inset-0 z-50 overflow-hidden font-sans select-none">
       {/* Backdrop */}
       <div
         onClick={onClose}
@@ -52,24 +55,29 @@ export function CustomerDrawer({
       {/* Golden Amber Drawer matching customer1.jpeg */}
       <div className="absolute inset-y-0 left-0 max-w-xs sm:max-w-sm w-full bg-[#febb2c] shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-left duration-300">
         {/* Top Header */}
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-2">
-              <EnategaLogo size={32} variant="black" />
-              <span className="font-black text-gray-950 text-lg tracking-tight">enatega</span>
-            </div>
+        <div className="p-6 overflow-y-auto">
+          {/* Header Bar with Logo and Close X matching customer1.jpeg */}
+          <div className="flex items-center justify-between mb-6">
+            <Link href="/" onClick={onClose} className="flex items-center">
+              <EnategaLogo size={30} variant="black" />
+            </Link>
             <button
               onClick={onClose}
-              className="w-9 h-9 rounded-full bg-black/10 hover:bg-black/20 flex items-center justify-center text-gray-900 transition cursor-pointer"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-black/10 hover:bg-black/20 text-gray-950 font-bold text-xs transition cursor-pointer"
               aria-label="Close menu"
             >
-              <X className="w-5 h-5 stroke-[2.5]" />
+              <span>Close</span>
+              <X className="size-4 stroke-[2.5]" />
             </button>
           </div>
 
-          {/* User Profile Card */}
-          <div className="flex items-center gap-4 p-4 rounded-2xl bg-black/10 backdrop-blur-xs border border-black/10 mb-6">
-            <div className="w-13 h-13 rounded-full bg-black text-[#febb2c] font-black text-xl flex items-center justify-center shadow-md shrink-0">
+          {/* User Profile Card matching customer1.jpeg Login/Profile Banner */}
+          <Link
+            href="/profile"
+            onClick={onClose}
+            className="flex items-center gap-4 p-4 rounded-2xl bg-black/10 hover:bg-black/15 transition backdrop-blur-xs border border-black/10 mb-6 block cursor-pointer"
+          >
+            <div className="size-12 rounded-full bg-black text-[#febb2c] font-black text-xl flex items-center justify-center shadow-md shrink-0">
               {userName.charAt(0).toUpperCase()}
             </div>
             <div className="min-w-0">
@@ -80,10 +88,10 @@ export function CustomerDrawer({
                 {userPhone}
               </p>
             </div>
-          </div>
+          </Link>
 
           {/* Navigation Links matching customer1.jpeg */}
-          <nav className="space-y-1.5">
+          <nav className="space-y-1">
             {menuItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -94,45 +102,47 @@ export function CustomerDrawer({
                   className="flex items-center justify-between px-4 py-3 rounded-xl text-gray-950 font-black text-sm hover:bg-black/10 active:bg-black/20 transition-colors group"
                 >
                   <div className="flex items-center gap-3.5">
-                    <Icon className="w-5 h-5 text-gray-900 group-hover:scale-110 transition-transform" />
+                    <Icon className="size-5 text-gray-900 group-hover:scale-110 transition-transform" />
                     <span>{item.label}</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-gray-800 opacity-60 group-hover:opacity-100 transition-opacity" />
+                  <ChevronRight className="size-4 text-gray-800 opacity-60 group-hover:opacity-100 transition-opacity" />
                 </Link>
               );
             })}
           </nav>
         </div>
 
-        {/* Footer with Version & Logout matching customer1.jpeg */}
-        <div className="p-6 border-t border-black/10 space-y-4">
-          <Link
-            href="/admin"
-            onClick={onClose}
-            className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-black/10 text-gray-950 font-bold text-xs hover:bg-black/15 transition"
-          >
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4" />
-              <span>Admin Station</span>
-            </div>
-            <span className="text-[10px] font-mono uppercase bg-black text-[#febb2c] px-2 py-0.5 rounded-full font-black">
-              Switch
-            </span>
-          </Link>
-
-          <div className="flex items-center justify-between pt-2">
-            <button
-              onClick={() => {
-                alert('Logged out demo session.');
-                onClose();
-              }}
-              className="flex items-center gap-2 text-xs font-black text-gray-950 hover:text-red-900 transition cursor-pointer"
+        {/* Footer with Portal Switchers & Logout */}
+        <div className="p-6 border-t border-black/10 space-y-3 shrink-0">
+          <div className="grid grid-cols-2 gap-2">
+            <Link
+              href="/admin"
+              onClick={onClose}
+              className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-black/10 hover:bg-black/20 text-gray-950 font-bold text-xs transition"
             >
-              <LogOut className="w-4 h-4" />
-              <span>Logout</span>
-            </button>
+              <ShieldCheck className="size-3.5" />
+              <span>Admin</span>
+            </Link>
+            <Link
+              href="/rider"
+              onClick={onClose}
+              className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-black/10 hover:bg-black/20 text-gray-950 font-bold text-xs transition"
+            >
+              <Bike className="size-3.5" />
+              <span>Rider</span>
+            </Link>
+          </div>
 
-            <span className="px-3 py-1 rounded-full bg-black text-white text-[11px] font-mono font-bold">
+          <div className="flex items-center justify-between pt-1 text-xs font-bold text-gray-900">
+            <Link
+              href="/profile"
+              onClick={onClose}
+              className="flex items-center gap-1.5 hover:text-red-900 transition"
+            >
+              <LogOut className="size-4" />
+              <span>Logout / Switch</span>
+            </Link>
+            <span className="px-2.5 py-0.5 rounded-full bg-black text-white text-[10px] font-mono font-bold">
               v2.4.0
             </span>
           </div>
