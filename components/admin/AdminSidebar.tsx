@@ -19,6 +19,7 @@ import {
   Layers,
   Ticket,
   Bell,
+  Sparkles,
   Kanban,
   ShoppingBag,
   Power,
@@ -49,6 +50,7 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
     { label: 'Option', href: '/admin/option', icon: Palette },
     { label: 'Addons', href: '/admin/addons', icon: Layers },
     { label: 'Coupons', href: '/admin/coupons', icon: Ticket },
+    { label: 'Banners', href: '/admin/banners', icon: Sparkles },
     { label: 'Notifications', href: '/admin/notifications', icon: Bell },
   ];
 
