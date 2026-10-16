@@ -90,7 +90,7 @@ export default function RiderLoginPage() {
             <Bike className="w-8 h-8 stroke-[2.5]" />
           </div>
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-[#F7D02C] border border-amber-500/20 text-[11px] font-black uppercase tracking-wider mb-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500/10 text-[#F7D02C] border border-amber-500/20 text-[11px] font-black uppercase tracking-wider mb-2">
               <Sparkles className="w-3 h-3" />
               <span>Delivery Fleet Terminal</span>
             </div>

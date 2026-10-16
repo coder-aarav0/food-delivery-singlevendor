@@ -121,7 +121,7 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
                 Store Status
               </span>
               <span
-                className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full ${
+                className={`text-[9px] font-extrabold px-2 py-0.5 rounded-md ${
                   isOpen
                     ? 'bg-emerald-100 text-emerald-800'
                     : 'bg-rose-100 text-rose-800'

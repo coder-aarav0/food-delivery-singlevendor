@@ -82,7 +82,7 @@ export function ProductDetailModal({
       onClose={onClose}
       maxWidth="2xl"
       contentClassName="p-0 overflow-hidden"
-      className="md:max-w-3xl border-0 shadow-2xl rounded-3xl overflow-hidden bg-white"
+      className="md:max-w-3xl border-0 shadow-2xl rounded-2xl overflow-hidden bg-white"
     >
       <div className="flex flex-col md:grid md:grid-cols-12 max-h-[88vh] bg-white">
         {/* Left Column: Visual Showcase (5 cols on desktop, compact on mobile) */}
@@ -90,17 +90,17 @@ export function ProductDetailModal({
           {/* Top Badges */}
           <div className="w-full flex items-center justify-between z-10 pr-8 md:pr-0">
             {hasDiscount ? (
-              <span className="inline-flex items-center gap-1 bg-emerald-600 text-white font-black text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-xs">
+              <span className="inline-flex items-center gap-1 bg-emerald-600 text-white font-black text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-md shadow-xs">
                 <Sparkles className="w-3 h-3 fill-white" />
                 <span>{discountPercentage}% OFF</span>
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1 bg-amber-500/15 text-amber-800 font-extrabold text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-lg border border-amber-500/20">
+              <span className="inline-flex items-center gap-1 bg-amber-500/15 text-amber-800 font-extrabold text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-md border border-amber-500/20">
                 Fresh Supermarket
               </span>
             )}
 
-            <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-xs px-2.5 py-1 rounded-lg border border-slate-200 text-[10px] font-black text-slate-700">
+            <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-xs px-2.5 py-1 rounded-md border border-slate-200 text-[10px] font-black text-slate-700">
               <span className={`w-2 h-2 rounded-full ${isOutOfStock ? 'bg-rose-500' : 'bg-emerald-500 animate-pulse'}`} />
               <span>{isOutOfStock ? 'Sold Out' : 'In Stock'}</span>
             </div>
@@ -276,7 +276,7 @@ export function ProductDetailModal({
                 <Button
                   variant="primary"
                   onClick={handleAddToCart}
-                  className="px-6 sm:px-8 py-3.5 min-h-[48px] text-sm sm:text-base font-black flex items-center gap-2 rounded-2xl shadow-lg hover:shadow-xl active:scale-[0.98] transition cursor-pointer bg-[var(--brand-primary)] text-slate-950 hover:bg-[var(--brand-primary-hover,var(--brand-primary))]"
+                  className="px-6 sm:px-8 py-3.5 min-h-[48px] text-sm sm:text-base font-black flex items-center gap-2 rounded-xl shadow-lg hover:shadow-xl active:scale-[0.98] transition cursor-pointer bg-[var(--brand-primary)] text-slate-950 hover:bg-[var(--brand-primary-hover,var(--brand-primary))]"
                 >
                   <ShoppingBag className="w-5 h-5 stroke-[2.5]" />
                   <span>Add to Cart</span>

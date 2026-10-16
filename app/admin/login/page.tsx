@@ -78,7 +78,7 @@ export default function AdminLoginPage() {
             <ArrowLeft className="w-4 h-4" />
             <span>Storefront</span>
           </Link>
-          <span className="text-[11px] font-bold text-white/70 bg-white/10 px-2.5 py-0.5 rounded-full border border-white/20">
+          <span className="text-[11px] font-bold text-white/70 bg-white/10 px-2.5 py-0.5 rounded-md border border-white/20">
             Admin Auth v2.4
           </span>
         </div>

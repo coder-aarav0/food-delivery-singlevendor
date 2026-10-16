@@ -209,7 +209,7 @@ export function ImageUploader({
             {/* Image Details & Actions */}
             <div className="flex-1 min-w-0 space-y-1.5">
               <div className="flex items-center gap-1.5">
-                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full">
+                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">
                   <CheckCircle2 className="w-3 h-3 text-emerald-600" />
                   Active Image
                 </span>

@@ -87,7 +87,7 @@ export default function ProfilePage() {
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            className="size-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition shadow-xs"
+            className="size-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition shadow-xs"
             aria-label="Back to store"
           >
             <ArrowLeft className="size-4" />
@@ -113,7 +113,7 @@ export default function ProfilePage() {
         {/* Profile Identity Card */}
         <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
           <div className="flex items-center gap-4">
-            <div className="size-16 rounded-full bg-amber-400 text-slate-950 font-black text-2xl flex items-center justify-center shadow-md shrink-0">
+            <div className="size-16 rounded-2xl bg-amber-400 text-slate-950 font-black text-2xl flex items-center justify-center shadow-md shrink-0">
               {fullName.charAt(0)}
             </div>
             <div className="flex-1 min-w-0">
@@ -123,7 +123,7 @@ export default function ProfilePage() {
               <p className="text-xs font-mono text-slate-500 mt-0.5">
                 {phone} • Verified Member
               </p>
-              <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full mt-1.5 border border-emerald-200">
+              <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md mt-1.5 border border-emerald-200">
                 FreshMart Express Gold
               </span>
             </div>

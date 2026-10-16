@@ -63,7 +63,7 @@ export default async function RiderOrderExecutionPage({ params }: PageProps) {
   if (orderData.status === 'DELIVERED') {
     return (
       <div className="p-8 text-center rounded-3xl bg-white border border-slate-200/80 space-y-4 shadow-sm">
-        <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-200">
+        <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-200">
           <CheckCircle className="w-8 h-8 stroke-[2.5]" />
         </div>
         <div className="space-y-1">

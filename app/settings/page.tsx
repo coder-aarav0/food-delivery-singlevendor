@@ -45,7 +45,7 @@ export default function SettingsPage() {
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            className="size-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition shadow-xs"
+            className="size-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition shadow-xs"
             aria-label="Back to store"
           >
             <ArrowLeft className="size-4" />

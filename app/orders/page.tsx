@@ -90,7 +90,7 @@ export default async function OrdersPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="size-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition shadow-xs"
+              className="size-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition shadow-xs"
               aria-label="Back to store"
             >
               <ArrowLeft className="size-4" />
@@ -104,7 +104,7 @@ export default async function OrdersPage() {
               </p>
             </div>
           </div>
-          <span className="text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200">
+          <span className="text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200">
             {displayOrders.length} {displayOrders.length === 1 ? 'Order' : 'Orders'}
           </span>
         </div>
@@ -148,7 +148,7 @@ export default async function OrdersPage() {
                           <span className="font-mono font-bold text-slate-900 text-sm">
                             Order #{order.order_number || order.id.slice(0, 8)}
                           </span>
-                          <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border ${getStatusBadge(order.status)}`}>
+                          <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${getStatusBadge(order.status)}`}>
                             {order.status}
                           </span>
                         </div>

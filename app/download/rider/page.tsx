@@ -62,7 +62,7 @@ export default function RiderDownloadPage() {
           </div>
 
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold mb-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold mb-2">
               <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
               <span>Latest Android Build v2.4.0</span>
             </div>
@@ -105,7 +105,7 @@ export default function RiderDownloadPage() {
         {/* Rider Auth Credentials Card */}
         <div className="bg-slate-900 text-white rounded-3xl p-5 border border-slate-800 shadow-md space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#F7D02C] bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-600/30">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#F7D02C] bg-amber-950/80 px-2.5 py-0.5 rounded-md border border-amber-600/30">
               Rider Authentication
             </span>
             <span className="text-[11px] text-slate-400">Server-Side Verified</span>
@@ -162,7 +162,7 @@ export default function RiderDownloadPage() {
 
           <div className="space-y-3 text-xs text-slate-700">
             <div className="flex items-start gap-3 p-3 rounded-2xl bg-slate-50">
-              <span className="w-6 h-6 rounded-full bg-[#F7D02C] text-[#121C28] flex items-center justify-center font-black text-xs shrink-0">
+              <span className="w-6 h-6 rounded-lg bg-[#F7D02C] text-[#121C28] flex items-center justify-center font-black text-xs shrink-0">
                 1
               </span>
               <div>
@@ -174,7 +174,7 @@ export default function RiderDownloadPage() {
             </div>
 
             <div className="flex items-start gap-3 p-3 rounded-2xl bg-slate-50">
-              <span className="w-6 h-6 rounded-full bg-[#F7D02C] text-[#121C28] flex items-center justify-center font-black text-xs shrink-0">
+              <span className="w-6 h-6 rounded-lg bg-[#F7D02C] text-[#121C28] flex items-center justify-center font-black text-xs shrink-0">
                 2
               </span>
               <div>
@@ -186,7 +186,7 @@ export default function RiderDownloadPage() {
             </div>
 
             <div className="flex items-start gap-3 p-3 rounded-2xl bg-slate-50">
-              <span className="w-6 h-6 rounded-full bg-[#F7D02C] text-[#121C28] flex items-center justify-center font-black text-xs shrink-0">
+              <span className="w-6 h-6 rounded-lg bg-[#F7D02C] text-[#121C28] flex items-center justify-center font-black text-xs shrink-0">
                 3
               </span>
               <div>

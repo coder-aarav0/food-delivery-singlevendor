@@ -144,7 +144,7 @@ export function ProductCard({
           <div className="flex items-center justify-between text-xs text-[var(--text-muted)] font-medium mb-1">
             <span className="truncate">{primaryVariation.title}</span>
             {hasMultipleVariations && (
-              <span className="text-[10px] text-[var(--brand-primary)] font-semibold bg-emerald-50 px-1.5 py-0.5 rounded">
+              <span className="text-[10px] text-[var(--brand-primary)] font-semibold bg-emerald-50 px-1.5 py-0.5 rounded-md">
                 +{variations.length} options
               </span>
             )}
@@ -203,7 +203,7 @@ export function ProductCard({
                 size="sm"
                 variant="primary"
                 onClick={handleAddClick}
-                className="bg-[var(--brand-primary)] text-slate-950 hover:bg-[var(--brand-primary-hover)] font-black h-8 min-h-[36px] px-3 shadow-xs transition-colors flex items-center gap-1 active:scale-95 cursor-pointer"
+                className="bg-[var(--brand-primary)] text-slate-950 hover:bg-[var(--brand-primary-hover)] font-black h-8 min-h-[36px] px-3 shadow-xs transition-colors flex items-center gap-1 active:scale-95 cursor-pointer rounded-lg"
               >
                 <span>ADD</span>
                 <Plus className="w-3.5 h-3.5 stroke-[3]" />

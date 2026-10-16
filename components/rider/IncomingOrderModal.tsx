@@ -140,7 +140,7 @@ export function IncomingOrderModal({
             </div>
 
             {/* Circular Ticking Dial */}
-            <div className="relative w-18 h-18 flex items-center justify-center bg-white rounded-full shadow-md shrink-0">
+            <div className="relative w-18 h-18 flex items-center justify-center bg-white rounded-2xl shadow-md shrink-0">
               <svg className="w-16 h-16 -rotate-90 transform" viewBox="0 0 72 72">
                 <circle
                   className="text-slate-100"

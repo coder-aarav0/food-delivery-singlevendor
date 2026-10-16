@@ -135,7 +135,7 @@ function SearchContent() {
               type="button"
               onClick={() => setQuery('')}
               aria-label="Clear search"
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center hover:bg-slate-300 transition-colors cursor-pointer"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-lg bg-slate-200 text-slate-600 flex items-center justify-center hover:bg-slate-300 transition-colors cursor-pointer"
             >
               <X className="w-3.5 h-3.5" />
             </button>

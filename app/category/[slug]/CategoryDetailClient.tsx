@@ -36,7 +36,7 @@ export function CategoryDetailClient({
           <div className="flex items-center justify-between mb-4">
             <Link
               href="/"
-              className="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-black bg-white/80 px-3 py-1.5 rounded-full border border-gray-200 transition"
+              className="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-black bg-white/80 px-3 py-1.5 rounded-xl border border-gray-200 transition"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to aisles</span>
@@ -44,12 +44,12 @@ export function CategoryDetailClient({
 
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2 rounded-full bg-white border border-gray-200 text-gray-800 hover:bg-gray-50 transition"
+              className="relative p-2 rounded-xl bg-white border border-gray-200 text-gray-800 hover:bg-gray-50 transition"
               aria-label="View Cart"
             >
               <ShoppingBag className="w-5 h-5 text-[#f5a623]" />
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#febb2c] text-black font-black text-[10px] flex items-center justify-center shadow-xs">
+                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-md bg-[#febb2c] text-black font-black text-[10px] flex items-center justify-center shadow-xs">
                   {totalItems}
                 </span>
               )}

@@ -98,7 +98,7 @@ export default function AddressesPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="size-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition shadow-xs"
+              className="size-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition shadow-xs"
               aria-label="Back to store"
             >
               <ArrowLeft className="size-4" />
@@ -244,7 +244,7 @@ export default function AddressesPage() {
                     {addr.label}
                   </span>
                   {addr.is_default && (
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800">
                       Default
                     </span>
                   )}

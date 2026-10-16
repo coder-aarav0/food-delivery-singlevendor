@@ -136,7 +136,7 @@ export function HorizontalProductCard({
           <button
             type="button"
             onClick={handleAdd}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#febb2c] hover:bg-[#f5a623] active:scale-95 text-gray-950 font-black text-xs shadow-xs transition cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#febb2c] hover:bg-[#f5a623] active:scale-95 text-gray-950 font-black text-xs shadow-xs transition cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5 stroke-[3]" />
             <span>ADD</span>

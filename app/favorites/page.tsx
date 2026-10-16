@@ -95,7 +95,7 @@ export default function FavoritesPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="size-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition shadow-xs"
+              className="size-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition shadow-xs"
               aria-label="Back to store"
             >
               <ArrowLeft className="size-4" />
@@ -109,7 +109,7 @@ export default function FavoritesPage() {
               </p>
             </div>
           </div>
-          <span className="text-xs font-bold text-rose-600 bg-rose-50 px-3 py-1.5 rounded-full border border-rose-200">
+          <span className="text-xs font-bold text-rose-600 bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-200">
             {favorites.length} Saved Items
           </span>
         </div>
@@ -132,14 +132,14 @@ export default function FavoritesPage() {
                     />
                     <button
                       onClick={() => handleRemove(product.id)}
-                      className="absolute top-2 right-2 size-8 rounded-full bg-white/90 hover:bg-white text-rose-600 flex items-center justify-center shadow-xs transition"
+                      className="absolute top-2 right-2 size-8 rounded-lg bg-white/90 hover:bg-white text-rose-600 flex items-center justify-center shadow-xs transition"
                       title="Remove from favorites"
                     >
                       <Trash2 className="size-4" />
                     </button>
                   </div>
 
-                  <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded uppercase tracking-wider block w-fit mb-1">
+                  <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md uppercase tracking-wider block w-fit mb-1">
                     {product.category}
                   </span>
 

@@ -73,7 +73,7 @@ export function Modal({
     >
       <div
         className={cn(
-          'relative w-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150',
+          'relative w-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150',
           maxWidthStyles[maxWidth],
           className
         )}

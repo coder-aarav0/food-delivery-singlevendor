@@ -164,7 +164,7 @@ export function GeofenceManager({ store }: GeofenceManagerProps) {
                     Monsoon Hazard Delivery Surge
                   </h4>
                   {isRainSurgeActive && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-white uppercase tracking-wider animate-pulse">
+                    <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500 text-white uppercase tracking-wider animate-pulse">
                       Active
                     </span>
                   )}
@@ -232,7 +232,7 @@ export function GeofenceManager({ store }: GeofenceManagerProps) {
                 height: `${Math.min(200, radiusKm * 6)}px`,
               }}
             />
-            <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-lg relative z-10 border-2 border-white">
+            <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-lg relative z-10 border-2 border-white">
               <MapPin className="w-5 h-5" />
             </div>
 

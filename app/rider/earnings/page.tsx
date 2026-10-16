@@ -67,7 +67,7 @@ export default async function RiderEarningsPage() {
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Radar</span>
         </Link>
-        <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+        <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
           Shift Active • Bay 04
         </span>
       </div>
@@ -159,9 +159,9 @@ export default async function RiderEarningsPage() {
             <span>Float Threshold</span>
             <span>₹{cashInHand} / ₹{codLimit} Max</span>
           </div>
-          <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/60">
+          <div className="w-full h-2.5 bg-slate-100 rounded-lg overflow-hidden p-0.5 border border-slate-200/60">
             <div
-              className={`h-full rounded-full transition-all duration-500 ${
+              className={`h-full rounded-lg transition-all duration-500 ${
                 codPercent > 75 ? 'bg-amber-500' : 'bg-emerald-600'
               }`}
               style={{ width: `${codPercent}%` }}
@@ -186,7 +186,7 @@ export default async function RiderEarningsPage() {
               Store Reconciliation QR
             </h2>
           </div>
-          <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">
+          <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-600">
             Cashier Desk Bay 04
           </span>
         </div>
