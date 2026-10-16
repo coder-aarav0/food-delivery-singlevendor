@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_blank" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "secondary-fixed-dim": "#c0c6db", "primary-fixed": "#ffe176", "on-tertiary-fixed": "#00210a", "surface-container-highest": "#d9e3f4", "on-secondary": "#ffffff", "primary-fixed-dim": "#e9c31c", "surface-container": "#e5eeff", "on-secondary-fixed": "#141b2b", "on-primary": "#ffffff", "error-container": "#ffdad6", "inverse-on-surface": "#eaf1ff", "secondary-fixed": "#dce2f7", "on-error": "#ffffff", "surface-bright": "#f8f9ff", "on-surface": "#121c28", "on-primary-fixed": "#221b00", "outline": "#7e7761", "on-tertiary": "#ffffff", "on-secondary-fixed-variant": "#404758", "tertiary-container": "#86e898", "background": "#f8f9ff", "tertiary": "#006d30", "outline-variant": "#d0c6ac", "on-surface-variant": "#4d4633", "on-secondary-container": "#5c6274", "primary": "#715d00", "inverse-primary": "#e9c31c", "surface-container-high": "#dfe9fa", "error": "#ba1a1a", "tertiary-fixed-dim": "#79db8d", "on-tertiary-fixed-variant": "#005323", "surface-container-low": "#eef4ff", "on-error-container": "#93000a", "on-primary-container": "#6c5900", "surface-container-lowest": "#ffffff", "secondary": "#575e70", "secondary-container": "#d9dff5", "on-primary-fixed-variant": "#554500", "on-tertiary-container": "#00692e", "surface-tint": "#715d00", "tertiary-fixed": "#95f8a7", "inverse-surface": "#27313e", "surface": "#f8f9ff", "primary-container": "#f7d02c", "surface-variant": "#d9e3f4", "surface-dim": "#d1dbec", "on-background": "#121c28" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-lg": "1.5rem", "space-sm": "0.5rem", "space-md": "1rem", "space-xs": "0.25rem", "space-xl": "2rem", "margin": "1rem", "gutter": "1rem" }, "fontFamily": { "label-sm": ["Inter"], "label-md": ["Inter"], "headline-sm": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "label-lg": ["Inter"], "display-lg": ["Plus Jakarta Sans"], "body-md": ["Inter"], "headline-md": ["Plus Jakarta Sans"], "body-sm": ["Inter"], "body-lg": ["Inter"] }, "fontSize": { "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "700" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600" }], "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "700" }], "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "body-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "500" }] } } } }</script><style>@layer base { html, body { min-height: 100%; margin: 0; padding: 0; } body { -webkit-tap-highlight-color: transparent; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style></head><body class="bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"><main class="flex-1 flex flex-col relative w-full bg-surface pt-safe pb-safe"><div class="flex flex-col w-full relative px-margin pb-10 space-y-4 overflow-hidden">
+<!-- Dynamic Confetti / Sparkle Canvas Background -->
+<div class="absolute inset-0 pointer-events-none -z-10 flex items-center justify-center">
+<!-- SVG Floating Celebratory Confetti -->
+<svg class="w-full h-full opacity-60" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialgradient cx="50%" cy="20%" id="confettiGlow" r="50%">
+<stop offset="0%" stop-color="#f7d02c" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#ffffff" stop-opacity="0"></stop>
+</radialgradient>
+</defs>
+<rect fill="url(#confettiGlow)" height="100%" width="100%"></rect>
+<!-- Scattered tactile geometric confetti -->
+<circle cx="15%" cy="8%" fill="#86e898" r="4"></circle>
+<polygon fill="#f7d02c" points="85,30 92,44 78,44"></polygon>
+<rect fill="#006d30" height="7" rx="1.5" transform="rotate(25 75 12)" width="7" x="75%" y="12%"></rect>
+<circle cx="88%" cy="22%" fill="#f7d02c" r="3"></circle>
+<rect fill="#715d00" height="10" rx="1" transform="rotate(-18 10 26)" width="6" x="10%" y="26%"></rect>
+<circle cx="92%" cy="42%" fill="#86e898" r="4.5"></circle>
+<polygon fill="#ffe176" points="30,120 36,132 24,132"></polygon>
+<rect fill="#f7d02c" height="8" rx="2" transform="rotate(40 80 65)" width="8" x="80%" y="65%"></rect>
+<circle cx="8%" cy="75%" fill="#006d30" r="3"></circle>
+<polygon fill="#86e898" points="340,310 348,322 332,322"></polygon>
+</svg>
+</div>
+<!-- Top Reference & Haptic Confirmation Pill -->
+<div class="flex flex-col items-center pt-2 text-center space-y-1.5">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-tertiary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-sm text-label-sm">Haptic Confirmed • Sound Played</span>
+</div>
+<div class="pt-1">
+<p class="font-label-md text-label-md text-secondary tracking-wide uppercase">Order #BK-ORD-88219 Delivered</p>
+<div class="inline-flex items-center gap-1 mt-0.5 px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+<span>Completed at 02:14 PM</span>
+<span class="text-tertiary font-bold">• 4m ahead of SLA ⚡</span>
+</div>
+</div>
+</div>
+<!-- Celebratory Centerpiece -->
+<div class="flex flex-col items-center text-center py-2 relative">
+<!-- Animated Pulse Rings -->
+<div class="relative flex items-center justify-center">
+<div class="absolute w-28 h-28 rounded-full bg-tertiary/15 animate-ping opacity-60"></div>
+<div class="absolute w-24 h-24 rounded-full bg-tertiary-container/30"></div>
+<!-- Center Emblem -->
+<div class="relative w-20 h-20 rounded-full bg-tertiary flex items-center justify-center shadow-lg shadow-tertiary/30">
+<span class="material-symbols-outlined text-on-tertiary text-[42px]" style="font-variation-settings: 'FILL' 1, 'wght' 700;">done_all</span>
+</div>
+<!-- Sparkle Ornaments -->
+<span class="material-symbols-outlined absolute -top-1 -right-2 text-primary-container text-[24px] animate-pulse" style="font-variation-settings: 'FILL' 1;">arrow_back_ios_new</span>
+<span class="material-symbols-outlined absolute bottom-1 -left-3 text-tertiary text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mt-4 tracking-tight">Order Delivered!</h1>
+<p class="font-body-md text-body-md text-secondary max-w-[280px] mt-1">
+      Great job, partner! Customer <strong class="text-on-surface font-semibold">Aarav S.</strong> confirmed the drop-off.
+    </p>
+</div>
+<!-- Earnings Breakdown Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm space-y-3.5">
+<div class="flex items-center justify-between pb-1">
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-primary-container text-[20px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-label-lg text-label-lg uppercase tracking-wider">Trip Earnings Breakdown</span>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-tertiary-container text-on-tertiary-container">Instant Settlement</span>
+</div>
+<div class="space-y-2 pt-1 font-body-sm text-body-sm text-secondary">
+<div class="flex justify-between items-center">
+<span>Base Pay</span>
+<span class="font-semibold text-on-surface">₹35.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="flex items-center gap-1">
+          Heavy Weight Surcharge
+          <span class="font-label-sm text-[10px] px-1.5 py-0.2 rounded bg-surface-container text-secondary">6.4 kg</span>
+</span>
+<span class="font-semibold text-on-surface">₹15.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="flex items-center gap-1 text-tertiary font-medium">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+          Customer Direct Tip
+          <span class="text-label-sm text-[11px] text-secondary">(Added on app)</span>
+</span>
+<span class="font-semibold text-tertiary">₹20.00</span>
+</div>
+</div>
+<!-- Soft Tonal Divider -->
+<div class="w-full h-[1px] bg-surface-container-high my-1"></div>
+<!-- Highlighted Total Row -->
+<div class="flex items-center justify-between pt-0.5">
+<div>
+<p class="font-label-md text-label-md text-on-surface font-semibold">Total Earned This Trip</p>
+<span class="inline-flex items-center gap-1 mt-0.5 text-[11px] font-label-sm text-tertiary font-bold">
+<span class="material-symbols-outlined text-[14px]">account_balance_wallet</span>
+          Credited to Partner Wallet
+        </span>
+</div>
+<div class="text-right">
+<span class="font-headline-lg text-headline-lg text-tertiary font-extrabold">₹70.00</span>
+</div>
+</div>
+<!-- Cash Reconciled Pill -->
+<div class="w-full bg-surface-container-low rounded-xl px-3 py-2 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px]" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-sm text-label-sm text-on-surface">Cash Collected &amp; Reconciled</span>
+</div>
+<span class="font-label-md text-label-md text-tertiary font-bold">₹420.00 ✓</span>
+</div>
+</div>
+<!-- Gamification Incentive Ladder Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm space-y-3.5 relative overflow-hidden">
+<!-- Subtle Amber Glow Indicator on Card Header -->
+<div class="absolute top-0 left-0 right-0 h-1 bg-primary-container"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary-container text-[22px]" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Daily Target Ladder</h2>
+</div>
+<span class="font-label-sm text-label-sm text-secondary bg-surface-container px-2.5 py-1 rounded-full font-semibold">Shift: Morning</span>
+</div>
+<!-- Progress Status & Bar -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center font-label-md text-label-md">
+<span class="font-bold text-on-surface">9 of 12 Orders Completed</span>
+<span class="text-primary font-bold">75% Achieved</span>
+</div>
+<div class="w-full h-3 rounded-full bg-surface-container overflow-hidden p-0.5">
+<div class="h-full bg-primary-container rounded-full relative" style="width: 75%;">
+<div class="absolute inset-0 bg-white/30 animate-pulse rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Milestones Nodes Tracker -->
+<div class="grid grid-cols-3 gap-2 pt-1 text-center">
+<!-- Milestone 1 -->
+<div class="bg-surface-container-low rounded-xl p-2.5 flex flex-col items-center">
+<span class="font-label-sm text-[11px] text-secondary">6 Orders</span>
+<span class="font-headline-sm text-[15px] font-bold text-on-surface mt-0.5">₹120 Bonus</span>
+<span class="mt-1 font-label-sm text-[10px] text-tertiary font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">check</span>
+          Unlocked
+        </span>
+</div>
+<!-- Milestone 2 (Just Unlocked) -->
+<div class="bg-tertiary-container/30 rounded-xl p-2.5 flex flex-col items-center relative overflow-hidden">
+<span class="absolute top-0 right-0 w-2 h-2 rounded-full bg-tertiary m-1"></span>
+<span class="font-label-sm text-[11px] text-tertiary font-semibold">9 Orders</span>
+<span class="font-headline-sm text-[15px] font-bold text-on-surface mt-0.5">₹180 Bonus</span>
+<span class="mt-1 font-label-sm text-[10px] text-tertiary font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">celebration</span>
+          Just Now!
+        </span>
+</div>
+<!-- Milestone 3 (Locked Mega Target) -->
+<div class="bg-surface-container-high rounded-xl p-2.5 flex flex-col items-center">
+<span class="font-label-sm text-[11px] text-secondary">12 Orders</span>
+<span class="font-headline-sm text-[15px] font-bold text-on-surface mt-0.5">₹250 Mega</span>
+<span class="mt-1 font-label-sm text-[10px] text-secondary font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">lock</span>
+          3 to go
+        </span>
+</div>
+</div>
+<!-- Motivational Urgent Callout -->
+<div class="bg-primary-fixed rounded-xl p-2.5 flex items-center justify-between text-on-primary-fixed">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<div class="text-left">
+<p class="font-label-md text-label-md font-bold leading-tight">3 more drops to unlock ₹250 Mega!</p>
+<p class="font-label-sm text-[11px] opacity-80 mt-0.5">Bonus added automatically on completion</p>
+</div>
+</div>
+<div class="text-right pl-2 shrink-0">
+<span class="font-label-sm text-[11px] uppercase tracking-wider block font-semibold">Expires</span>
+<span class="font-label-md text-label-md font-bold">11:59 PM</span>
+</div>
+</div>
+</div>
+<!-- Bottom Floating / Sticky Operational Action Tray -->
+<div class="w-full pt-2 flex flex-col items-center space-y-3">
+<!-- Sunshine Yellow Primary Action Button with Timer -->
+<button class="w-full bg-primary-container text-on-surface font-label-lg text-label-lg py-4 rounded-2xl shadow-lg flex flex-col items-center justify-center active:scale-[0.98] transition-transform" id="queueBtn">
+<span class="flex items-center gap-2 font-headline-sm text-headline-sm font-bold">
+        Back to Store Queue
+        <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</span>
+<span class="font-label-sm text-[12px] opacity-85 mt-0.5" id="countdownText">
+        Auto-routing to Keshri Mart Bay 04 in <span class="font-bold underline" id="secondsLeft">15s</span>
+</span>
+</button>
+<!-- Secondary Receipt Trigger -->
+<button class="inline-flex items-center gap-1.5 font-label-md text-label-md text-secondary hover:text-on-surface py-1 transition-colors">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+<span>View Detailed Trip Receipt</span>
+</button>
+</div>
+</div>
+<script>
+  // Micro-interaction: Auto-countdown for motorcycle quick-commerce riders
+  (function() {
+    let seconds = 15;
+    const counterEl = document.getElementById('secondsLeft');
+    const queueBtn = document.getElementById('queueBtn');
+
+    if (counterEl) {
+      const interval = setInterval(() => {
+        seconds--;
+        if (seconds <= 0) {
+          clearInterval(interval);
+          counterEl.textContent = '0s';
+          if (queueBtn) {
+            queueBtn.classList.add('opacity-90');
+          }
+        } else {
+          counterEl.textContent = seconds + 's';
+        }
+      }, 1000);
+    }
+  })();
+</script></main></body></html>

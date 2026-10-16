@@ -1,5 +1,5 @@
 import React from 'react';
-import { createServerClient } from '@/lib/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { ensureDemoRiderAction } from '@/actions/rider-actions';
 import {
   RiderDashboard,
@@ -9,21 +9,20 @@ import {
 export const dynamic = 'force-dynamic';
 
 export default async function RiderPage() {
-  const supabase = await createServerClient();
   const { rider } = await ensureDemoRiderAction();
 
   const riderId = rider?.id || '00000000-0000-0000-0000-000000000000';
   const isOnline = rider?.isOnline ?? true;
 
   // 1. Fetch Store Details
-  const { data: store } = await supabase
+  const { data: store } = await supabaseAdmin
     .from('stores')
     .select('name, address')
     .limit(1)
     .single();
 
   // 2. Fetch Active Order (Dispatched or Ready for Pickup assigned to this rider)
-  const { data: activeOrderData } = await (supabase as any)
+  const { data: activeOrderData } = await (supabaseAdmin as any)
     .from('orders')
     .select(`
       id,
@@ -43,7 +42,7 @@ export default async function RiderPage() {
     .maybeSingle();
 
   // 3. Fetch Available Orders (Ready for Pickup with no rider or assigned to this rider)
-  const { data: availableOrdersData } = await (supabase as any)
+  const { data: availableOrdersData } = await (supabaseAdmin as any)
     .from('orders')
     .select(`
       id,

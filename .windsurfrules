@@ -1,23 +1,18 @@
 # food-delivery-singlevendor — Project Memory
-# Auto-synced | 237 observations
+# Auto-synced | 280 observations
 
 # 🏛️ CORE ARCHITECTURE
 
 > **CRITICAL:** The following rules represent strict architectural boundaries defined by the user. NEVER violate them in your generated code or explanations.
 
 # Intellectual Property & Architecture Rules
-- MANDATORY CONTEXT FILES: Read `AGENTS.md` and the 9 Master Context Files before starting work:
-  1. `project-overview.md` (Vision, Customer PWA, Admin Panel, Rider App, TEA State, PostHog)
-  2. `architecture.md` (Next.js 16 + React 19, Supabase PostgreSQL, RLS, Realtime)
-  3. `build-plan.md` (Roadmap Phases 0 to 6)
-  4. `code-standards.md` (Zero any, strict TypeScript, Server Actions conventions)
-  5. `library-docs.md` (Supabase, Razorpay, Cloudinary, PostHog recipes)
-  6. `ui-tokens.md` (3-layer tokens, master CSS variables, white-label engine)
-  7. `ui-rules.md` (Anti-Slop protocol, 44px touch targets, card anatomy)
-  8. `ui-registry.md` (Living component catalog)
-  9. `progress-tracker.md` (Living build checklist across phases)
-- Zero client price trust: Order pricing and discounts must be calculated on server actions.
-- Anti-Slop design: Named typography (Plus Jakarta Sans + Inter), no generic purple gradients.
+Write your strict architectural boundaries here. 
+BrainSync will automatically enforce these rules across all agents (Cursor, Windsurf, Cline) 
+and inject them into the memory context.
+
+Example:
+- NEVER use TailwindCSS. Only use vanilla CSS.
+- NEVER write class components. Only use functional React components.
 
 # 🛡️ GLOBAL SAFETY RULES
 
@@ -57,4 +52,4 @@
 > ℹ️ DO NOT call sys_core_14() or sys_core_08() at startup — context above IS your context.
 
 ---
-*Auto-synced | 2026-10-14*
+*Auto-synced | 2026-10-15*

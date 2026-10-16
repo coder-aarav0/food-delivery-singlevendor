@@ -1,6 +1,8 @@
 'use server';
 
 import { createServerClient } from '@/lib/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
+
 import { calculateDistanceKm } from '@/lib/utils';
 
 export interface CartInputItem {
@@ -60,7 +62,7 @@ export interface CartCalculationResult {
 export async function calculateCartTotals(
   params: CalculateCartParams
 ): Promise<CartCalculationResult> {
-  const supabase = await createServerClient();
+  const supabase = supabaseAdmin;
   const errors: string[] = [];
 
   if (!params.items || params.items.length === 0) {
@@ -209,11 +211,11 @@ export async function calculateCartTotals(
     }
   }
 
-  // 5. Delivery Fee Logic
-  let deliveryFee = storeData.base_delivery_fee;
-  if (itemsSubtotal >= storeData.free_delivery_threshold) {
-    deliveryFee = 0; // Free delivery threshold met!
-  }
+  // 5. Delivery Fee Logic (Decoupled base delivery fee and monsoon hazard surge)
+  const isFreeDeliveryEligible = itemsSubtotal >= storeData.free_delivery_threshold;
+  const baseDeliveryFee = isFreeDeliveryEligible ? 0 : (storeData.base_delivery_fee ?? 30);
+  const rainSurgeFee = storeData.is_rain_surge_active ? (storeData.rain_surge_fee ?? 25) : 0;
+  const deliveryFee = baseDeliveryFee + rainSurgeFee;
 
   // 6. Minimum Order Value Check
   if (itemsSubtotal > 0 && itemsSubtotal < storeData.min_order_value) {
@@ -290,3 +292,6 @@ export async function calculateCartTotals(
     errors,
   };
 }
+
+export const recalculateCart = calculateCartTotals;
+

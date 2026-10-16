@@ -6,46 +6,138 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { CustomerDrawer } from '@/components/customer/CustomerDrawer';
 import { PhoneAuthModal } from '@/components/customer/PhoneAuthModal';
+import { AddressSelectModal } from '@/components/customer/AddressSelectModal';
 import { EnategaLogo } from '@/components/ui/EnategaLogo';
 import { sound } from '@/lib/sound';
+import { supabase } from '@/lib/supabase/client';
 import {
   MapPin,
   Search,
   ShoppingBag,
   ChevronDown,
   Menu,
-  Sparkles,
   Mic,
   User,
-  LogOut,
 } from 'lucide-react';
+
+interface SpeechRecognitionResultItem {
+  transcript: string;
+}
+
+interface SpeechRecognitionResultList {
+  [index: number]: SpeechRecognitionResultItem;
+}
+
+interface CustomSpeechRecognitionEvent {
+  results: {
+    [index: number]: SpeechRecognitionResultList;
+  };
+}
+
+interface CustomSpeechRecognition {
+  lang: string;
+  interimResults: boolean;
+  onresult: (event: CustomSpeechRecognitionEvent) => void;
+  onerror: () => void;
+  onend: () => void;
+  start: () => void;
+}
 
 export function StorefrontHeader() {
   const router = useRouter();
-  const { totalItems, setIsCartOpen, selectedAddress } = useCart();
+  const { totalItems, setIsCartOpen, selectedAddress, setSelectedAddress } = useCart();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isListening, setIsListening] = useState(false);
-  const [userSession, setUserSession] = useState<{ phone: string; name: string } | null>(null);
+  const [userSession, setUserSession] = useState<{
+    name: string;
+    email?: string;
+    avatar?: string;
+    phone?: string;
+  } | null>(null);
 
-  // Load existing session from localStorage
+  // Initialize and listen to real Supabase Auth session
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('freshmart_user_session_v1');
-      if (stored) {
-        setUserSession(JSON.parse(stored));
+    async function initAuth() {
+      // 1. Check active Supabase User
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        setUserSession({
+          name:
+            user.user_metadata?.full_name ||
+            user.user_metadata?.name ||
+            user.email?.split('@')[0] ||
+            'Customer',
+          email: user.email,
+          avatar: user.user_metadata?.avatar_url,
+          phone: user.phone,
+        });
+        return;
       }
-    } catch (e) {
-      // Ignore
+
+      // 2. Check LocalStorage fallback
+      try {
+        const stored = localStorage.getItem('freshmart_user_session_v1');
+        if (stored) {
+          setUserSession(JSON.parse(stored));
+        }
+      } catch {
+        // Ignore
+      }
     }
+
+    initAuth();
+
+    // 3. Subscribe to real-time auth state events (SIGN_IN, SIGN_OUT, TOKEN_REFRESH)
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setUserSession({
+          name:
+            session.user.user_metadata?.full_name ||
+            session.user.user_metadata?.name ||
+            session.user.email?.split('@')[0] ||
+            'Customer',
+          email: session.user.email,
+          avatar: session.user.user_metadata?.avatar_url,
+          phone: session.user.phone,
+        });
+      } else {
+        // Check if fallback exists
+        try {
+          const stored = localStorage.getItem('freshmart_user_session_v1');
+          if (stored) {
+            setUserSession(JSON.parse(stored));
+          } else {
+            setUserSession(null);
+          }
+        } catch {
+          setUserSession(null);
+        }
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const handleVoiceSearch = () => {
     if (typeof window === 'undefined') return;
+    const windowWithSpeech = window as unknown as {
+      SpeechRecognition?: new () => CustomSpeechRecognition;
+      webkitSpeechRecognition?: new () => CustomSpeechRecognition;
+    };
+
     const SpeechRecognition =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
+      windowWithSpeech.SpeechRecognition ||
+      windowWithSpeech.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
       alert('Voice search is not supported in this browser. Please use Chrome or Edge.');
@@ -59,7 +151,7 @@ export function StorefrontHeader() {
       recognition.interimResults = false;
       setIsListening(true);
 
-      recognition.onresult = (event: any) => {
+      recognition.onresult = (event: CustomSpeechRecognitionEvent) => {
         const transcript = event.results[0][0].transcript;
         setSearchQuery(transcript);
         setIsListening(false);
@@ -70,14 +162,9 @@ export function StorefrontHeader() {
       recognition.onerror = () => setIsListening(false);
       recognition.onend = () => setIsListening(false);
       recognition.start();
-    } catch (e) {
+    } catch {
       setIsListening(false);
     }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('freshmart_user_session_v1');
-    setUserSession(null);
   };
 
   return (
@@ -94,12 +181,20 @@ export function StorefrontHeader() {
         onSuccess={(user) => setUserSession(user)}
       />
 
+      {/* Delivery Address Selector Modal */}
+      <AddressSelectModal
+        isOpen={isAddressModalOpen}
+        onClose={() => setIsAddressModalOpen(false)}
+        currentAddress={selectedAddress}
+        onSelectAddress={(addr) => setSelectedAddress(addr)}
+      />
+
       <header className="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-md border-b border-slate-200/80 transition-shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           
           {/* Left: Drawer Trigger + Brand Identity */}
           <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-            {/* Hamburger Button matching customer2.jpeg */}
+            {/* Hamburger Button */}
             <button
               type="button"
               onClick={() => setIsDrawerOpen(true)}
@@ -114,8 +209,13 @@ export function StorefrontHeader() {
               <EnategaLogo size="sm" variant="full" />
             </Link>
 
-            {/* Quiet, Human-Designed Location Indicator */}
-            <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-slate-200">
+            {/* Desktop Clickable Location Indicator */}
+            <button
+              type="button"
+              onClick={() => setIsAddressModalOpen(true)}
+              aria-label="Change delivery location"
+              className="hidden sm:flex items-center gap-2 pl-3 border-l border-slate-200 hover:bg-slate-50 py-1.5 px-2 rounded-xl transition cursor-pointer text-left"
+            >
               <div className="size-8 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
                 <MapPin className="size-4 text-amber-600" />
               </div>
@@ -130,7 +230,7 @@ export function StorefrontHeader() {
                   {selectedAddress?.address_line_1 || 'Galleria Market, Gurugram'}
                 </span>
               </div>
-            </div>
+            </button>
           </div>
 
           {/* Center: Integrated Clean Search Input with Voice Search */}
@@ -188,9 +288,17 @@ export function StorefrontHeader() {
                 onClick={() => setIsDrawerOpen(true)}
                 className="flex items-center gap-2 h-10 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition cursor-pointer"
               >
-                <div className="size-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-black text-[11px]">
-                  {userSession.name?.charAt(0) || 'A'}
-                </div>
+                {userSession.avatar ? (
+                  <img
+                    src={userSession.avatar}
+                    alt={userSession.name}
+                    className="size-6 rounded-full object-cover border border-emerald-500 shadow-xs"
+                  />
+                ) : (
+                  <div className="size-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-black text-[11px]">
+                    {userSession.name?.charAt(0) || 'A'}
+                  </div>
+                )}
                 <span className="hidden lg:inline">{userSession.name?.split(' ')[0]}</span>
               </button>
             ) : (
@@ -204,7 +312,7 @@ export function StorefrontHeader() {
               </button>
             )}
 
-            {/* Shopping Cart Pill matching customer2.jpeg with teal badge */}
+            {/* Shopping Cart Pill with custom badge */}
             <button
               type="button"
               onClick={() => setIsCartOpen(true)}
@@ -214,13 +322,30 @@ export function StorefrontHeader() {
               <ShoppingBag className="size-4 text-amber-300" />
               <span className="font-semibold hidden sm:inline">Cart</span>
               {totalItems > 0 && (
-                <span className="inline-flex items-center justify-center size-5 rounded-full bg-[#00b9c6] text-white text-[10px] font-black tabular-nums">
+                <span className="inline-flex items-center justify-center size-5 rounded-full bg-[var(--brand-accent,#00b9c6)] text-white text-[10px] font-black tabular-nums">
                   {totalItems}
                 </span>
               )}
             </button>
           </div>
 
+        </div>
+
+        {/* Mobile Viewport Location Strip (<640px) */}
+        <div className="sm:hidden px-4 py-1.5 bg-amber-50/80 border-t border-amber-100/60 flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => setIsAddressModalOpen(true)}
+            className="flex items-center gap-1.5 text-xs text-slate-800 font-medium truncate max-w-[260px] text-left cursor-pointer"
+          >
+            <MapPin className="size-3.5 text-amber-600 shrink-0" />
+            <span className="font-bold">{selectedAddress?.label || 'Delivery to:'}</span>
+            <span className="truncate text-slate-600">{selectedAddress?.address_line_1 || 'Galleria Market, Gurugram'}</span>
+            <ChevronDown className="size-3 text-slate-400 shrink-0" />
+          </button>
+          <span className="text-[10px] font-bold bg-amber-500 text-white px-2 py-0.5 rounded-full shrink-0 tracking-wide">
+            15 MINS
+          </span>
         </div>
       </header>
     </>

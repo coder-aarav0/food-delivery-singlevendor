@@ -84,29 +84,6 @@ export function StorefrontView({ categories, products }: StorefrontViewProps) {
       {/* Hero Banner */}
       <StorefrontHero />
 
-      {/* Zero Rain Surge Neighborhood Guarantee Trust Banner */}
-      <div className="flex items-center justify-between p-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-50 via-teal-50 to-white border border-emerald-200/80 shadow-xs">
-        <div className="flex items-center gap-2.5">
-          <span className="text-xl">☔</span>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs font-black text-emerald-950">
-                Zero Surge Pricing Guarantee
-              </span>
-              <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-emerald-600 text-white uppercase tracking-wider">
-                Fair Local Price
-              </span>
-            </div>
-            <p className="text-[11px] text-emerald-800/80 mt-0.5">
-              We never charge rain surge fees or high demand penalties. Fixed fair pricing 24/7.
-            </p>
-          </div>
-        </div>
-        <span className="hidden sm:inline-flex text-xs font-extrabold text-emerald-700">
-          ⚡ 15-Min Express
-        </span>
-      </div>
-
       {/* Category Horizontal Pill Bar */}
       <div className="sticky top-[65px] z-20 bg-[var(--bg-app)]/95 backdrop-blur-md py-2 border-b border-[var(--border-subtle)]">
         <CategoryPillBar

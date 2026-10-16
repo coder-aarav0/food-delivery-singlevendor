@@ -22,10 +22,55 @@ import {
 } from 'lucide-react';
 import { BarcodeScannerModal } from '@/components/admin/BarcodeScannerModal';
 
+import { OrderStatus } from '@/types/database.types';
+
+export interface KanbanOrderItem {
+  id: string;
+  product_name: string;
+  variation_title?: string;
+  quantity: number;
+  unit_price: number;
+  total_price: number;
+}
+
+export interface KanbanOrderData {
+  id: string;
+  order_number: number;
+  status: OrderStatus;
+  payment_method: string;
+  payment_status: string;
+  items_subtotal?: number;
+  delivery_fee?: number;
+  discount_amount?: number;
+  total_amount: number;
+  created_at: string;
+  delivery_otp?: string | null;
+  cancellation_reason?: string | null;
+  customer_notes?: string | null;
+  rider_id?: string | null;
+  profiles?: {
+    full_name: string | null;
+    phone: string | null;
+  } | null;
+  rider_profile?: {
+    full_name: string | null;
+    phone: string | null;
+  } | null;
+  delivery_address_snapshot?: {
+    label?: string;
+    address_line?: string;
+    address_line_1?: string;
+    landmark?: string;
+    city?: string;
+    pincode?: string;
+  } | null;
+  order_items?: KanbanOrderItem[];
+}
+
 export interface KanbanOrderCardProps {
-  order: any;
+  order: KanbanOrderData;
   availableRiders?: Array<{ id: string; full_name: string | null; phone: string | null }>;
-  onOpenThermalSlip: (order: any) => void;
+  onOpenThermalSlip: (order: KanbanOrderData) => void;
   onRefresh?: () => void;
 }
 
@@ -41,7 +86,7 @@ export function KanbanOrderCard({
   const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
 
   // Check if customer added grace-window items post-checkout
-  const hasGraceItems = (order.order_items || []).some((it: any) =>
+  const hasGraceItems = (order.order_items || []).some((it) =>
     String(it.id).startsWith('grace_')
   );
 
@@ -62,7 +107,7 @@ export function KanbanOrderCard({
   const isUrgent = elapsedMinutes >= 10;
   const isWarning = elapsedMinutes >= 5 && elapsedMinutes < 10;
 
-  const handleStatusChange = async (newStatus: any) => {
+  const handleStatusChange = async (newStatus: OrderStatus) => {
     setIsUpdating(true);
     await updateOrderStatusAction(order.id, newStatus);
     setIsUpdating(false);
@@ -121,7 +166,7 @@ export function KanbanOrderCard({
 
       {/* Items List Preview */}
       <div className="p-2.5 rounded-xl bg-[var(--bg-app)] border border-[var(--border-subtle)] space-y-1.5 text-xs">
-        {(order.order_items || []).slice(0, 3).map((item: any) => (
+        {(order.order_items || []).slice(0, 3).map((item) => (
           <div key={item.id} className="flex justify-between items-baseline gap-2">
             <span className="font-medium text-[var(--text-ink)] truncate text-[11px]">
               <strong className="text-[var(--brand-primary)] mr-1">

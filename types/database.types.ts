@@ -51,6 +51,8 @@ export interface Database {
           closing_time: string;
           brand_primary_hex: string;
           brand_accent_hex: string;
+          is_rain_surge_active?: boolean;
+          rain_surge_fee?: number;
           created_at: string;
           updated_at: string;
         };
@@ -77,6 +79,8 @@ export interface Database {
           closing_time?: string;
           brand_primary_hex?: string;
           brand_accent_hex?: string;
+          is_rain_surge_active?: boolean;
+          rain_surge_fee?: number;
           created_at?: string;
           updated_at?: string;
         };

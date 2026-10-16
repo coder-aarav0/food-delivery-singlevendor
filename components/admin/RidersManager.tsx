@@ -17,6 +17,11 @@ import {
   ShieldCheck,
   Eye,
   EyeOff,
+  Download,
+  Share2,
+  MessageCircle,
+  ExternalLink,
+  Smartphone,
 } from 'lucide-react';
 
 export interface RiderTableItem {
@@ -195,6 +200,64 @@ export function RidersManager({ initialRiders }: RidersManagerProps) {
           <span>{flash.message}</span>
         </div>
       )}
+
+      {/* Rider Mobile APK & Fast Onboarding Banner */}
+      <div className="bg-gradient-to-r from-amber-50 via-white to-amber-50/50 rounded-2xl p-5 border border-amber-200/80 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-[#F7D02C] text-[#121C28] flex items-center justify-center font-black shadow-sm shrink-0">
+            <Smartphone className="w-6 h-6" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-extrabold text-base text-[#121C28]">
+                Delivery Partner Mobile App
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
+                v2.4.0 APK
+              </span>
+            </div>
+            <p className="text-xs text-slate-600 mt-0.5">
+              Direct Android APK installation &amp; WhatsApp onboarding link for riders.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
+          {/* Download APK Button */}
+          <a
+            href="/api/download/rider"
+            className="flex-1 md:flex-none px-4 py-2.5 rounded-xl bg-[#F7D02C] hover:bg-[#ebd228] text-[#121C28] font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition"
+          >
+            <Download className="w-4 h-4 stroke-[2.5]" />
+            <span>Download Rider APK</span>
+          </a>
+
+          {/* Share on WhatsApp Button */}
+          <a
+            href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+              'Namaste! Keshri Mart Delivery Partner App download karein aur orders deliver karna shuru karein:\n\n📱 Direct Download:\nhttps://keshrimart.com/download/rider\n\n(Install karne ke baad apne store manager se Login ID le lein)'
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 md:flex-none px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition"
+          >
+            <MessageCircle className="w-4 h-4 fill-white" />
+            <span>Share APK on WhatsApp</span>
+          </a>
+
+          {/* Mobile App Simulator Preview */}
+          <a
+            href="/rider"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition"
+            title="Preview Mobile APK Screen in Browser"
+          >
+            <Smartphone className="w-3.5 h-3.5 text-slate-600" />
+            <span>Preview Mobile App</span>
+          </a>
+        </div>
+      </div>
 
       {/* Add Rider Form Card (Matching Admin Rider Panel.jpeg) */}
       <div className="bg-white rounded-xl shadow-md border border-[var(--border-subtle)] overflow-hidden">
@@ -422,7 +485,22 @@ export function RidersManager({ initialRiders }: RidersManagerProps) {
                       </button>
                     </td>
                     <td className="py-4 px-6 text-right relative">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-1.5">
+                        <a
+                          href={`https://wa.me/${
+                            r.phone.replace(/[^0-9]/g, '').length === 10
+                              ? '91' + r.phone.replace(/[^0-9]/g, '')
+                              : r.phone.replace(/[^0-9]/g, '')
+                          }?text=${encodeURIComponent(
+                            `Namaste ${r.name}! Keshri Mart Delivery Partner App download karein aur shifts accept karna shuru karein:\n\n📱 Direct Download: https://keshrimart.com/download/rider\n\n🔑 Username: ${r.username}\n📞 Phone: ${r.phone}`
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1.5 rounded hover:bg-emerald-50 text-emerald-600 transition"
+                          title="Send App Link & Login on WhatsApp"
+                        >
+                          <MessageCircle className="w-4 h-4 fill-emerald-600/20" />
+                        </a>
                         <button
                           onClick={() => handleEditClick(r)}
                           className="p-1.5 rounded hover:bg-gray-100 text-gray-600 hover:text-gray-900 transition"

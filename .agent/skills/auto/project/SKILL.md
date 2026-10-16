@@ -1,6 +1,6 @@
 ---
 name: project
-description: "Project for food-delivery-singlevendor. 19 gotchas, 216 conventions."
+description: "Project for food-delivery-singlevendor. 48 gotchas, 217 conventions."
 domain: project
 triggers:
   - glob: "**/*"
@@ -10,7 +10,7 @@ enabled: true
 
 # Project
 
-Auto-compiled from **235 real patterns** in **food-delivery-singlevendor**. This skill is auto-routed to agents when working on project files.
+Auto-compiled from **278 real patterns** in **food-delivery-singlevendor**. This skill is auto-routed to agents when working on project files.
 
 ## ⚠️ Anti-Patterns & Gotchas
 
@@ -18,6 +18,35 @@ Auto-compiled from **235 real patterns** in **food-delivery-singlevendor**. This
 
 | ❌ Don't | Details |
 |----------|----------|
+| Low cohesion detected in Domain Cluster 1934 | Cluster 1934 (11 nodes) has a very low cohesion score (0.09). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1932 | Cluster 1932 (36 nodes) has a very low cohesion score (0.03). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1930 | Cluster 1930 (25 nodes) has a very low cohesion score (0.04). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1913 | Cluster 1913 (15 nodes) has a very low cohesion score (0.07). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1911 | Cluster 1911 (22 nodes) has a very low cohesion score (0.05). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1901 | Cluster 1901 (12 nodes) has a very low cohesion score (0.08). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1140 | Cluster 1140 (14 nodes) has a very low cohesion score (0.07). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1064 | Cluster 1064 (14 nodes) has a very low cohesion score (0.07). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1058 | Cluster 1058 (12 nodes) has a very low cohesion score (0.08). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1054 | Cluster 1054 (14 nodes) has a very low cohesion score (0.07). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1043 | Cluster 1043 (19 nodes) has a very low cohesion score (0.05). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 966 | Cluster 966 (11 nodes) has a very low cohesion score (0.09). This suggests the community is a "spagh |
+| Low cohesion detected in Domain Cluster 954 | Cluster 954 (12 nodes) has a very low cohesion score (0.08). This suggests the community is a "spagh |
+| Low cohesion detected in Domain Cluster 770 | Cluster 770 (11 nodes) has a very low cohesion score (0.09). This suggests the community is a "spagh |
+| Low cohesion detected in Domain Cluster 2 | Cluster 2 (17 nodes) has a very low cohesion score (0.06). This suggests the community is a "spaghet |
+| Low cohesion detected in Domain Cluster 1933 | Cluster 1933 (11 nodes) has a very low cohesion score (0.09). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1931 | Cluster 1931 (36 nodes) has a very low cohesion score (0.03). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1929 | Cluster 1929 (25 nodes) has a very low cohesion score (0.04). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1912 | Cluster 1912 (15 nodes) has a very low cohesion score (0.07). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1910 | Cluster 1910 (22 nodes) has a very low cohesion score (0.05). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1900 | Cluster 1900 (12 nodes) has a very low cohesion score (0.08). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1139 | Cluster 1139 (14 nodes) has a very low cohesion score (0.07). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1063 | Cluster 1063 (14 nodes) has a very low cohesion score (0.07). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1057 | Cluster 1057 (12 nodes) has a very low cohesion score (0.08). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1053 | Cluster 1053 (14 nodes) has a very low cohesion score (0.07). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 1042 | Cluster 1042 (19 nodes) has a very low cohesion score (0.05). This suggests the community is a "spag |
+| Low cohesion detected in Domain Cluster 965 | Cluster 965 (11 nodes) has a very low cohesion score (0.09). This suggests the community is a "spagh |
+| Low cohesion detected in Domain Cluster 953 | Cluster 953 (12 nodes) has a very low cohesion score (0.08). This suggests the community is a "spagh |
+| Low cohesion detected in Domain Cluster 769 | Cluster 769 (11 nodes) has a very low cohesion score (0.09). This suggests the community is a "spagh |
 | Agent: follow existing project patterns — don't in | Agent: follow existing project patterns — don't introduce a different style |
 | Agent: don't generate code with "any" type — defin | Agent: don't generate code with "any" type — define proper TypeScript types |
 | Agent: always handle loading/error states — don't  | Agent: always handle loading/error states — don't just render data |
@@ -41,6 +70,13 @@ Auto-compiled from **235 real patterns** in **food-delivery-singlevendor**. This
 ## 📐 Conventions & Best Practices
 
 ### Project Conventions
+- 📐 **convention in .gitignore** — File updated (external): .gitignore
+
+Content summary (37 lines):
+# Dependencies
+node_modules/
+
+# Sec
 - 📐 **Version your API from day 1 (/api/v1/)** — Version your API from day 1 (/api/v1/)
 - 📐 **Use consistent response format across all endpoints** — Use consistent response format across all endpoints
 - 📐 **Implement soft delete for important data — don't hard delete without confirmation** — Implement soft delete for important data — don't hard delete without confirmation
@@ -73,24 +109,6 @@ Auto-compiled from **235 real patterns** in **food-delivery-singlevendor**. This
 - 📐 **Disable submit button during form submission — prevent double-submit** — Disable submit button during form submission — prevent double-submit
 - 📐 **Always add empty states ("No items yet" with call-to-action)** — Always add empty states ("No items yet" with call-to-action)
 - 📐 **Always add error states with retry button — not just blank screen** — Always add error states with retry button — not just blank screen
-- 📐 **Always add loading states for async operations (skeleton, spinner)** — Always add loading states for async operations (skeleton, spinner)
-- 📐 **Test edge cases: empty input, null, boundary values, error scenarios** — Test edge cases: empty input, null, boundary values, error scenarios
-- 📐 **Each test should be independent — no shared mutable state between tests** — Each test should be independent — no shared mutable state between tests
-- 📐 **Write tests for business logic — test behavior/output, not implementation details** — Write tests for business logic — test behavior/output, not implementation details
-- 📐 **Close resources (streams, connections, handles) when done** — Close resources (streams, connections, handles) when done
-- 📐 **Debounce user input handlers (search, resize, scroll)** — Debounce user input handlers (search, resize, scroll)
-- 📐 **Use pagination for lists over 100 items** — Use pagination for lists over 100 items
-- 📐 **Implement retry logic for transient failures with exponential backoff** — Implement retry logic for transient failures with exponential backoff
-- 📐 **Return proper HTTP status codes — not 500 for everything** — Return proper HTTP status codes — not 500 for everything
-- 📐 **Handle edge cases: empty arrays, empty strings, null, undefined, 0, NaN** — Handle edge cases: empty arrays, empty strings, null, undefined, 0, NaN
-- 📐 **Keep functions under 50 lines and single-responsibility** — Keep functions under 50 lines and single-responsibility
-- 📐 **Remove unused imports, variables, and dead code** — Remove unused imports, variables, and dead code
-- 📐 **Version your API from day 1 (/api/v1/)** — Version your API from day 1 (/api/v1/)
-- 📐 **Use consistent response format across all endpoints** — Use consistent response format across all endpoints
-- 📐 **Implement soft delete for important data — don't hard delete without confirmation** — Implement soft delete for important data — don't hard delete without confirmation
-- 📐 **Handle timezone correctly — store UTC, display in user's timezone** — Handle timezone correctly — store UTC, display in user's timezone
-- 📐 **Make layouts responsive from the start — mobile-first approach** — Make layouts responsive from the start — mobile-first approach
-- 📐 **Disable submit button during form submission — prevent double-submit** — Disable submit button during form submission — prevent double-submit
+- 📐 **Always add loading states for async operations (skeleton, spinner)** — Always add loading states for asy
 
----
-*Auto-generated by BrainSync 🧠 | 235 patterns | 2026-10-14*
+... [Truncated — see individual observations for full content]

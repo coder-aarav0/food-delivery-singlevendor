@@ -28,8 +28,14 @@ import {
   X,
 } from 'lucide-react';
 
+export interface StoreSidebarData {
+  id?: string;
+  name?: string;
+  is_open?: boolean;
+}
+
 export interface AdminSidebarProps {
-  initialStore: any;
+  initialStore: StoreSidebarData | null;
 }
 
 export function AdminSidebar({ initialStore }: AdminSidebarProps) {

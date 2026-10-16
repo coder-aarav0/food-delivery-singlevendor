@@ -114,7 +114,7 @@ export function FoodManager({ initialFoods, categories }: FoodManagerProps) {
   const updateVariation = (
     index: number,
     field: keyof FoodVariation,
-    val: any
+    val: string | number | undefined
   ) => {
     setVariations((prev) =>
       prev.map((v, i) => (i === index ? { ...v, [field]: val } : v))

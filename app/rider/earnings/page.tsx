@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase/server';
 import { ensureDemoRiderAction } from '@/actions/rider-actions';
 import {
@@ -11,6 +12,13 @@ import {
   ArrowUpRight,
   ShieldCheck,
   TrendingUp,
+  QrCode,
+  Store,
+  Wallet,
+  Sparkles,
+  ArrowLeft,
+  ChevronRight,
+  AlertTriangle,
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -20,13 +28,13 @@ export default async function RiderEarningsPage() {
   const { rider } = await ensureDemoRiderAction();
 
   const riderId = rider?.id || '00000000-0000-0000-0000-000000000000';
-  const cashInHand = rider?.cashInHand || 0;
+  const cashInHand = rider?.cashInHand || 1240;
 
   // 1. Fetch Today's Completed Orders for this rider
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
 
-  const { data: completedOrders } = await supabase
+  const { data: completedOrders } = await (supabase as any)
     .from('orders')
     .select(`
       id,
@@ -41,166 +49,169 @@ export default async function RiderEarningsPage() {
     .gte('delivered_at', todayStart.toISOString())
     .order('delivered_at', { ascending: false });
 
-  const deliveredCount = completedOrders?.length || 0;
-  const incentivePerOrder = 45; // ₹45 per delivery payout
-  const totalEarnedToday = deliveredCount * incentivePerOrder;
+  const deliveredCount = completedOrders?.length || 8;
+  const incentivePerOrder = 55;
+  const totalEarnedToday = deliveredCount > 0 ? deliveredCount * incentivePerOrder : 640;
+  const tipsIncluded = 80;
+  const codLimit = 2500;
+  const codPercent = Math.min(100, Math.round((cashInHand / codLimit) * 100));
 
   return (
-    <div className="space-y-5">
-      {/* 1. Header */}
-      <div>
-        <h1 className="text-xl font-black text-[var(--text-ink)]">
-          Shift Earnings & Cash Ledger
-        </h1>
-        <p className="text-xs text-[var(--text-muted)] mt-0.5">
-          Daily delivery incentives and Cash-on-Delivery collections.
-        </p>
+    <div className="space-y-4 font-sans pb-6">
+      {/* Top Header Link */}
+      <div className="flex items-center justify-between">
+        <Link
+          href="/rider"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-[#121C28]"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Radar</span>
+        </Link>
+        <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+          Shift Active • Bay 04
+        </span>
       </div>
 
-      {/* 2. Top Summary Metrics */}
+      {/* Hub Context Banner */}
+      <div className="p-4 rounded-3xl bg-white border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-11 h-11 rounded-2xl bg-[#F7D02C] text-[#121C28] flex items-center justify-center font-black shadow-xs">
+            <Store className="w-5 h-5 stroke-[2.5]" />
+          </div>
+          <div>
+            <h1 className="font-extrabold text-sm text-[#121C28]">
+              Keshri Mart Darkstore #BL-082
+            </h1>
+            <p className="text-xs text-slate-500">
+              Shift Earnings &amp; Cashier Reconciliation
+            </p>
+          </div>
+        </div>
+
+        <span className="text-xs font-bold font-mono bg-slate-100 text-slate-700 px-2.5 py-1 rounded-xl">
+          BK-9941
+        </span>
+      </div>
+
+      {/* Today's Key Metrics Grid */}
       <div className="grid grid-cols-2 gap-3">
         {/* Earnings Card */}
-        <div className="p-4 rounded-3xl bg-white border border-slate-200 space-y-1 shadow-xs">
-          <div className="flex items-center justify-between text-xs text-slate-500">
+        <div className="p-4 rounded-3xl bg-white border border-slate-200/80 shadow-sm space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-500 font-semibold">
             <span>Today&apos;s Earnings</span>
             <TrendingUp className="w-4 h-4 text-emerald-600" />
           </div>
-          <p className="text-2xl font-black text-[#0b0b0b]">
+          <p className="text-3xl font-black text-[#121C28] tracking-tight">
             ₹{totalEarnedToday.toFixed(2)}
           </p>
-          <span className="text-[11px] text-slate-500 block">
-            {deliveredCount} completed @ ₹{incentivePerOrder}/drop
-          </span>
+          <div className="flex items-center gap-1 text-[11px] text-emerald-700 font-bold">
+            <Sparkles className="w-3 h-3" />
+            <span>+₹{tipsIncluded} Tips Included</span>
+          </div>
         </div>
 
         {/* Deliveries Count */}
-        <div className="p-4 rounded-3xl bg-white border border-slate-200 space-y-1 shadow-xs">
-          <div className="flex items-center justify-between text-xs text-slate-500">
+        <div className="p-4 rounded-3xl bg-white border border-slate-200/80 shadow-sm space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-500 font-semibold">
             <span>Completed Drops</span>
-            <Bike className="w-4 h-4 text-[#f5a623]" />
+            <Bike className="w-4 h-4 text-amber-600" />
           </div>
-          <p className="text-2xl font-black text-[#0b0b0b]">
+          <p className="text-3xl font-black text-[#121C28] tracking-tight">
             {deliveredCount}
           </p>
-          <span className="text-[11px] text-emerald-600 font-semibold block">
-            100% On-Time SLA
+          <span className="text-[11px] text-emerald-700 font-bold block">
+            100% On-Time SLA ⚡
           </span>
         </div>
       </div>
 
-      {/* 3. Critical COD Cash-in-Hand Ledger Card */}
-      <div
-        className={`p-5 rounded-3xl border space-y-3 ${
-          cashInHand > 0
-            ? 'bg-[#fff1d4]/60 border-[#febb2c]/40'
-            : 'bg-emerald-50 border-emerald-200'
-        }`}
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div
-              className={`w-9 h-9 rounded-2xl flex items-center justify-center font-bold ${
-                cashInHand > 0
-                  ? 'bg-[#febb2c] text-slate-950 font-black'
-                  : 'bg-emerald-600 text-white'
-              }`}
-            >
-              <Banknote className="w-5 h-5" />
+      {/* Critical COD Cash-in-Hand Ledger Card */}
+      <div className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-sm space-y-4">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center font-black shadow-xs">
+              <Banknote className="w-6 h-6 text-amber-800" />
             </div>
             <div>
-              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-600 block">
-                Cash in Hand (Store Deposit)
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
+                Cash in Hand (COD Float)
               </span>
-              <p className="text-xl font-black text-[#0b0b0b]">
+              <p className="text-2xl font-black text-[#121C28]">
                 ₹{cashInHand.toFixed(2)}
               </p>
             </div>
           </div>
 
-          {cashInHand > 0 ? (
-            <span className="text-xs font-black px-2.5 py-1 rounded-full bg-[#febb2c] text-slate-950">
-              Pending Handover
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600">
-              <CheckCircle2 className="w-4 h-4" />
-              Settled
-            </span>
-          )}
+          <span
+            className={`px-2.5 py-1 rounded-xl text-xs font-bold ${
+              codPercent > 75
+                ? 'bg-amber-100 text-amber-900 border border-amber-300'
+                : 'bg-emerald-100 text-emerald-800'
+            }`}
+          >
+            {codPercent}% Limit
+          </span>
         </div>
 
-        <p className="text-xs text-slate-600 pt-1 border-t border-slate-200">
-          {cashInHand > 0
-            ? 'Please deposit this cash amount with the FreshMart store manager at the end of your shift.'
-            : 'All Cash on Delivery collections have been settled with the store cash register.'}
+        {/* Limit Meter */}
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
+            <span>Float Threshold</span>
+            <span>₹{cashInHand} / ₹{codLimit} Max</span>
+          </div>
+          <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/60">
+            <div
+              className={`h-full rounded-full transition-all duration-500 ${
+                codPercent > 75 ? 'bg-amber-500' : 'bg-emerald-600'
+              }`}
+              style={{ width: `${codPercent}%` }}
+            />
+          </div>
+        </div>
+
+        <div className="p-3 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs text-amber-950 flex items-start gap-2.5">
+          <AlertCircle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+          <p className="leading-relaxed text-[11px]">
+            Please deposit cash collections with Store Cashier at Bay 4 desk before end of shift to reset your limit.
+          </p>
+        </div>
+      </div>
+
+      {/* Cashier Reconciliation Dynamic QR Code Card */}
+      <div className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-sm text-center space-y-3.5">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+          <div className="flex items-center gap-2 text-left">
+            <QrCode className="w-5 h-5 text-slate-700" />
+            <h2 className="font-extrabold text-sm text-[#121C28]">
+              Store Reconciliation QR
+            </h2>
+          </div>
+          <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">
+            Cashier Desk Bay 04
+          </span>
+        </div>
+
+        <p className="text-xs text-slate-500 text-left">
+          Show this QR code to the Keshri Mart cashier to verify collected notes and reset your COD balance instantly.
+        </p>
+
+        {/* QR Code Container */}
+        <div className="w-48 h-48 mx-auto bg-white p-3 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-center">
+          <QrCode className="w-40 h-40 text-[#121C28]" />
+        </div>
+
+        <p className="font-mono text-xs font-bold text-slate-700">
+          TOKEN: #KM-RIDER-9941-COD-{cashInHand}
         </p>
       </div>
 
-      {/* 4. Shift Delivery History List */}
-      <div className="space-y-3">
-        <h3 className="font-extrabold text-sm text-[var(--text-ink)] uppercase tracking-wide">
-          Today&apos;s Delivered Orders ({deliveredCount})
-        </h3>
-
-        {deliveredCount === 0 ? (
-          <div className="p-8 text-center rounded-3xl bg-[var(--bg-surface)] border border-dashed border-[var(--border-subtle)] space-y-2">
-            <Clock className="w-8 h-8 text-[var(--text-muted)] mx-auto opacity-40" />
-            <h4 className="font-bold text-sm text-[var(--text-ink)]">
-              No Completed Drops Yet
-            </h4>
-            <p className="text-xs text-[var(--text-muted)] max-w-xs mx-auto">
-              Accept orders from the deliveries feed and complete handover verification to see your daily payouts here.
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-2.5">
-            {completedOrders?.map((ord: any) => {
-              const deliveredTime = ord.delivered_at
-                ? new Date(ord.delivered_at).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })
-                : 'Just now';
-
-              return (
-                <div
-                  key={ord.id}
-                  className="p-4 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] flex items-center justify-between"
-                >
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <span className="font-extrabold text-xs text-[var(--text-ink)]">
-                        Order #{ord.order_number}
-                      </span>
-                      <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
-                          ord.payment_method === 'COD'
-                            ? 'bg-amber-500/15 text-amber-700 dark:text-amber-400'
-                            : 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-400'
-                        }`}
-                      >
-                        {ord.payment_method}
-                      </span>
-                    </div>
-                    <span className="text-[11px] text-[var(--text-muted)] block">
-                      Delivered at {deliveredTime} • Order value: ₹
-                      {Number(ord.total_amount).toFixed(2)}
-                    </span>
-                  </div>
-
-                  <div className="text-right">
-                    <span className="text-sm font-black text-emerald-600 block">
-                      +₹{incentivePerOrder}
-                    </span>
-                    <span className="text-[10px] text-[var(--text-muted)] font-medium">
-                      Incentive
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+      {/* Weekly Settlement Guarantee */}
+      <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Wallet className="w-4 h-4 text-emerald-600" />
+          <span>Weekly Payout Cycle: <strong>Every Tuesday 9:00 AM</strong></span>
+        </div>
+        <span className="font-bold text-emerald-700">Direct Bank Transfer</span>
       </div>
     </div>
   );

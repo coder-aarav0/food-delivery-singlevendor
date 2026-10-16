@@ -45,3 +45,38 @@ export async function createRazorpayOrder({
 
   return await client.orders.create(options);
 }
+
+/**
+ * Constant-time HMAC SHA256 signature verification for Razorpay payment webhooks.
+ * Prevents timing attacks by comparing raw binary buffers with timingSafeEqual.
+ */
+export function verifyRazorpayWebhookSignature(
+  rawBody: string,
+  receivedSignature: string,
+  secret: string
+): boolean {
+  if (!rawBody || !receivedSignature || !secret) {
+    return false;
+  }
+
+  try {
+    const crypto = require('crypto');
+    const expectedSignature = crypto
+      .createHmac('sha256', secret)
+      .update(rawBody)
+      .digest('hex');
+
+    const expectedBuffer = Buffer.from(expectedSignature, 'utf8');
+    const receivedBuffer = Buffer.from(receivedSignature, 'utf8');
+
+    if (expectedBuffer.length !== receivedBuffer.length) {
+      return false;
+    }
+
+    return crypto.timingSafeEqual(expectedBuffer, receivedBuffer);
+  } catch (err) {
+    console.error('Error verifying Razorpay signature:', err);
+    return false;
+  }
+}
+

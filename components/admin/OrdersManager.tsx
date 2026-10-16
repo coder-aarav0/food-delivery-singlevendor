@@ -23,6 +23,19 @@ import {
   Loader2,
 } from 'lucide-react';
 
+export interface DeliveryAddressSnapshotData {
+  label?: string;
+  address_line?: string;
+  address_line_1?: string;
+  address_line_2?: string;
+  landmark?: string;
+  city?: string;
+  pincode?: string;
+  street?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
 export interface OrderRowData {
   id: string;
   order_number: number;
@@ -32,7 +45,7 @@ export interface OrderRowData {
   total_amount: number;
   delivery_fee: number;
   discount_amount: number;
-  delivery_address_snapshot: any;
+  delivery_address_snapshot: DeliveryAddressSnapshotData | null;
   created_at: string;
   rider_id: string | null;
   cancellation_reason: string | null;

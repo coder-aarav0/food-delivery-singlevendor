@@ -6,7 +6,12 @@ import { useRouter } from 'next/navigation';
 import { StorefrontHeader } from '@/components/customer/StorefrontHeader';
 import { useCart } from '@/context/CartContext';
 import { formatCurrency } from '@/lib/utils';
-import { placeOrderAction } from '@/actions/order-actions';
+import {
+  placeOrderAction,
+  getRazorpayKeyIdAction,
+  verifyRazorpayPaymentAction,
+} from '@/actions/order-actions';
+
 import { Button } from '@/components/ui/Button';
 import { AddressSelectModal } from '@/components/customer/AddressSelectModal';
 import { CheckoutCrossSell } from '@/components/customer/CheckoutCrossSell';
@@ -42,6 +47,7 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<'COD' | 'RAZORPAY'>('COD');
   const [deliverySlot, setDeliverySlot] = useState<'INSTANT' | 'MORNING' | 'EVENING'>('INSTANT');
   const [customerNotes, setCustomerNotes] = useState('');
+  const [riderTip, setRiderTip] = useState<number>(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderError, setOrderError] = useState<string | null>(null);
 
@@ -56,7 +62,7 @@ export default function CheckoutPage() {
   const isFreeDelivery = subtotal >= FREE_DELIVERY_THRESHOLD;
   const deliveryFee = isFreeDelivery ? 0 : 30;
   const packagingFee = packaging.fee || 0;
-  const totalAmount = subtotal + deliveryFee + packagingFee;
+  const totalAmount = subtotal + deliveryFee + packagingFee + riderTip;
 
   if (items.length === 0) {
     return (
@@ -94,10 +100,8 @@ export default function CheckoutPage() {
     setOrderError(null);
 
     try {
-      // In development/demo, ensure a mock address ID or pass address
       const addressId = selectedAddress?.id || 'addr_default_demo';
 
-      // We call placeOrderAction
       const cartInputItems = items.map((i) => ({
         productId: i.productId,
         variationId: i.variationId,
@@ -106,8 +110,11 @@ export default function CheckoutPage() {
           i.substitutionPreference.toLowerCase() as 'call_me' | 'replace_with_best' | 'cancel_item',
       }));
 
-      // Combine packaging details with notes if gift wrap is selected
+      // Combine notes, packaging, and rider tip into order remarks
       let finalNotes = customerNotes.trim();
+      if (riderTip > 0) {
+        finalNotes = finalNotes ? `[RIDER TIP: ₹${riderTip}] ${finalNotes}` : `[RIDER TIP: ₹${riderTip}]`;
+      }
       if (packaging.type === 'GIFT') {
         const giftPrefix = `[GIFT PACKAGING: ${
           packaging.recipientName ? `For ${packaging.recipientName}` : 'Gift Wrap'
@@ -125,22 +132,79 @@ export default function CheckoutPage() {
       });
 
       if (!res.success || !res.orderId) {
-        // Fallback for seamless guest/demo browsing when not signed in
-        if (res.error?.includes('signed in')) {
-          const demoOrderId = `demo_order_${Math.floor(100 + Math.random() * 900)}`;
-          clearCart();
-          router.push(`/order/${demoOrderId}`);
-          return;
-        }
         setOrderError(res.error || 'Failed to place order. Please try again.');
         setIsSubmitting(false);
         return;
       }
 
-      // If Razorpay, open Razorpay Modal or mock payment flow
-      if (paymentMethod === 'RAZORPAY' && res.razorpayOrderId) {
-        clearCart();
-        router.push(`/order/${res.orderId}?payment=razorpay_success`);
+      // If Razorpay, open Real Razorpay Standard Checkout SDK
+      if (paymentMethod === 'RAZORPAY') {
+        const keyId = await getRazorpayKeyIdAction();
+        if (!keyId) {
+          // Alert user clearly that Sandbox keys need to be put into .env.local
+          setOrderError(
+            'RAZORPAY_KEY_ID is not configured in .env.local. Please select Cash on Delivery (COD) for testing or configure your Razorpay Test API keys in .env.local.'
+          );
+          setIsSubmitting(false);
+          return;
+        }
+
+        // Dynamically load Razorpay standard checkout script
+        const scriptLoaded = await new Promise<boolean>((resolve) => {
+          if (typeof window === 'undefined') return resolve(false);
+          if ((window as any).Razorpay) return resolve(true);
+          const s = document.createElement('script');
+          s.src = 'https://checkout.razorpay.com/v1/checkout.js';
+          s.onload = () => resolve(true);
+          s.onerror = () => resolve(false);
+          document.body.appendChild(s);
+        });
+
+        if (!scriptLoaded) {
+          setOrderError('Failed to load Razorpay payment gateway SDK. Please check your network connection.');
+          setIsSubmitting(false);
+          return;
+        }
+
+        const rzp = new (window as any).Razorpay({
+          key: keyId,
+          amount: res.amountInPaise,
+          currency: 'INR',
+          name: 'FreshMart Supermarket',
+          description: `Order #${res.orderNumber || ''}`,
+          order_id: res.razorpayOrderId,
+          prefill: {
+            name: selectedAddress?.label || 'Customer',
+            email: 'customer@freshmart.local',
+            contact: '9876543210',
+          },
+          theme: {
+            color: '#00b9c6',
+          },
+          handler: async function (response: any) {
+            const verifyRes = await verifyRazorpayPaymentAction({
+              orderId: res.orderId!,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpayOrderId: response.razorpay_order_id,
+              razorpaySignature: response.razorpay_signature,
+            });
+
+            if (verifyRes.success) {
+              clearCart();
+              router.push(`/order/${res.orderId}`);
+            } else {
+              setOrderError(verifyRes.error || 'Payment signature verification failed.');
+              setIsSubmitting(false);
+            }
+          },
+          modal: {
+            ondismiss: function () {
+              setIsSubmitting(false);
+            },
+          },
+        });
+
+        rzp.open();
         return;
       }
 
@@ -153,6 +217,7 @@ export default function CheckoutPage() {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-app)] text-[var(--text-body)]">
@@ -391,14 +456,88 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* 5. "You Might Also Like" Cross-Sell Shelf (New Feature) */}
+            {/* 5. Delivery Partner Tip */}
+            <div className="p-5 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-base">🚴</span>
+                  <h2 className="text-sm font-bold text-[var(--text-ink)]">
+                    Tip your delivery partner
+                  </h2>
+                </div>
+                <span className="text-[10px] font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                  100% goes to rider
+                </span>
+              </div>
+              <p className="text-xs text-[var(--text-muted)] mb-3">
+                Your delivery partner navigates traffic and weather to deliver your groceries in 15 mins.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {[0, 10, 20, 30, 50].map((amount) => (
+                  <button
+                    key={amount}
+                    type="button"
+                    onClick={() => setRiderTip(amount)}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                      riderTip === amount
+                        ? 'bg-emerald-600 text-white shadow-xs'
+                        : 'bg-[var(--bg-app)] border border-[var(--border-subtle)] text-[var(--text-ink)] hover:bg-slate-100'
+                    }`}
+                  >
+                    {amount === 0 ? 'No Tip' : `₹${amount}`}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 6. "You Might Also Like" Cross-Sell Shelf */}
             <CheckoutCrossSell />
 
-            {/* 6. Delivery Instructions */}
+            {/* 7. Delivery Instructions */}
             <div className="p-5 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
               <label className="text-xs font-bold text-[var(--text-ink)] block mb-1.5">
-                Delivery Instructions (Optional)
+                Delivery Instructions & Notes
               </label>
+
+              {/* Quick Instruction Chips */}
+              <div className="flex flex-wrap gap-1.5 mb-2.5">
+                {[
+                  "Don't ring bell 🔕",
+                  "Leave at door 🚪",
+                  "Avoid calling 📞",
+                  "Leave with security 🏢",
+                ].map((chip) => {
+                  const isActive = customerNotes.includes(chip);
+                  return (
+                    <button
+                      key={chip}
+                      type="button"
+                      onClick={() => {
+                        if (isActive) {
+                          setCustomerNotes(
+                            customerNotes
+                              .replace(chip, '')
+                              .replace(/,\s*,/g, ',')
+                              .trim()
+                          );
+                        } else {
+                          setCustomerNotes(
+                            customerNotes ? `${customerNotes}, ${chip}` : chip
+                          );
+                        }
+                      }}
+                      className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition cursor-pointer ${
+                        isActive
+                          ? 'bg-amber-100 text-amber-900 border-amber-300'
+                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                      }`}
+                    >
+                      {chip}
+                    </button>
+                  );
+                })}
+              </div>
+
               <textarea
                 value={customerNotes}
                 onChange={(e) => setCustomerNotes(e.target.value)}
@@ -452,6 +591,15 @@ export default function CheckoutPage() {
                     <span className="text-emerald-600 font-bold">🌱 ₹0</span>
                   </div>
                 )}
+
+                {/* Rider Tip Row */}
+                {riderTip > 0 && (
+                  <div className="flex justify-between text-emerald-800 font-bold">
+                    <span>Delivery Partner Tip</span>
+                    <span>+{formatCurrency(riderTip)}</span>
+                  </div>
+                )}
+
 
                 <div className="pt-2 border-t border-[var(--border-subtle)] flex justify-between items-baseline text-sm font-extrabold text-[var(--text-ink)]">
                   <span>Total Amount</span>

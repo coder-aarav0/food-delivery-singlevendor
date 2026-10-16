@@ -1,18 +1,18 @@
 {
   "project": {
     "enabled": true,
-    "lastGenerated": "2026-10-14T15:50:31.390Z",
-    "observationCount": 235,
+    "lastGenerated": "2026-10-16T05:29:47.879Z",
+    "observationCount": 278,
     "skillCount": 0,
     "domain": "project",
     "triggerGlobs": [
       "**/*"
     ],
-    "description": "Project for food-delivery-singlevendor. 19 gotchas, 216 conventions."
+    "description": "Project for food-delivery-singlevendor. 48 gotchas, 217 conventions."
   },
   "typescript-react": {
     "enabled": true,
-    "lastGenerated": "2026-10-14T15:50:31.392Z",
+    "lastGenerated": "2026-10-16T05:29:47.881Z",
     "observationCount": 2,
     "skillCount": 0,
     "domain": "typescript-react",
@@ -20,5 +20,16 @@
       "**/*.tsx"
     ],
     "description": "Typescript React for food-delivery-singlevendor. 2 conventions."
+  },
+  "gotcha": {
+    "enabled": true,
+    "lastGenerated": "2026-10-16T05:29:47.883Z",
+    "observationCount": 0,
+    "skillCount": 2,
+    "domain": "gotcha",
+    "triggerGlobs": [
+      "**/*"
+    ],
+    "description": "Gotcha for food-delivery-singlevendor. ."
   }
 }

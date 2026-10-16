@@ -1,5 +1,6 @@
 import { createSchema, createYoga } from 'graphql-yoga';
 import { supabaseAdmin } from '@/lib/supabase/admin';
+import { OrderStatus, PaymentMethod } from '@/types/database.types';
 
 // 1. GraphQL SDL Schema Definition matching Enatega contracts
 const typeDefs = /* GraphQL */ `
@@ -166,6 +167,12 @@ const typeDefs = /* GraphQL */ `
     tokenExpiration: Int
   }
 
+  input OrderItemInput {
+    food: String
+    variation: String!
+    quantity: Int!
+  }
+
   type Query {
     configuration: Configuration!
     categories: [Category!]!
@@ -194,8 +201,60 @@ const typeDefs = /* GraphQL */ `
     coupon(coupon: String!): Coupon
     updateOrderStatus(id: String!, status: String!): Order
     assignRider(id: String!, riderId: String!): Order
+    placeOrder(
+      restaurant: String
+      orderInput: [OrderItemInput!]!
+      paymentMethod: String!
+      deliveryAddress: String
+      couponCode: String
+    ): Order
   }
 `;
+
+// Helper interfaces for database mapping without `any`
+interface DbAddressSnapshot {
+  label?: string;
+  address_line?: string;
+  address_line_1?: string;
+  landmark?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+interface DbVariationItem {
+  id: string;
+  title: string;
+  price: number | string;
+  discounted_price: number | string | null;
+  is_in_stock?: boolean;
+}
+
+interface DbProductItem {
+  id: string;
+  name: string;
+  description: string | null;
+  image_url: string | null;
+  is_active: boolean;
+  category_id: string;
+  product_variations?: DbVariationItem[];
+}
+
+interface DbOrderItemWithProduct {
+  id: string;
+  variation_id: string;
+  product_id: string;
+  unit_price: number | string;
+  quantity: number;
+  product_variations?: {
+    id: string;
+    title: string;
+    products?: {
+      id: string;
+      name: string;
+      image_url: string | null;
+    } | null;
+  } | null;
+}
 
 // 2. Type-Safe Resolvers wired directly into Supabase PostgreSQL
 const resolvers = {
@@ -230,7 +289,7 @@ const resolvers = {
     },
 
     foodByCategory: async (
-      _: any,
+      _: unknown,
       args: {
         category: string;
         onSale?: boolean;
@@ -264,15 +323,16 @@ const resolvers = {
       }
 
       const { data: prods } = await query;
+      const typedProds = (prods || []) as unknown as DbProductItem[];
 
-      return (prods || []).map((p: any) => ({
+      return typedProds.map((p) => ({
         _id: p.id,
         title: p.name,
         description: p.description || '',
         img_url: p.image_url || '',
         stock: p.is_active ?? true,
         category: { _id: p.category_id },
-        variations: (p.product_variations || []).map((v: any) => ({
+        variations: (p.product_variations || []).map((v) => ({
           _id: v.id,
           title: v.title,
           price: Number(v.price),
@@ -282,7 +342,7 @@ const resolvers = {
       }));
     },
 
-    foodByIds: async (_: any, args: { ids: string[] }) => {
+    foodByIds: async (_: unknown, args: { ids: string[] }) => {
       const { data: prods } = await supabaseAdmin
         .from('products')
         .select(
@@ -304,14 +364,16 @@ const resolvers = {
         )
         .in('id', args.ids);
 
-      return (prods || []).map((p: any) => ({
+      const typedProds = (prods || []) as unknown as DbProductItem[];
+
+      return typedProds.map((p) => ({
         _id: p.id,
         title: p.name,
         description: p.description || '',
         img_url: p.image_url || '',
         stock: p.is_active ?? true,
         category: { _id: p.category_id },
-        variations: (p.product_variations || []).map((v: any) => ({
+        variations: (p.product_variations || []).map((v) => ({
           _id: v.id,
           title: v.title,
           price: Number(v.price),
@@ -321,7 +383,7 @@ const resolvers = {
       }));
     },
 
-    order: async (_: any, args: { id: string }) => {
+    order: async (_: unknown, args: { id: string }) => {
       const { data: ord } = await supabaseAdmin
         .from('orders')
         .select('*')
@@ -335,7 +397,8 @@ const resolvers = {
         .select('*, product_variations(*, products(*))')
         .eq('order_id', ord.id);
 
-      const addr = ord.delivery_address_snapshot as any;
+      const addr = (ord.delivery_address_snapshot || {}) as DbAddressSnapshot;
+      const typedItems = (items || []) as unknown as DbOrderItemWithProduct[];
 
       return {
         _id: ord.id,
@@ -347,13 +410,13 @@ const resolvers = {
         payment_status: ord.payment_status,
         order_status: ord.status,
         delivery_address: {
-          label: 'Home',
-          delivery_address: addr?.address_line || 'Delivery Address',
-          details: addr?.landmark || '',
-          latitude: Number(addr?.latitude || 28.4595),
-          longitude: Number(addr?.longitude || 77.0266),
+          label: addr.label || 'Home',
+          delivery_address: addr.address_line || addr.address_line_1 || 'Delivery Address',
+          details: addr.landmark || '',
+          latitude: Number(addr.latitude || 28.4595),
+          longitude: Number(addr.longitude || 77.0266),
         },
-        items: (items || []).map((it: any) => ({
+        items: typedItems.map((it) => ({
           _id: it.id,
           food: {
             _id: it.product_variations?.products?.id || it.product_id,
@@ -381,7 +444,7 @@ const resolvers = {
       };
     },
 
-    orders: async (_: any, args: { offset?: number }) => {
+    orders: async (_: unknown, _args: { offset?: number }) => {
       const { data: ords } = await supabaseAdmin
         .from('orders')
         .select('*')
@@ -389,7 +452,7 @@ const resolvers = {
         .limit(20);
 
       return (ords || []).map((ord) => {
-        const addr = ord.delivery_address_snapshot as any;
+        const addr = (ord.delivery_address_snapshot || {}) as DbAddressSnapshot;
         return {
           _id: ord.id,
           order_id: String(ord.order_number),
@@ -400,11 +463,11 @@ const resolvers = {
           payment_status: ord.payment_status,
           order_status: ord.status,
           delivery_address: {
-            label: 'Home',
-            delivery_address: addr?.address_line || 'Delivery Address',
-            details: addr?.landmark || '',
-            latitude: Number(addr?.latitude || 28.4595),
-            longitude: Number(addr?.longitude || 77.0266),
+            label: addr.label || 'Home',
+            delivery_address: addr.address_line || addr.address_line_1 || 'Delivery Address',
+            details: addr.landmark || '',
+            latitude: Number(addr.latitude || 28.4595),
+            longitude: Number(addr.longitude || 77.0266),
           },
           items: [],
           user: { _id: ord.customer_id, phone: '' },
@@ -452,7 +515,7 @@ const resolvers = {
       };
     },
 
-    rider: async (_: any, args: { id?: string }) => {
+    rider: async (_: unknown, args: { id?: string }) => {
       let query = supabaseAdmin.from('rider_profiles').select('*');
       if (args.id) {
         query = query.eq('id', args.id);
@@ -471,7 +534,7 @@ const resolvers = {
 
   Mutation: {
     login: async (
-      _: any,
+      _: unknown,
       args: { email?: string; password?: string; type: string; name?: string }
     ) => {
       return {
@@ -485,7 +548,7 @@ const resolvers = {
       };
     },
 
-    coupon: async (_: any, args: { coupon: string }) => {
+    coupon: async (_: unknown, args: { coupon: string }) => {
       const { data: coup } = await supabaseAdmin
         .from('coupons')
         .select('*')
@@ -504,13 +567,13 @@ const resolvers = {
     },
 
     updateOrderStatus: async (
-      _: any,
+      _: unknown,
       args: { id: string; status: string }
     ) => {
       await supabaseAdmin
         .from('orders')
         .update({
-          status: args.status as any,
+          status: args.status as OrderStatus,
           updated_at: new Date().toISOString(),
         })
         .eq('id', args.id);
@@ -519,19 +582,195 @@ const resolvers = {
     },
 
     assignRider: async (
-      _: any,
+      _: unknown,
       args: { id: string; riderId: string }
     ) => {
       await supabaseAdmin
         .from('orders')
         .update({
           rider_id: args.riderId,
-          status: 'READY_FOR_PICKUP',
+          status: 'READY_FOR_PICKUP' as OrderStatus,
           updated_at: new Date().toISOString(),
         })
         .eq('id', args.id);
 
       return resolvers.Query.order(null, { id: args.id });
+    },
+
+    placeOrder: async (
+      _: unknown,
+      args: {
+        restaurant?: string;
+        orderInput: Array<{
+          food?: string;
+          variation: string;
+          quantity: number;
+        }>;
+        paymentMethod: string;
+        deliveryAddress?: string;
+        couponCode?: string;
+      }
+    ) => {
+      // 1. Authoritatively fetch prices from product_variations table (Zero Client Price Trust)
+      const variationIds = args.orderInput.map((it) => it.variation);
+      const { data: variations } = await supabaseAdmin
+        .from('product_variations')
+        .select('*, products(*)')
+        .in('id', variationIds);
+
+      const varMap = new Map((variations || []).map((v) => [v.id, v]));
+
+      let itemsSubtotal = 0;
+      const orderItemsToInsert: Array<{
+        product_id: string;
+        variation_id: string;
+        product_name: string;
+        variation_title: string;
+        quantity: number;
+        unit_price: number;
+        total_price: number;
+        image_url: string | null;
+        substitution_preference: string;
+      }> = [];
+
+      for (const item of args.orderInput) {
+        const v = varMap.get(item.variation);
+        if (!v) continue;
+        const unitPrice = Number(v.discounted_price ?? v.price);
+        const lineTotal = unitPrice * item.quantity;
+        itemsSubtotal += lineTotal;
+        const prod = v.products as { name?: string; image_url?: string | null } | null;
+        orderItemsToInsert.push({
+          product_id: v.product_id,
+          variation_id: v.id,
+          product_name: prod?.name || 'Grocery Item',
+          variation_title: v.title || 'Standard',
+          quantity: item.quantity,
+          unit_price: unitPrice,
+          total_price: lineTotal,
+          image_url: prod?.image_url || null,
+          substitution_preference: 'cancel_item',
+        });
+      }
+
+      // 2. Authoritatively fetch store & compute delivery fee + monsoon surge
+      const { data: store } = await supabaseAdmin
+        .from('stores')
+        .select('*')
+        .limit(1)
+        .single();
+
+      const baseFee = Number(store?.base_delivery_fee || 30);
+      const freeThreshold = Number(store?.free_delivery_threshold || 499);
+      const rainSurge = store?.is_rain_surge_active ? Number(store?.rain_surge_fee || 25) : 0;
+      const deliveryFee = itemsSubtotal >= freeThreshold ? 0 : baseFee + rainSurge;
+
+      // 3. Authoritative coupon validation
+      let discountAmount = 0;
+      if (args.couponCode) {
+        const { data: coup } = await supabaseAdmin
+          .from('coupons')
+          .select('*')
+          .ilike('code', args.couponCode.trim())
+          .eq('is_active', true)
+          .maybeSingle();
+
+        if (coup && itemsSubtotal >= Number(coup.min_order_amount || 0)) {
+          if (coup.discount_type === 'PERCENTAGE') {
+            const raw = (itemsSubtotal * Number(coup.discount_value)) / 100;
+            discountAmount = coup.max_discount_amount ? Math.min(raw, Number(coup.max_discount_amount)) : raw;
+          } else {
+            discountAmount = Number(coup.discount_value);
+          }
+        }
+      }
+
+      const totalAmount = Math.max(0, itemsSubtotal + deliveryFee - discountAmount);
+
+      // 4. Default user profile & delivery address snapshot
+      const { data: firstProfile } = await supabaseAdmin
+        .from('profiles')
+        .select('*')
+        .limit(1)
+        .maybeSingle();
+
+      const customerId = firstProfile?.id || 'demo_customer';
+      const deliveryOtp = Math.floor(1000 + Math.random() * 9000).toString();
+
+      // Ensure address_id exists in addresses table
+      const { data: userAddress } = await supabaseAdmin
+        .from('addresses')
+        .select('id')
+        .eq('user_id', customerId)
+        .limit(1)
+        .maybeSingle();
+
+      let finalAddressId = userAddress?.id;
+      if (!finalAddressId) {
+        const { data: newAddr } = await supabaseAdmin
+          .from('addresses')
+          .insert({
+            user_id: customerId,
+            label: 'Mobile App Order',
+            address_line_1: args.deliveryAddress || 'Shop 12-14, Galleria Market, Sector 28, Gurugram',
+            city: 'Gurugram',
+            pincode: '122002',
+            latitude: 28.4595,
+            longitude: 77.0266,
+          })
+          .select('id')
+          .single();
+        finalAddressId = newAddr?.id || '00000000-0000-0000-0000-000000000000';
+      }
+
+      const deliveryAddressSnapshot = {
+        label: 'Mobile App Order',
+        address_line: args.deliveryAddress || 'Shop 12-14, Galleria Market, Sector 28, Gurugram',
+        landmark: 'Customer Dropoff',
+        latitude: 28.4595,
+        longitude: 77.0266,
+      };
+
+      const paymentMethod: PaymentMethod = args.paymentMethod.toUpperCase() === 'COD' ? 'COD' : 'RAZORPAY';
+
+      // 5. Insert order
+      const { data: newOrder, error: orderErr } = await supabaseAdmin
+        .from('orders')
+        .insert({
+          store_id: store?.id || '11111111-1111-1111-1111-111111111111',
+          customer_id: customerId,
+          address_id: finalAddressId,
+          delivery_address_snapshot: deliveryAddressSnapshot,
+          status: paymentMethod === 'COD' ? 'ACCEPTED' : 'PENDING',
+          payment_method: paymentMethod,
+          payment_status: 'UNPAID',
+          items_subtotal: itemsSubtotal,
+          delivery_fee: deliveryFee,
+          discount_amount: discountAmount,
+          total_amount: totalAmount,
+          coupon_code: args.couponCode || null,
+          delivery_otp: deliveryOtp,
+          estimated_delivery_time: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+        })
+        .select('id')
+        .single();
+
+      if (orderErr || !newOrder) {
+        throw new Error(orderErr?.message || 'Failed to create order');
+      }
+
+      // 6. Insert items
+      if (orderItemsToInsert.length > 0) {
+        await supabaseAdmin.from('order_items').insert(
+          orderItemsToInsert.map((it) => ({
+            order_id: newOrder.id,
+            ...it,
+          }))
+        );
+      }
+
+      // 7. Return complete Order object
+      return resolvers.Query.order(null, { id: newOrder.id });
     },
   },
 };
@@ -546,15 +785,31 @@ const yoga = createYoga({
   fetchAPI: { Response },
 });
 
+const corsHeaders: Record<string, string> = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-apollo-tracing, apollo-require-preflight',
+};
+
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 export async function GET(request: Request) {
-  return yoga.handleRequest(request, {});
+  const response = await yoga.handleRequest(request, {});
+  Object.entries(corsHeaders).forEach(([key, value]) => {
+    response.headers.set(key, value);
+  });
+  return response;
 }
 
 export async function POST(request: Request) {
-  return yoga.handleRequest(request, {});
+  const response = await yoga.handleRequest(request, {});
+  Object.entries(corsHeaders).forEach(([key, value]) => {
+    response.headers.set(key, value);
+  });
+  return response;
 }
-
-export async function OPTIONS(request: Request) {
-  return yoga.handleRequest(request, {});
-}
-

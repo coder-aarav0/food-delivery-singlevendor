@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_blank" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "outline": "#7e7761", "on-primary-fixed-variant": "#554500", "on-secondary": "#ffffff", "primary": "#715d00", "outline-variant": "#d0c6ac", "inverse-on-surface": "#eaf1ff", "on-secondary-container": "#5c6274", "surface": "#f8f9ff", "tertiary-fixed": "#95f8a7", "secondary-fixed-dim": "#c0c6db", "error": "#ba1a1a", "surface-container-lowest": "#ffffff", "on-error": "#ffffff", "on-background": "#121c28", "surface-bright": "#f8f9ff", "surface-container": "#e5eeff", "on-secondary-fixed": "#141b2b", "surface-container-low": "#eef4ff", "background": "#f8f9ff", "tertiary-container": "#86e898", "primary-fixed": "#ffe176", "on-primary-fixed": "#221b00", "secondary-fixed": "#dce2f7", "surface-tint": "#715d00", "primary-fixed-dim": "#e9c31c", "surface-dim": "#d1dbec", "on-surface-variant": "#4d4633", "on-tertiary": "#ffffff", "on-tertiary-fixed-variant": "#005323", "on-tertiary-container": "#00692e", "inverse-primary": "#e9c31c", "inverse-surface": "#27313e", "tertiary-fixed-dim": "#79db8d", "error-container": "#ffdad6", "on-primary-container": "#6c5900", "tertiary": "#006d30", "on-secondary-fixed-variant": "#404758", "secondary": "#575e70", "surface-container-high": "#dfe9fa", "on-primary": "#ffffff", "primary-container": "#f7d02c", "secondary-container": "#d9dff5", "on-error-container": "#93000a", "on-tertiary-fixed": "#00210a", "surface-container-highest": "#d9e3f4", "on-surface": "#121c28", "surface-variant": "#d9e3f4" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1rem", "margin": "1rem", "space-lg": "1.5rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "gutter": "1rem", "space-xl": "2rem" }, "fontFamily": { "headline-md": ["Plus Jakarta Sans"], "label-lg": ["Inter"], "body-md": ["Inter"], "body-lg": ["Inter"], "headline-sm": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "body-sm": ["Inter"], "label-sm": ["Inter"], "label-md": ["Inter"] }, "fontSize": { "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "500" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600" }], "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "body-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "700" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }] } } } };</script><style>@layer base { html, body { width: 100%; height: 100%; margin: 0; padding: 0; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } } ::-webkit-scrollbar { display: none; }</style></head><body class="bg-surface text-on-surface antialiased h-full w-full min-h-screen"><main class="relative w-full h-full min-h-screen bg-surface"><div class="flex flex-col w-full relative select-none">
+<!-- Map Canvas & Navigation Viewport Container -->
+<div class="relative w-full h-[470px] overflow-hidden bg-surface-container-high">
+<!-- Stylized Realistic Daylight Vector Map Graphic -->
+<svg class="absolute inset-0 w-full h-full object-cover" fill="none" preserveaspectratio="xMidYMid slice" viewbox="0 0 420 520" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<!-- Map Landmass Background Gradient -->
+<lineargradient gradientunits="userSpaceOnUse" id="mapBgGrad" x1="0" x2="420" y1="0" y2="520">
+<stop offset="0%" stop-color="#EAF0F6"></stop>
+<stop offset="50%" stop-color="#EDF2F7"></stop>
+<stop offset="100%" stop-color="#E5ECF2"></stop>
+</lineargradient>
+<!-- Route Electric Flow Gradient -->
+<lineargradient gradientunits="userSpaceOnUse" id="activeRouteGlow" x1="90" x2="330" y1="360" y2="120">
+<stop offset="0%" stop-color="#0284C7"></stop>
+<stop offset="100%" stop-color="#2563EB"></stop>
+</lineargradient>
+<!-- Radar Pulse Radial Gradient -->
+<radialgradient cx="50%" cy="50%" id="riderRadar" r="50%">
+<stop offset="0%" stop-color="#F7D02C" stop-opacity="0.8"></stop>
+<stop offset="65%" stop-color="#F7D02C" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#F7D02C" stop-opacity="0"></stop>
+</radialgradient>
+</defs>
+<!-- Map Ground Terrain Base -->
+<rect fill="url(#mapBgGrad)" height="520" width="420"></rect>
+<!-- Parks & Green Zones -->
+<path d="M-20 40 Q40 30 75 80 T130 140 L40 180 Z" fill="#D2E8D5" opacity="0.85"></path>
+<path d="M280 20 C320 25 360 60 390 40 L440 90 L340 140 Z" fill="#D9EBD9" opacity="0.9"></path>
+<path d="M190 320 Q240 310 270 360 T310 430 L220 450 Z" fill="#D2E8D5" opacity="0.75"></path>
+<!-- Secondary Roads & Urban Alleys -->
+<path d="M-10 110 L440 95" stroke="#FFFFFF" stroke-linecap="round" stroke-width="12"></path>
+<path d="M-10 220 L440 210" stroke="#FFFFFF" stroke-linecap="round" stroke-width="10"></path>
+<path d="M-10 390 L440 375" stroke="#FFFFFF" stroke-linecap="round" stroke-width="14"></path>
+<path d="M120 -10 L140 530" stroke="#FFFFFF" stroke-linecap="round" stroke-width="10"></path>
+<path d="M300 -10 L285 530" stroke="#FFFFFF" stroke-linecap="round" stroke-width="12"></path>
+<path d="M20 460 L240 260" stroke="#FFFFFF" stroke-linecap="round" stroke-width="9"></path>
+<!-- High-Density Building Footprints -->
+<rect fill="#DBE4EC" height="42" rx="4" width="36" x="25" y="130"></rect>
+<rect fill="#D4DEE7" height="34" rx="4" width="28" x="68" y="125"></rect>
+<rect fill="#DBE4EC" height="54" rx="6" width="48" x="25" y="240"></rect>
+<rect fill="#D4DEE7" height="38" rx="4" width="24" x="85" y="250"></rect>
+<rect fill="#DBE4EC" height="38" rx="5" width="56" x="155" y="160"></rect>
+<rect fill="#D4DEE7" height="42" rx="5" width="46" x="220" y="155"></rect>
+<rect fill="#E2EAF1" height="46" rx="6" width="70" x="160" y="240"></rect>
+<rect fill="#D9E3EC" height="60" rx="6" width="42" x="315" y="245"></rect>
+<rect fill="#DBE4EC" height="50" rx="5" width="45" x="368" y="235"></rect>
+<rect fill="#D4DEE7" height="48" rx="6" width="50" x="320" y="140"></rect>
+<!-- Major Arterial Highway: Sasaram-Dharamshala Bypass -->
+<path d="M-20 480 Q140 430 185 350 T240 180 L290 -10" stroke="#FCFDFD" stroke-linecap="round" stroke-width="26"></path>
+<path d="M-20 480 Q140 430 185 350 T240 180 L290 -10" stroke="#CBD5E1" stroke-linecap="round" stroke-linejoin="round" stroke-width="20"></path>
+<!-- Clear Traffic Visual Line (Past Leg) -->
+<path d="M125 415 L165 372" opacity="0.9" stroke="#22C55E" stroke-linecap="round" stroke-width="7"></path>
+<!-- ACTIVE NAVIGATION ROUTE POLYLINE -->
+<!-- Glow casing under route -->
+<path d="M165 372 L205 328 Q222 308 232 280 L236 268 L320 262 L322 175" opacity="0.3" stroke="#0369A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></path>
+<!-- Main high contrast electric blue polyline -->
+<path d="M165 372 L205 328 Q222 308 232 280 L236 268 L320 262 L322 175" stroke="url(#activeRouteGlow)" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"></path>
+<!-- Route Directional Chevrons Overlay -->
+<path d="M188 348 L194 340 L200 348" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<path d="M231 292 L234 284 L239 290" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<path d="M268 266 L276 262 L268 258" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<path d="M325 218 L321 210 L317 218" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<!-- Origin Marker Behind: Darkstore #BL-082 Pin -->
+<g transform="translate(100, 440)">
+<circle cx="14" cy="14" fill="#00692E" opacity="0.2" r="14"></circle>
+<circle cx="14" cy="14" fill="#006D30" r="9"></circle>
+<circle cx="14" cy="14" fill="#FFFFFF" r="4"></circle>
+<!-- Micro Darkstore Label -->
+<rect fill="#121C28" height="15" opacity="0.85" rx="3" width="64" x="-18" y="28"></rect>
+<text fill="#FFFFFF" font-family="Inter" font-size="8" font-weight="700" text-anchor="middle" x="14" y="39">STORE #082</text>
+</g>
+<!-- LIVE RIDER LOCATION PIN with Radar Cone -->
+<g transform="translate(142, 350)">
+<!-- Dynamic Scanning Radar Cone pointing northeast along route -->
+<path d="M23 23 L-8 -15 A48 48 0 0 1 54 -15 Z" fill="url(#riderRadar)"></path>
+<!-- Halo Ripple Rings -->
+<circle cx="23" cy="23" fill="#F7D02C" fill-opacity="0.28" r="22"></circle>
+<!-- Solid High Visibility Rider Puck -->
+<circle cx="23" cy="23" fill="#121C28" r="14"></circle>
+<circle cx="23" cy="23" fill="#F7D02C" r="11"></circle>
+<!-- Scooter Direction Needle/Icon -->
+<path d="M23 15 L28 26 L23 23 L18 26 Z" fill="#121C28"></path>
+</g>
+<!-- DESTINATION MARKER: Palm Heights Tower B -->
+<g transform="translate(305, 138)">
+<!-- Destination Pulse Ripple -->
+<circle cx="17" cy="37" fill="#BA1A1A" fill-opacity="0.18" r="16"></circle>
+<!-- Drop Pin Body -->
+<path d="M17 12 C10.4 12 5 17.4 5 24 C5 33 17 44 17 44 C17 44 29 33 29 24 C29 17.4 23.6 12 17 12 Z" fill="#BA1A1A"></path>
+<circle cx="17" cy="24" fill="#FFFFFF" r="5"></circle>
+</g>
+<!-- Road Nomenclature Labels (Daylight Glanceable) -->
+<text fill="#475569" font-family="Inter" font-size="10" font-weight="700" transform="rotate(-30 75 380)" x="75" y="380">SASARAM BYPASS</text>
+<text fill="#1E293B" font-family="Plus Jakarta Sans" font-size="10.5" font-weight="800" x="245" y="254">PALM AVENUE</text>
+<text fill="#0F172A" font-family="Plus Jakarta Sans" font-size="11" font-weight="800" x="280" y="130">PALM HEIGHTS</text>
+</svg>
+<!-- FLOATING TOP NAVIGATION HUD -->
+<div class="absolute top-3 inset-x-3 flex flex-col gap-2 z-20">
+<!-- High Contrast Emerald Slate Primary HUD Card -->
+<div class="bg-inverse-surface rounded-2xl p-3.5 shadow-xl text-inverse-on-surface flex flex-col gap-2.5">
+<!-- Primary Turn Command Row -->
+<div class="flex items-center gap-3.5">
+<!-- Tactile Turn Vector Icon Capsule -->
+<div class="w-13 h-13 min-w-[52px] h-[52px] rounded-xl bg-tertiary-container text-on-tertiary-container flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-[34px] font-bold" style="font-variation-settings: 'FILL' 1, 'wght' 700;">turn_right</span>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex items-baseline gap-1.5">
+<span class="font-headline-lg text-headline-lg tracking-tight text-white leading-none">In 180m</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-tertiary-fixed font-bold">Turn Right</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-white truncate mt-0.5">Palm Avenue</p>
+</div>
+<!-- Turn Speed Telemetry Capsule -->
+<div class="flex flex-col items-end shrink-0 pl-1">
+<div class="bg-surface-container-lowest/15 px-2.5 py-1 rounded-xl flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-primary-container font-extrabold leading-none">28</span>
+<span class="font-label-sm text-label-sm text-inverse-on-surface/80">km/h</span>
+</div>
+<span class="font-label-sm text-[10px] text-inverse-on-surface/60 mt-1">Limit 35</span>
+</div>
+</div>
+<!-- Next Maneuver Secondary Teaser Row -->
+<div class="flex items-center justify-between pt-2 border-t-0 bg-white/5 -mx-3.5 -mb-3.5 px-3.5 py-2 rounded-b-2xl">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-inverse-on-surface/70 text-[18px]">straight</span>
+<p class="font-body-sm text-body-sm text-inverse-on-surface/90 truncate">
+              Then continue <span class="font-bold text-white">900m straight</span> to Palm Heights Gate 1
+            </p>
+</div>
+<!-- GPS Accuracy Status Pill -->
+<div class="flex items-center gap-1 shrink-0 ml-2">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-tertiary-fixed font-bold">GPS High</span>
+</div>
+</div>
+</div>
+<!-- Quick Action Floating Telemetry Toolbar -->
+<div class="flex items-center justify-between px-1">
+<!-- Voice Guidance Connected Pill -->
+<div class="bg-surface-container-lowest/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-md flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px]" style="font-variation-settings: 'FILL' 1;">volume_up</span>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Voice On</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="material-symbols-outlined text-secondary text-[16px]">headset_mic</span>
+</div>
+<!-- Right Side Nav Controls: Recenter, Layers, Tilt -->
+<div class="flex items-center gap-2">
+<!-- Recenter Map Button -->
+<button aria-label="Recenter live route" class="w-10 h-10 rounded-full bg-surface-container-lowest shadow-md flex items-center justify-center text-on-surface active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[20px] text-primary" style="font-variation-settings: 'FILL' 1;">my_location</span>
+</button>
+<!-- Quick Zoom & 3D Toggle Pill -->
+<div class="bg-surface-container-lowest/95 backdrop-blur-md px-2.5 py-1.5 rounded-full shadow-md flex items-center gap-2">
+<button class="font-label-sm text-label-sm font-bold text-on-surface px-1 hover:text-primary" type="button">3D</button>
+<span class="w-px h-3 bg-outline-variant"></span>
+<span class="material-symbols-outlined text-[18px] text-on-surface">explore</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Dynamic In-Map ETA Floating Bubble Overlay (Anchored near destination) -->
+<div class="absolute bottom-4 right-3 z-10">
+<div class="bg-surface-container-lowest/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-lg flex items-center gap-3">
+<div class="flex flex-col">
+<div class="flex items-baseline gap-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-black">7</span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">MINS</span>
+<span class="text-secondary font-bold mx-0.5">•</span>
+<span class="font-label-md text-label-md text-secondary">1.8 km</span>
+</div>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-label-sm text-label-sm text-tertiary font-bold tracking-tight">On Time (02:18 PM SLA)</span>
+</div>
+</div>
+<div class="w-8 h-8 rounded-xl bg-tertiary-container/40 flex items-center justify-center text-on-tertiary-container">
+<span class="material-symbols-outlined text-[20px]">electric_moped</span>
+</div>
+</div>
+</div>
+</div>
+<!-- BOTTOM FLOATING PURE WHITE CARD (DELIVERY CONTEXT & SLIDE ACTIONS) -->
+<div class="w-full bg-surface-container-lowest rounded-t-3xl shadow-2xl z-30 -mt-3 flex flex-col px-4 pt-3 pb-6 gap-3.5">
+<!-- Top Pull Pill Center Drag Handle -->
+<div class="w-12 h-1.5 rounded-full bg-secondary-fixed self-center mb-1"></div>
+<!-- Primary Customer Identification Row -->
+<div class="flex items-center justify-between gap-3">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface font-extrabold truncate">Aarav S.</span>
+<span class="px-2 py-0.5 rounded-md bg-secondary-container text-on-secondary-fixed text-label-sm font-bold shrink-0">Tower B</span>
+</div>
+<p class="font-body-md text-body-md text-secondary font-semibold truncate mt-0.5">
+          Flat 402 • Palm Heights Society
+        </p>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="material-symbols-outlined text-[16px] text-tertiary" style="font-variation-settings: 'FILL' 1;">vpn_key</span>
+<span class="font-label-md text-label-md text-on-surface font-extrabold tracking-wide">Bay 2 Gate Code: <span class="bg-surface-container px-1.5 py-0.5 rounded text-on-surface-variant font-mono">#8491</span></span>
+</div>
+</div>
+<!-- Quick Contact Actions -->
+<div class="flex items-center gap-2 shrink-0">
+<!-- Call Button: High Touch Outdoor Ergonomics -->
+<a aria-label="Call customer Aarav S" class="w-12 h-12 rounded-2xl bg-tertiary text-on-tertiary flex items-center justify-center shadow-md active:scale-95 transition-transform" href="tel:+919876543210">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">phone_in_talk</span>
+</a>
+<!-- In-App Quick Chat Button -->
+<button aria-label="Chat with customer" class="w-12 h-12 rounded-2xl bg-surface-container text-on-surface flex items-center justify-center active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[24px]">chat</span>
+</button>
+</div>
+</div>
+<!-- PROMINENT YELLOW SPECIAL DELIVERY INSTRUCTION CHIP -->
+<div class="w-full bg-primary-fixed/40 rounded-2xl p-3 flex items-start gap-3">
+<div class="w-9 h-9 rounded-xl bg-primary-fixed-dim text-on-primary-fixed flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">notifications_off</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-primary-fixed-variant font-extrabold">Delivery Instruction</span>
+<p class="font-body-sm text-body-sm text-on-surface font-bold leading-snug mt-0.5">
+          "Don't ring bell, baby sleeping! Please knock softly or drop at shoe rack."
+        </p>
+</div>
+</div>
+<!-- CASH ON DELIVERY / PAYMENT COLLECTION BANNER -->
+<div class="w-full bg-surface-container-low rounded-2xl p-3.5 flex items-center justify-between">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-xl bg-tertiary-container text-on-tertiary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">payments</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm font-extrabold uppercase text-error tracking-wider">Collect Cash (COD)</span>
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface font-black mt-0.5">₹420.00</span>
+<p class="font-body-sm text-body-sm text-secondary truncate">Keep change ready • Exact cash requested</p>
+</div>
+</div>
+<!-- Order Quick Specs Pill -->
+<div class="flex flex-col items-end shrink-0 pl-2">
+<span class="px-2 py-1 rounded-lg bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-bold">3 Items</span>
+<span class="font-label-sm text-label-sm text-secondary mt-1 font-semibold">9.4 kg</span>
+</div>
+</div>
+<!-- PRIMARY ACTION CTA: I Have Reached Doorstep -->
+<div class="w-full flex flex-col gap-1.5 pt-1">
+<button class="w-full h-14 bg-primary-container text-on-surface font-headline-sm text-headline-sm font-extrabold rounded-2xl flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-transform" id="reachedBtn" type="button">
+<span>I Have Reached Doorstep</span>
+<span class="material-symbols-outlined text-[24px] font-bold">arrow_forward</span>
+</button>
+<p class="text-center font-body-sm text-body-sm text-secondary font-medium">
+        Tap when parked at Tower B lift lobby
+      </p>
+</div>
+</div>
+</div>
+<script>
+  // Simple micro-interaction for primary button tap
+  const reachedBtn = document.getElementById('reachedBtn');
+  if (reachedBtn) {
+    reachedBtn.addEventListener('click', () => {
+      reachedBtn.classList.add('bg-tertiary-container', 'text-on-tertiary-container');
+      reachedBtn.innerHTML = `
+        <span class="material-symbols-outlined text-[24px] font-bold animate-spin">sync</span>
+        <span>Verifying GPS Location...</span>
+      `;
+      setTimeout(() => {
+        reachedBtn.innerHTML = `
+          <span class="material-symbols-outlined text-[24px] font-bold">check_circle</span>
+          <span>Arrived at Tower B!</span>
+        `;
+      }, 900);
+    });
+  }
+</script></main></body></html>

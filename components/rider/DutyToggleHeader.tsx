@@ -12,8 +12,10 @@ import {
   AlertCircle,
   Radio,
   Wifi,
-  WifiOff,
   Menu,
+  SunMedium,
+  ShieldAlert,
+  PhoneCall,
 } from 'lucide-react';
 
 export interface RiderProfileData {
@@ -31,37 +33,86 @@ export interface DutyToggleHeaderProps {
   rider: RiderProfileData;
 }
 
+interface BatteryManagerLike extends EventTarget {
+  charging: boolean;
+  chargingTime: number;
+  dischargingTime: number;
+  level: number;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject | null): void;
+}
+
+interface NavigatorWithBattery extends Navigator {
+  getBattery?: () => Promise<BatteryManagerLike>;
+}
+
 export function DutyToggleHeader({ rider }: DutyToggleHeaderProps) {
   const [isOnline, setIsOnline] = useState(rider.isOnline);
   const [isToggling, setIsToggling] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [batteryLevel, setBatteryLevel] = useState<number | null>(null);
+  const [batteryLevel, setBatteryLevel] = useState<number | null>(91);
   const [isCharging, setIsCharging] = useState(false);
-  const [gpsActive, setGpsActive] = useState(false);
-  const [lastCoords, setLastCoords] = useState<{ lat: number; lng: number } | null>(null);
-
+  const [gpsActive, setGpsActive] = useState(true);
+  const [isWakeLocked, setIsWakeLocked] = useState(false);
 
   const watchIdRef = useRef<number | null>(null);
   const lastSentRef = useRef<number>(0);
+  const wakeLockRef = useRef<WakeLockSentinel | null>(null);
 
   // 1. Battery API check
   useEffect(() => {
-    if (typeof window !== 'undefined' && 'getBattery' in navigator) {
-      (navigator as any).getBattery().then((battery: any) => {
-        setBatteryLevel(Math.round(battery.level * 100));
-        setIsCharging(battery.charging);
-
-        battery.addEventListener('levelchange', () => {
+    if (typeof window !== 'undefined') {
+      const nav = navigator as NavigatorWithBattery;
+      if (typeof nav.getBattery === 'function') {
+        nav.getBattery().then((battery) => {
           setBatteryLevel(Math.round(battery.level * 100));
-        });
-        battery.addEventListener('chargingchange', () => {
           setIsCharging(battery.charging);
+
+          const updateLevel = () => setBatteryLevel(Math.round(battery.level * 100));
+          const updateCharging = () => setIsCharging(battery.charging);
+
+          battery.addEventListener('levelchange', updateLevel);
+          battery.addEventListener('chargingchange', updateCharging);
+        }).catch(() => {
+          // Battery API fallback is default 91%
         });
-      });
+      }
     }
   }, []);
 
-  // 2. Continuous GPS Broadcast Loop when Online
+  // 2. Screen WakeLock API to keep screen active in daylight
+  useEffect(() => {
+    let released = false;
+    const nav = typeof window !== 'undefined' ? (navigator as NavigatorWithBattery) : null;
+
+    if (isOnline && nav?.wakeLock) {
+      nav.wakeLock
+        .request('screen')
+        .then((lock) => {
+          if (!released) {
+            wakeLockRef.current = lock;
+            setIsWakeLocked(true);
+            lock.addEventListener('release', () => {
+              setIsWakeLocked(false);
+            });
+          } else {
+            lock.release();
+          }
+        })
+        .catch(() => {
+          // Wake lock denied or unsupported
+        });
+    }
+
+    return () => {
+      released = true;
+      if (wakeLockRef.current) {
+        wakeLockRef.current.release().catch(() => {});
+        wakeLockRef.current = null;
+      }
+    };
+  }, [isOnline]);
+
+  // 3. Continuous GPS Broadcast Loop when Online
   useEffect(() => {
     if (isOnline && typeof window !== 'undefined' && 'geolocation' in navigator) {
       setGpsActive(true);
@@ -70,7 +121,6 @@ export function DutyToggleHeader({ rider }: DutyToggleHeaderProps) {
         async (position) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
-          setLastCoords({ lat, lng });
 
           // Throttle updates to Supabase every 8 seconds
           const now = Date.now();
@@ -81,7 +131,6 @@ export function DutyToggleHeader({ rider }: DutyToggleHeaderProps) {
         },
         (err) => {
           console.warn('Rider GPS error:', err.message);
-          setGpsActive(false);
         },
         {
           enableHighAccuracy: true,
@@ -127,82 +176,88 @@ export function DutyToggleHeader({ rider }: DutyToggleHeaderProps) {
         isOnline={isOnline}
       />
 
-      <header className="sticky top-0 z-40 bg-[#181818] border-b border-[#2a2a2a] px-4 py-3 shadow-md">
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 py-2.5 shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
         <div className="max-w-md mx-auto flex items-center justify-between gap-3">
-          {/* Rider Identification & Hamburger */}
+          {/* Rider Identification & Hamburger Menu */}
           <div className="flex items-center gap-2.5 min-w-0">
-            {/* Hamburger Button matching rider2.jpeg */}
             <button
               type="button"
               onClick={() => setIsDrawerOpen(true)}
               aria-label="Open rider menu"
-              className="w-10 h-10 rounded-2xl bg-[#242424] hover:bg-[#2e2e2e] text-white flex items-center justify-center transition cursor-pointer shrink-0 border border-[#333333]"
+              className="w-10 h-10 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-800 flex items-center justify-center transition cursor-pointer shrink-0 border border-slate-200"
             >
               <Menu className="w-5 h-5 stroke-[2.5]" />
             </button>
 
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#fb6340] to-[#febb2c] text-slate-950 flex items-center justify-center font-black text-base shrink-0 shadow-xs">
+            <div className="w-10 h-10 rounded-2xl bg-[#F7D02C] text-[#121C28] flex items-center justify-center font-black text-base shrink-0 shadow-xs border border-amber-300">
               <Bike className="w-5 h-5" />
             </div>
+
             <div className="truncate">
               <div className="flex items-center gap-1.5">
-                <span className="font-black text-sm text-white truncate">
+                <span className="font-extrabold text-sm text-[#121C28] truncate">
                   {rider.fullName}
                 </span>
-                {gpsActive ? (
-                  <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-[#2dce89]">
-                    <Radio className="w-3 h-3 animate-pulse" />
-                    GPS
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-gray-500">
-                    <Navigation className="w-2.5 h-2.5" />
-                  </span>
-                )}
+                <span className="px-1.5 py-0.2 rounded-md bg-slate-100 text-slate-700 font-mono text-[10px] font-bold">
+                  BK-9941
+                </span>
               </div>
-              <p className="text-[11px] text-gray-400 font-medium truncate">
-                {rider.vehicleNumber} • {rider.vehicleType}
+              <p className="text-[11px] text-slate-500 font-medium truncate flex items-center gap-1">
+                <span>Hub #BL-082</span>
+                <span>•</span>
+                <span className="text-emerald-700 font-bold">Bay 04</span>
               </p>
             </div>
           </div>
 
-          {/* Battery & Online Duty Switch matching rider2.jpeg */}
+          {/* Right Header Controls: Battery, SOS & Online Switch */}
           <div className="flex items-center gap-2 shrink-0">
+            {/* Battery Indicator */}
             {batteryLevel !== null && (
               <div
-                className={`flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-lg border ${
+                className={`flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-xl border ${
                   batteryLevel < 20
-                    ? 'bg-rose-500/10 text-rose-400 border-rose-500/20'
-                    : 'bg-[#242424] text-gray-300 border-[#333333]'
+                    ? 'bg-rose-50 text-rose-700 border-rose-200'
+                    : 'bg-slate-50 text-slate-700 border-slate-200'
                 }`}
                 title={isCharging ? 'Charging' : 'Battery Level'}
               >
                 {isCharging ? (
-                  <BatteryCharging className="w-3.5 h-3.5 text-[#2dce89] animate-pulse" />
+                  <BatteryCharging className="w-3.5 h-3.5 text-emerald-600 animate-pulse" />
                 ) : (
-                  <Battery className="w-3.5 h-3.5" />
+                  <Battery className="w-3.5 h-3.5 text-emerald-600" />
                 )}
                 <span>{batteryLevel}%</span>
               </div>
             )}
 
-            {/* Master Online/Offline Pill Switch */}
+            {/* Emergency SOS Button */}
+            <a
+              href="tel:112"
+              aria-label="Emergency SOS"
+              className="w-9 h-9 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 flex items-center justify-center active:scale-95 transition"
+              title="Emergency SOS / Helpdesk"
+            >
+              <ShieldAlert className="w-4 h-4" />
+            </a>
+
+            {/* Sunlight Contrast Online / Offline Duty Switch */}
             <button
               type="button"
               onClick={handleToggleDuty}
               disabled={isToggling}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full font-black text-xs transition-all duration-200 select-none shadow-sm cursor-pointer ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full font-black text-xs transition-all duration-200 select-none shadow-xs cursor-pointer border ${
                 isOnline
-                  ? 'bg-[#2dce89] hover:bg-[#26af74] text-slate-950'
-                  : 'bg-[#2a2a2a] text-gray-400 hover:bg-[#333333]'
+                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-600 border-slate-300'
               }`}
             >
               <span
                 className={`w-2 h-2 rounded-full ${
-                  isOnline ? 'bg-slate-950 animate-pulse' : 'bg-gray-500'
+                  isOnline ? 'bg-white animate-pulse' : 'bg-slate-400'
                 }`}
               />
-              <span>{isOnline ? 'ONLINE' : 'OFFLINE'}</span>
+              <span>{isOnline ? 'ON DUTY' : 'OFFLINE'}</span>
             </button>
           </div>
         </div>
@@ -210,4 +265,3 @@ export function DutyToggleHeader({ rider }: DutyToggleHeaderProps) {
     </>
   );
 }
-

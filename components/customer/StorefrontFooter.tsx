@@ -247,10 +247,6 @@ export function StorefrontFooter() {
               Admin Station
             </Link>
             <span>•</span>
-            <Link href="/rider" className="text-slate-600 hover:text-amber-600 font-semibold transition">
-              Rider Portal
-            </Link>
-            <span>•</span>
             <span className="text-slate-400">All rights reserved</span>
           </div>
         </div>

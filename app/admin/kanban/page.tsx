@@ -1,15 +1,13 @@
 import React from 'react';
-import { createServerClient } from '@/lib/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { ArgonHeader } from '@/components/admin/ArgonHeader';
 import { LiveDispatchKanban } from '@/components/admin/LiveDispatchKanban';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminKanbanPage() {
-  const supabase = await createServerClient();
-
-  // 1. Fetch recent active orders with items
-  const { data: orders } = await (supabase as any)
+  // 1. Fetch real active orders with items using authoritative supabaseAdmin
+  const { data: orders } = await (supabaseAdmin as any)
     .from('orders')
     .select(`
       *,
@@ -18,8 +16,8 @@ export default async function AdminKanbanPage() {
     .order('created_at', { ascending: false })
     .limit(50);
 
-  // 2. Fetch available riders
-  const { data: riders } = await supabase
+  // 2. Fetch real registered riders
+  const { data: riders } = await supabaseAdmin
     .from('profiles')
     .select('id, full_name, phone')
     .eq('role', 'rider');

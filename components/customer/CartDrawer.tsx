@@ -193,12 +193,16 @@ export function CartDrawer() {
                     <QuantityStepper
                       size="sm"
                       quantity={item.quantity}
-                      onIncrement={() =>
-                        updateQuantity(item.variationId, item.quantity + 1)
-                      }
-                      onDecrement={() =>
-                        updateQuantity(item.variationId, item.quantity - 1)
-                      }
+                      onIncrement={() => {
+                        sound.playPopSound();
+                        sound.triggerHaptic(12);
+                        updateQuantity(item.variationId, item.quantity + 1);
+                      }}
+                      onDecrement={() => {
+                        sound.playPopSound();
+                        sound.triggerHaptic(12);
+                        updateQuantity(item.variationId, item.quantity - 1);
+                      }}
                     />
                   </div>
                 </div>
@@ -274,7 +278,7 @@ export function CartDrawer() {
                   router.push(`/order/${demoOrderId}`);
                 }, 400);
               }}
-              className="w-full bg-[#febb2c] hover:bg-[#f5a623] text-slate-950 py-3.5 px-5 rounded-2xl font-black flex items-center justify-between shadow-elevated active:scale-[0.98] transition-all min-h-[52px] cursor-pointer"
+              className="w-full bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover,var(--brand-primary))] text-slate-950 py-3.5 px-5 rounded-2xl font-black flex items-center justify-between shadow-elevated active:scale-[0.98] transition-all min-h-[52px] cursor-pointer"
             >
               <div className="flex flex-col text-left">
                 <span className="text-[10px] uppercase text-slate-900 font-extrabold flex items-center gap-1">

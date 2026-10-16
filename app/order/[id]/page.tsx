@@ -1,7 +1,9 @@
 import React from 'react';
-import { createServerClient } from '@/lib/supabase/server';
+import Link from 'next/link';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { LiveOrderTracker, OrderWithItems } from '@/components/customer/LiveOrderTracker';
 import { StorefrontHeader } from '@/components/customer/StorefrontHeader';
+import { PackageX, ArrowLeft } from 'lucide-react';
 
 interface OrderPageProps {
   params: Promise<{ id: string }>;
@@ -9,86 +11,48 @@ interface OrderPageProps {
 
 export default async function OrderPage({ params }: OrderPageProps) {
   const { id } = await params;
-  const supabase = await createServerClient();
 
-  const { data: order } = await supabase
+  // 1. Fetch real order directly from Supabase
+  const { data: order } = await supabaseAdmin
     .from('orders')
     .select('*')
     .eq('id', id)
-    .single();
+    .maybeSingle();
 
   if (!order) {
-    // Demo fallback order if browsing a direct test link
-    const mockOrder: OrderWithItems = {
-      id,
-      order_number: 1042,
-      store_id: '11111111-1111-1111-1111-111111111111',
-      customer_id: 'cust_demo_1',
-      rider_id: null,
-      address_id: 'addr_1',
-      delivery_address_snapshot: {
-        label: 'Home',
-        address_line_1: 'Shop 12-14, Galleria Market, Sector 28',
-        city: 'Gurugram',
-        pincode: '122002',
-        latitude: 28.4595,
-        longitude: 77.0266,
-      },
-      status: 'ACCEPTED',
-      payment_method: 'COD',
-      payment_status: 'UNPAID',
-      items_subtotal: 420,
-      delivery_fee: 0,
-      discount_amount: 50,
-      total_amount: 370,
-      coupon_code: 'WELCOME50',
-      customer_notes: 'Leave at front door',
-      delivery_otp: '7824',
-      razorpay_order_id: null,
-      razorpay_payment_id: null,
-      estimated_delivery_time: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
-      dispatched_at: null,
-      delivered_at: null,
-      cancelled_at: null,
-      cancellation_reason: null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      order_items: [
-        {
-          id: 'item_1',
-          product_name: 'Fresh Farm Shimla Apples',
-          variation_title: '1 kg (approx. 8 pcs)',
-          unit_price: 169,
-          quantity: 1,
-          total_price: 169,
-          image_url:
-            'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=600&q=80',
-        },
-        {
-          id: 'item_2',
-          product_name: 'Amul Taaza Homogenised Milk',
-          variation_title: '1 Litre Tetra Pack',
-          unit_price: 70,
-          quantity: 2,
-          total_price: 140,
-          image_url:
-            'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80',
-        },
-      ],
-    };
-
     return (
       <div className="min-h-screen flex flex-col bg-[var(--bg-app)] text-[var(--text-body)]">
         <StorefrontHeader />
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-8 py-6">
-          <LiveOrderTracker initialOrder={mockOrder} />
+        <main className="flex-1 max-w-lg w-full mx-auto px-4 py-16 text-center flex flex-col items-center justify-center">
+          <div className="w-16 h-16 rounded-3xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 mb-4 shadow-sm">
+            <PackageX className="w-8 h-8" />
+          </div>
+          <h1 className="text-2xl font-black text-slate-900 mb-2">Order Not Found</h1>
+          <p className="text-xs text-slate-500 max-w-sm mb-6 leading-relaxed">
+            We could not find an active order matching ID <code className="bg-slate-100 px-1.5 py-0.5 rounded text-slate-700 font-mono text-[11px]">{id}</code>. It may have expired or been placed under another session.
+          </p>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Store</span>
+            </Link>
+            <Link
+              href="/orders"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 font-bold text-xs hover:bg-slate-50 transition"
+            >
+              <span>View My Orders</span>
+            </Link>
+          </div>
         </main>
       </div>
     );
   }
 
-  // Fetch related order items
-  const { data: orderItems } = await supabase
+  // 2. Fetch real related order items
+  const { data: orderItems } = await supabaseAdmin
     .from('order_items')
     .select('*')
     .eq('order_id', order.id);

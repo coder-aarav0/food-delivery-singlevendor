@@ -3,6 +3,7 @@
 import { createServerClient } from '@/lib/supabase/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
+import { OrderStatus, Database } from '@/types/database.types';
 
 /**
  * Toggles Store Operational Status (Open / Closed for orders).
@@ -126,6 +127,8 @@ export async function updateStoreSettingsAction(
     delivery_radius_km?: number;
     opening_time?: string;
     closing_time?: string;
+    is_rain_surge_active?: boolean;
+    rain_surge_fee?: number;
   }
 ) {
   const { error } = await supabaseAdmin
@@ -238,34 +241,64 @@ export async function saveCategoryAction(data: {
     .replace(/(^-|-$)+/g, '');
 
   if (data.id) {
-    const { error } = await supabaseAdmin
+    const { data: updated, error } = await supabaseAdmin
       .from('categories')
       .update({
         name: data.title,
         slug,
         image_url: data.imageUrl || null,
       })
-      .eq('id', data.id);
+      .eq('id', data.id)
+      .select('id, name, slug, image_url')
+      .single();
 
     if (error) return { success: false, error: error.message };
+    revalidatePath('/');
+    revalidatePath('/admin');
+    revalidatePath('/admin/category');
+    return {
+      success: true,
+      category: updated
+        ? {
+            id: updated.id,
+            name: updated.name,
+            slug: updated.slug,
+            description: null,
+            image_url: updated.image_url,
+          }
+        : null,
+    };
   } else {
-    const { error } = await supabaseAdmin.from('categories').insert({
-      store_id: '11111111-1111-1111-1111-111111111111',
-      name: data.title,
-      slug,
-      image_url: data.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80',
-      is_active: true,
-      display_order: 10,
-    });
+    const { data: inserted, error } = await supabaseAdmin
+      .from('categories')
+      .insert({
+        store_id: '11111111-1111-1111-1111-111111111111',
+        name: data.title,
+        slug,
+        image_url: data.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80',
+        is_active: true,
+        display_order: 10,
+      })
+      .select('id, name, slug, image_url')
+      .single();
 
     if (error) return { success: false, error: error.message };
+    revalidatePath('/');
+    revalidatePath('/admin');
+    revalidatePath('/admin/category');
+    return {
+      success: true,
+      category: inserted
+        ? {
+            id: inserted.id,
+            name: inserted.name,
+            slug: inserted.slug,
+            description: null,
+            image_url: inserted.image_url,
+          }
+        : null,
+    };
   }
-
-
-  revalidatePath('/');
-  revalidatePath('/admin');
-  revalidatePath('/admin/category');
-  return { success: true };
 }
 
 /**
@@ -403,8 +436,8 @@ export async function updateOrderStatusAction(
   newStatus: string,
   reason?: string
 ) {
-  const updatePayload: any = {
-    status: newStatus,
+  const updatePayload: Partial<Database['public']['Tables']['orders']['Update']> = {
+    status: newStatus as OrderStatus,
     updated_at: new Date().toISOString(),
   };
 
@@ -422,7 +455,7 @@ export async function updateOrderStatusAction(
   // Log status change
   await supabaseAdmin.from('order_status_logs').insert({
     order_id: orderId,
-    new_status: newStatus as any,
+    new_status: newStatus as OrderStatus,
     notes: reason ? `Reason: ${reason}` : `Updated by store admin`,
   });
 

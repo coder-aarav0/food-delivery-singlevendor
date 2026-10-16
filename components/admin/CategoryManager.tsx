@@ -67,11 +67,13 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
               : c
           )
         );
+      } else if (res.category) {
+        setCategories((prev) => [res.category as CategoryItem, ...prev]);
       } else {
         const newCat: CategoryItem = {
-          id: 'temp-' + Date.now(),
+          id: 'cat-' + Date.now(),
           name: title.trim(),
-          slug: title.toLowerCase().replace(/\s+/g, '-'),
+          slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
           description: description.trim(),
           image_url:
             imageUrl.trim() ||

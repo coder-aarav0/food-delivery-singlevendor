@@ -62,25 +62,28 @@ export default async function RiderOrderExecutionPage({ params }: PageProps) {
   // If already delivered, show completion view
   if (orderData.status === 'DELIVERED') {
     return (
-      <div className="p-8 text-center rounded-3xl bg-[#1c1c1e] border border-[#2c2c2e] space-y-4 shadow-xl">
-        <div className="w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/20">
-          <CheckCircle className="w-8 h-8" />
+      <div className="p-8 text-center rounded-3xl bg-white border border-slate-200/80 space-y-4 shadow-sm">
+        <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-200">
+          <CheckCircle className="w-8 h-8 stroke-[2.5]" />
         </div>
-        <h2 className="font-black text-xl text-white">
-          Delivery Completed!
-        </h2>
-        <p className="text-xs text-gray-400 max-w-xs mx-auto">
-          Order #{orderData.order_number} has been delivered and verified via customer OTP.
-        </p>
-        <Link
-          href="/rider"
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#febb2c] hover:bg-[#f5a623] text-slate-950 font-black text-xs shadow-md transition"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Deliveries Feed
-        </Link>
+        <div className="space-y-1">
+          <h2 className="font-black text-xl text-[#121C28]">
+            Order #{orderData.order_number} Delivered!
+          </h2>
+          <p className="text-xs text-slate-500 max-w-xs mx-auto">
+            Order has been delivered and verified via customer OTP. ₹55.00 credited to partner wallet.
+          </p>
+        </div>
+        <div className="pt-2">
+          <Link
+            href="/rider"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#F7D02C] hover:bg-[#ebd228] text-[#121C28] font-black text-xs shadow-sm transition"
+          >
+            <ArrowLeft className="w-4 h-4 stroke-[2.5]" />
+            <span>Back to Radar &amp; Deliveries Feed</span>
+          </Link>
+        </div>
       </div>
-
     );
   }
 

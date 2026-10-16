@@ -14,9 +14,9 @@ import {
   LogOut,
   ChevronRight,
   ShieldCheck,
-  Bike,
 } from 'lucide-react';
 import { EnategaLogo } from '@/components/ui/EnategaLogo';
+import { supabase } from '@/lib/supabase/client';
 
 export interface CustomerDrawerProps {
   isOpen: boolean;
@@ -32,6 +32,17 @@ export function CustomerDrawer({
   userPhone = '+91 98765 43210',
 }: CustomerDrawerProps) {
   if (!isOpen) return null;
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      localStorage.removeItem('freshmart_user_session_v1');
+    } catch {
+      // Ignore
+    }
+    onClose();
+    window.location.reload();
+  };
 
   // Exact 6 core items matching customer1.jpeg + Favorites
   const menuItems = [
@@ -114,34 +125,26 @@ export function CustomerDrawer({
 
         {/* Footer with Portal Switchers & Logout */}
         <div className="p-6 border-t border-black/10 space-y-3 shrink-0">
-          <div className="grid grid-cols-2 gap-2">
+          <div>
             <Link
               href="/admin"
               onClick={onClose}
               className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-black/10 hover:bg-black/20 text-gray-950 font-bold text-xs transition"
             >
               <ShieldCheck className="size-3.5" />
-              <span>Admin</span>
-            </Link>
-            <Link
-              href="/rider"
-              onClick={onClose}
-              className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-black/10 hover:bg-black/20 text-gray-950 font-bold text-xs transition"
-            >
-              <Bike className="size-3.5" />
-              <span>Rider</span>
+              <span>Admin Station</span>
             </Link>
           </div>
 
           <div className="flex items-center justify-between pt-1 text-xs font-bold text-gray-900">
-            <Link
-              href="/profile"
-              onClick={onClose}
-              className="flex items-center gap-1.5 hover:text-red-900 transition"
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="flex items-center gap-1.5 hover:text-red-900 transition cursor-pointer"
             >
               <LogOut className="size-4" />
-              <span>Logout / Switch</span>
-            </Link>
+              <span>Log Out</span>
+            </button>
             <span className="px-2.5 py-0.5 rounded-full bg-black text-white text-[10px] font-mono font-bold">
               v2.4.0
             </span>

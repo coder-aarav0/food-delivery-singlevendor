@@ -17,10 +17,25 @@ import {
   RefreshCw,
 } from 'lucide-react';
 
+export interface BarcodeScannerItem {
+  id: string;
+  product_name: string;
+  variation_title?: string;
+  quantity: number;
+  image_url?: string | null;
+  barcode?: string;
+}
+
+export interface BarcodeScannerOrder {
+  id: string;
+  order_number?: number;
+  order_items?: BarcodeScannerItem[];
+}
+
 export interface BarcodeScannerModalProps {
   isOpen: boolean;
   onClose: () => void;
-  order: any;
+  order: BarcodeScannerOrder | null;
   onCompletePack: () => void;
 }
 
@@ -34,7 +49,7 @@ export function BarcodeScannerModal({
   order,
   onCompletePack,
 }: BarcodeScannerModalProps) {
-  const items = order?.order_items || [];
+  const items: BarcodeScannerItem[] = order?.order_items || [];
   const [scannedItems, setScannedItems] = useState<ScannedState>({});
   const [manualBarcode, setManualBarcode] = useState('');
   const [lastScannedName, setLastScannedName] = useState<string | null>(null);
@@ -56,7 +71,7 @@ export function BarcodeScannerModal({
     if (scannedItems[itemId]) return;
 
     playPopSound();
-    triggerHaptic();
+    triggerHaptic(15);
 
     const nextState = { ...scannedItems, [itemId]: true };
     setScannedItems(nextState);
@@ -66,17 +81,65 @@ export function BarcodeScannerModal({
     if (Object.values(nextState).filter(Boolean).length === totalItemsCount) {
       setTimeout(() => {
         playCelebrationSound();
-        triggerHaptic();
+        triggerHaptic([40, 60, 100]);
       }, 200);
     }
   };
+
+  // Physical USB/Bluetooth barcode scanner hardware listener (<30ms between keystrokes)
+  useEffect(() => {
+    if (!isOpen) return;
+
+    let buffer = '';
+    let lastKeyTime = Date.now();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is manually typing into the manual input
+      if (
+        document.activeElement?.tagName === 'INPUT' ||
+        document.activeElement?.tagName === 'TEXTAREA'
+      ) {
+        return;
+      }
+
+      const now = Date.now();
+      const diff = now - lastKeyTime;
+      lastKeyTime = now;
+
+      if (e.key === 'Enter') {
+        if (buffer.length >= 3) {
+          const scannedCode = buffer.trim();
+          const matchedItem =
+            items.find((it) => it.barcode === scannedCode) ||
+            items.find((it) => !scannedItems[it.id]);
+
+          if (matchedItem) {
+            handleScanItem(matchedItem.id, matchedItem.product_name);
+          }
+        }
+        buffer = '';
+        return;
+      }
+
+      if (diff > 50) {
+        buffer = '';
+      }
+
+      if (e.key.length === 1) {
+        buffer += e.key;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, items, scannedItems]);
 
   const handleManualScanSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!manualBarcode.trim()) return;
 
     // Find next unverified item or match
-    const unscannedItem = items.find((it: any) => !scannedItems[it.id]);
+    const unscannedItem = items.find((it) => !scannedItems[it.id]);
     if (unscannedItem) {
       handleScanItem(unscannedItem.id, unscannedItem.product_name);
       setManualBarcode('');
@@ -85,7 +148,7 @@ export function BarcodeScannerModal({
 
   const handleConfirmAndSeal = () => {
     playCelebrationSound();
-    triggerHaptic();
+    triggerHaptic(40);
     onCompletePack();
     onClose();
   };
@@ -128,158 +191,106 @@ export function BarcodeScannerModal({
           <div className="absolute top-0 left-0 right-0 h-0.5 bg-emerald-400 shadow-[0_0_12px_#34d399] animate-pulse pointer-events-none" />
 
           {/* Reticle Target */}
-          <div className="w-48 h-24 border-2 border-dashed border-emerald-400/50 rounded-xl flex flex-col items-center justify-center p-2 backdrop-blur-xs">
-            <ScanLine className="w-6 h-6 text-emerald-400 mb-1 animate-bounce" />
-            <span className="text-[10px] uppercase tracking-widest text-emerald-300 font-bold">
-              Optical Viewfinder Active
+          <div className="relative z-10 flex flex-col items-center gap-2">
+            <div className="p-3 rounded-full bg-slate-900 border border-slate-700 text-emerald-400">
+              <ScanLine className="w-8 h-8 animate-pulse" />
+            </div>
+            <span className="text-xs font-bold text-slate-300">
+              Hardware Scanner Active • Point laser barcode gun at product
             </span>
-          </div>
-
-          <div className="mt-3">
-            {lastScannedName ? (
-              <span className="text-xs font-bold text-emerald-400 flex items-center justify-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                Verified: {lastScannedName}
-              </span>
-            ) : (
-              <span className="text-xs text-slate-400">
-                Point dark store camera at EAN-13 barcode or tap item below
+            {lastScannedName && (
+              <span className="text-xs font-bold text-emerald-400 animate-in fade-in">
+                ✓ Verified: {lastScannedName}
               </span>
             )}
           </div>
         </div>
 
-        {/* Manual Barcode Gun Input */}
-        <form
-          onSubmit={handleManualScanSubmit}
-          className="flex items-center gap-2"
-        >
-          <div className="relative flex-1">
-            <Barcode className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={manualBarcode}
-              onChange={(e) => setManualBarcode(e.target.value)}
-              placeholder="Scan with Bluetooth/USB Gun or enter SKU..."
-              className="w-full pl-9 pr-3 py-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs text-[var(--text-ink)] focus:outline-none focus:border-[var(--brand-primary)]"
-            />
-          </div>
+        {/* Manual Barcode Input Fallback */}
+        <form onSubmit={handleManualScanSubmit} className="flex gap-2">
+          <input
+            type="text"
+            value={manualBarcode}
+            onChange={(e) => setManualBarcode(e.target.value)}
+            placeholder="Manual SKU / EAN-13 Barcode or tap Verify below..."
+            className="flex-1 h-10 px-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs font-medium focus:outline-none focus:border-emerald-500"
+          />
           <Button
             type="submit"
-            variant="outline"
+            variant="secondary"
             size="sm"
-            className="text-xs h-9 min-h-[36px]"
+            className="h-10 text-xs font-bold"
           >
-            Enter SKU
+            Scan Next
           </Button>
         </form>
 
-        {/* Order Items Verification Checklist */}
-        <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-          <label className="text-xs font-black uppercase tracking-wider text-[var(--text-ink)] block">
-            Items to Pack & Scan
-          </label>
-
-          {items.map((item: any, idx: number) => {
-            const isScanned = !!scannedItems[item.id];
-            const mockBarcode = `89012620${(idx + 10).toString().padStart(4, '0')}`;
-
+        {/* Item Picking Checklist */}
+        <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+          {items.map((it) => {
+            const isScanned = Boolean(scannedItems[it.id]);
             return (
               <div
-                key={item.id}
-                className={`p-3 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
+                key={it.id}
+                onClick={() => handleScanItem(it.id, it.product_name)}
+                className={`p-3 rounded-xl border flex items-center justify-between gap-3 transition cursor-pointer select-none ${
                   isScanned
-                    ? 'border-emerald-300 bg-emerald-50/60 shadow-xs'
-                    : 'border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:border-slate-300'
+                    ? 'bg-emerald-50/80 border-emerald-300 text-emerald-950'
+                    : 'bg-[var(--bg-surface)] border-[var(--border-subtle)] hover:border-slate-300'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                    className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
                       isScanned
-                        ? 'bg-emerald-500 text-white'
-                        : 'bg-slate-100 text-slate-400'
+                        ? 'bg-emerald-600 text-white'
+                        : 'border-2 border-slate-300 text-transparent'
                     }`}
                   >
-                    {isScanned ? (
-                      <CheckCircle2 className="w-5 h-5" />
-                    ) : (
-                      <Barcode className="w-5 h-5" />
-                    )}
+                    <CheckCircle2 className="w-4 h-4" />
                   </div>
-
-                  <div>
-                    <h5 className="text-xs font-bold text-[var(--text-ink)]">
-                      {item.product_name}
-                    </h5>
-                    <div className="flex items-center gap-2 text-[10px] text-[var(--text-muted)] font-mono">
-                      <span>Qty: {item.quantity}</span>
-                      <span>•</span>
-                      <span>SKU: {mockBarcode}</span>
-                    </div>
+                  <div className="flex flex-col">
+                    <span className="text-xs font-bold text-[var(--text-ink)] leading-tight">
+                      {it.product_name}
+                    </span>
+                    <span className="text-[11px] text-[var(--text-muted)]">
+                      {it.variation_title || 'Standard'} • Qty: {it.quantity}
+                    </span>
                   </div>
                 </div>
 
-                {isScanned ? (
-                  <span className="text-[11px] font-black text-emerald-700 bg-emerald-100/80 px-2.5 py-1 rounded-lg">
-                    VERIFIED ✓
-                  </span>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleScanItem(item.id, item.product_name)
-                    }
-                    className="px-3 py-1.5 rounded-xl bg-[var(--brand-primary)] hover:opacity-90 text-slate-950 font-bold text-xs transition-transform active:scale-95 shadow-sm flex items-center gap-1"
-                  >
-                    <ScanLine className="w-3.5 h-3.5" />
-                    <span>Scan</span>
-                  </button>
-                )}
+                <span
+                  className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full ${
+                    isScanned
+                      ? 'bg-emerald-200 text-emerald-800'
+                      : 'bg-slate-100 text-slate-500'
+                  }`}
+                >
+                  {isScanned ? 'VERIFIED' : 'PENDING'}
+                </span>
               </div>
             );
           })}
         </div>
 
-        {/* Completion Action */}
-        <div className="pt-2 border-t border-[var(--border-subtle)] space-y-2">
-          {isAllVerified ? (
-            <Button
-              variant="accent"
-              onClick={handleConfirmAndSeal}
-              className="w-full text-xs font-bold h-11 bg-emerald-600 hover:bg-emerald-700 text-white"
-            >
-              <PackageCheck className="w-4 h-4 mr-1.5" />
-              <span>All 100% Verified • Seal Bag & Mark Ready</span>
-            </Button>
-          ) : (
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                onClick={onClose}
-                className="flex-1 text-xs"
-              >
-                Close
-              </Button>
-              <Button
-                variant="primary"
-                onClick={() => {
-                  // Instant verify all for testing speed
-                  const allScanned: ScannedState = {};
-                  items.forEach((it: any) => {
-                    allScanned[it.id] = true;
-                  });
-                  setScannedItems(allScanned);
-                  playCelebrationSound();
-                  triggerHaptic();
-                }}
-                className="flex-1 text-xs"
-              >
-                <Sparkles className="w-3.5 h-3.5 mr-1" />
-                <span>1-Tap Verify All</span>
-              </Button>
-            </div>
-          )}
+        {/* Modal Action Footer */}
+        <div className="pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between">
+          <Button variant="ghost" size="sm" onClick={onClose} className="text-xs font-bold">
+            Close
+          </Button>
+
+          <Button
+            variant="primary"
+            size="md"
+            disabled={!isAllVerified}
+            onClick={handleConfirmAndSeal}
+            className={`text-xs font-black flex items-center gap-1.5 ${
+              isAllVerified ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : ''
+            }`}
+          >
+            <PackageCheck className="w-4 h-4" />
+            <span>Confirm & Ready For Pickup</span>
+          </Button>
         </div>
       </div>
     </Modal>

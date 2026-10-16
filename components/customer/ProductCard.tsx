@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/Badge';
 import { QuantityStepper } from '@/components/ui/QuantityStepper';
 import { Button } from '@/components/ui/Button';
 import { useCart } from '@/context/CartContext';
+import { sound } from '@/lib/sound';
 import { Plus } from 'lucide-react';
 
 export interface ProductVariationItem {
@@ -80,6 +81,8 @@ export function ProductCard({
       return;
     }
 
+    sound.playPopSound();
+    sound.triggerHaptic(15);
     addItem({
       productId: product.id,
       variationId: primaryVariation.id,
@@ -184,19 +187,23 @@ export function ProductCard({
               <QuantityStepper
                 size="sm"
                 quantity={currentCartQty}
-                onIncrement={() =>
-                  updateQuantity(primaryVariation.id, currentCartQty + 1)
-                }
-                onDecrement={() =>
-                  updateQuantity(primaryVariation.id, currentCartQty - 1)
-                }
+                onIncrement={() => {
+                  sound.playPopSound();
+                  sound.triggerHaptic(12);
+                  updateQuantity(primaryVariation.id, currentCartQty + 1);
+                }}
+                onDecrement={() => {
+                  sound.playPopSound();
+                  sound.triggerHaptic(12);
+                  updateQuantity(primaryVariation.id, currentCartQty - 1);
+                }}
               />
             ) : (
               <Button
                 size="sm"
                 variant="primary"
                 onClick={handleAddClick}
-                className="bg-[var(--brand-primary)] text-slate-950 hover:bg-[var(--brand-primary-hover)] font-black h-8 min-h-[36px] px-3 shadow-xs transition-colors flex items-center gap-1 active:scale-95"
+                className="bg-[var(--brand-primary)] text-slate-950 hover:bg-[var(--brand-primary-hover)] font-black h-8 min-h-[36px] px-3 shadow-xs transition-colors flex items-center gap-1 active:scale-95 cursor-pointer"
               >
                 <span>ADD</span>
                 <Plus className="w-3.5 h-3.5 stroke-[3]" />

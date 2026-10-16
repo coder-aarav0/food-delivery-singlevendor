@@ -7,7 +7,7 @@
       ],
       "type": "stdio",
       "env": {
-        "BRAINSYNC_ENV_FILE": "C:\\Users\\AARAV SONI\\.brainsync\\food-delivery-singlevendor\\mcp-secret-env.json"
+        "BRAINSYNC_ENV_FILE": "C:\\Users\\AARAV SONI\\.bsync_core\\food-delivery-singlevendor\\mcp-secret-env.json"
       }
     }
   }

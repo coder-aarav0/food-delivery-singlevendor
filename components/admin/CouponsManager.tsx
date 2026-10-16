@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Tag, Plus, Edit2, Trash2, CheckCircle, Percent, DollarSign, Calendar } from 'lucide-react';
+import { Tag, Plus, Edit2, Trash2, CheckCircle, Percent, DollarSign, Calendar, AlertCircle } from 'lucide-react';
 
 export interface CouponItem {
   id: string;
@@ -29,6 +29,7 @@ export function CouponsManager({ initialCoupons }: CouponsManagerProps) {
   const [maxDiscount, setMaxDiscount] = useState('100');
   const [isActive, setIsActive] = useState(true);
   const [flash, setFlash] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleEdit = (coupon: CouponItem) => {
     setEditingId(coupon.id);
@@ -38,6 +39,7 @@ export function CouponsManager({ initialCoupons }: CouponsManagerProps) {
     setMinOrder(coupon.min_order_amount.toString());
     setMaxDiscount(coupon.max_discount_amount ? coupon.max_discount_amount.toString() : '');
     setIsActive(coupon.is_active);
+    setErrorMsg(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -49,15 +51,43 @@ export function CouponsManager({ initialCoupons }: CouponsManagerProps) {
     setMinOrder('199');
     setMaxDiscount('100');
     setIsActive(true);
+    setErrorMsg(null);
   };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!code.trim() || !discountValue) return;
+    setErrorMsg(null);
 
-    const val = parseFloat(discountValue) || 0;
+    if (!code.trim()) {
+      setErrorMsg('Please enter a coupon code.');
+      return;
+    }
+
+    const val = parseFloat(discountValue);
+    if (isNaN(val) || val <= 0) {
+      setErrorMsg('Please enter a valid positive discount value.');
+      return;
+    }
+
     const minVal = parseFloat(minOrder) || 0;
     const maxVal = maxDiscount ? parseFloat(maxDiscount) : null;
+
+    if (discountType === 'PERCENTAGE') {
+      if (val > 100) {
+        setErrorMsg('Percentage discount cannot exceed 100%.');
+        return;
+      }
+      if (!maxVal || maxVal <= 0) {
+        setErrorMsg('Percentage-based coupons must specify a maximum discount cap (₹) to prevent unbounded liability on bulk orders.');
+        return;
+      }
+    } else {
+      // FIXED flat discount
+      if (minVal < val) {
+        setErrorMsg(`Minimum order value (₹${minVal}) must be greater than or equal to flat discount (₹${val}).`);
+        return;
+      }
+    }
 
     if (editingId) {
       setCoupons((prev) =>
@@ -107,6 +137,13 @@ export function CouponsManager({ initialCoupons }: CouponsManagerProps) {
         <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-semibold flex items-center gap-2">
           <CheckCircle className="w-4 h-4 text-emerald-600" />
           {flash}
+        </div>
+      )}
+
+      {errorMsg && (
+        <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm font-semibold flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+          {errorMsg}
         </div>
       )}
 

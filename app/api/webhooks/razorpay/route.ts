@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import crypto from 'crypto';
 import { supabaseAdmin } from '@/lib/supabase/admin';
+import { verifyRazorpayWebhookSignature } from '@/lib/razorpay';
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,12 +23,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const expectedSignature = crypto
-      .createHmac('sha256', secret)
-      .update(rawBody)
-      .digest('hex');
+    const isValidSignature = verifyRazorpayWebhookSignature(rawBody, signature, secret);
 
-    if (expectedSignature !== signature) {
+    if (!isValidSignature) {
       console.error('❌ Razorpay webhook signature verification failed');
       return NextResponse.json(
         { error: 'Invalid HMAC signature' },

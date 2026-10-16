@@ -8,6 +8,7 @@ import { QuantityStepper } from '@/components/ui/QuantityStepper';
 import { formatCurrency } from '@/lib/utils';
 import { getOptimizedImageUrl } from '@/lib/cloudinary';
 import { useCart } from '@/context/CartContext';
+import { sound } from '@/lib/sound';
 import { ProductCardProps, ProductVariationItem } from './ProductCard';
 import { Check, ShoppingBag, Sparkles } from 'lucide-react';
 
@@ -61,6 +62,8 @@ export function ProductDetailModal({
     !selectedVariation.is_in_stock || selectedVariation.stock_quantity <= 0;
 
   const handleAddToCart = () => {
+    sound.playPopSound();
+    sound.triggerHaptic(20);
     addItem({
       productId: product.id,
       variationId: selectedVariation.id,
@@ -131,7 +134,11 @@ export function ProductDetailModal({
                     key={v.id}
                     type="button"
                     disabled={vOutOfStock}
-                    onClick={() => setSelectedVariation(v)}
+                    onClick={() => {
+                      sound.playPopSound();
+                      sound.triggerHaptic(10);
+                      setSelectedVariation(v);
+                    }}
                     className={`relative p-3 rounded-xl border text-left transition-all duration-150 select-none ${
                       isSelected
                         ? 'border-[var(--brand-primary)] bg-emerald-50/60 ring-2 ring-[var(--brand-primary)]/20'
@@ -193,19 +200,23 @@ export function ProductDetailModal({
                 <QuantityStepper
                   size="md"
                   quantity={currentCartQty}
-                  onIncrement={() =>
-                    updateQuantity(selectedVariation.id, currentCartQty + 1)
-                  }
-                  onDecrement={() =>
-                    updateQuantity(selectedVariation.id, currentCartQty - 1)
-                  }
+                  onIncrement={() => {
+                    sound.playPopSound();
+                    sound.triggerHaptic(12);
+                    updateQuantity(selectedVariation.id, currentCartQty + 1);
+                  }}
+                  onDecrement={() => {
+                    sound.playPopSound();
+                    sound.triggerHaptic(12);
+                    updateQuantity(selectedVariation.id, currentCartQty - 1);
+                  }}
                 />
               </div>
             ) : (
               <Button
                 variant="primary"
                 onClick={handleAddToCart}
-                className="px-6 py-3 min-h-[48px] text-base font-bold flex items-center gap-2 shadow-md hover:shadow-lg"
+                className="px-6 py-3 min-h-[48px] text-base font-bold flex items-center gap-2 shadow-md hover:shadow-lg active:scale-95 cursor-pointer"
               >
                 <ShoppingBag className="w-5 h-5" />
                 <span>Add to Cart</span>

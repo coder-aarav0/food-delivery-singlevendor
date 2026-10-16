@@ -4,10 +4,22 @@ import React, { useState } from 'react';
 import { updateStoreSettingsAction } from '@/actions/admin-actions';
 import { Button } from '@/components/ui/Button';
 import { formatCurrency } from '@/lib/utils';
-import { MapPin, Navigation, Save, CheckCircle2, AlertCircle } from 'lucide-react';
+import { MapPin, Navigation, Save, CheckCircle2, AlertCircle, CloudRain, Zap } from 'lucide-react';
+
+export interface StoreGeofenceData {
+  id: string;
+  delivery_radius_km?: number | null;
+  base_delivery_fee?: number | null;
+  free_delivery_threshold?: number | null;
+  min_order_value?: number | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  is_rain_surge_active?: boolean | null;
+  rain_surge_fee?: number | null;
+}
 
 export interface GeofenceManagerProps {
-  store: any;
+  store: StoreGeofenceData | null;
 }
 
 export function GeofenceManager({ store }: GeofenceManagerProps) {
@@ -17,6 +29,8 @@ export function GeofenceManager({ store }: GeofenceManagerProps) {
   const [minOrderValue, setMinOrderValue] = useState<number>(store?.min_order_value || 99);
   const [latitude, setLatitude] = useState<number>(store?.latitude || 28.4595);
   const [longitude, setLongitude] = useState<number>(store?.longitude || 77.0266);
+  const [isRainSurgeActive, setIsRainSurgeActive] = useState<boolean>(store?.is_rain_surge_active ?? false);
+  const [rainSurgeFee, setRainSurgeFee] = useState<number>(store?.rain_surge_fee ?? 25);
 
   const [isSaving, setIsSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
@@ -31,12 +45,16 @@ export function GeofenceManager({ store }: GeofenceManagerProps) {
       base_delivery_fee: baseFee,
       free_delivery_threshold: freeThreshold,
       min_order_value: minOrderValue,
+      is_rain_surge_active: isRainSurgeActive,
+      rain_surge_fee: rainSurgeFee,
     });
 
     setIsSaving(false);
     setSuccessMsg(true);
     setTimeout(() => setSuccessMsg(false), 3000);
   };
+
+  const totalDeliveryFeePreview = isRainSurgeActive ? baseFee + rainSurgeFee : baseFee;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -134,6 +152,55 @@ export function GeofenceManager({ store }: GeofenceManagerProps) {
             </div>
           </div>
 
+          {/* Monsoon Surge Emergency Toggle */}
+          <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-600 flex items-center justify-center shrink-0 mt-0.5">
+                <CloudRain className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h4 className="text-sm font-bold text-[var(--text-ink)]">
+                    Monsoon Hazard Delivery Surge
+                  </h4>
+                  {isRainSurgeActive && (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-white uppercase tracking-wider animate-pulse">
+                      Active
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-[var(--text-muted)] mt-0.5">
+                  Applies dynamic rider hazard compensation and customer notification banner during heavy rainfall or extreme weather.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0 self-end sm:self-center">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-[var(--text-muted)]">Surge Fee:</span>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={rainSurgeFee}
+                  onChange={(e) => setRainSurgeFee(Number(e.target.value))}
+                  disabled={!isRainSurgeActive}
+                  className="w-16 p-1.5 text-center rounded-lg bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-bold text-xs disabled:opacity-50"
+                />
+              </div>
+
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isRainSurgeActive}
+                  onChange={(e) => setIsRainSurgeActive(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600"></div>
+              </label>
+            </div>
+          </div>
+
           {/* Save Button */}
           <div className="pt-4 border-t border-[var(--border-subtle)] flex justify-end">
             <Button
@@ -180,8 +247,18 @@ export function GeofenceManager({ store }: GeofenceManagerProps) {
               <span className="font-bold text-[var(--text-ink)]">{radiusKm} km</span>
             </div>
             <div className="flex justify-between">
-              <span>Delivery Cost:</span>
+              <span>Base Delivery:</span>
               <span className="font-bold text-[var(--text-ink)]">{formatCurrency(baseFee)}</span>
+            </div>
+            {isRainSurgeActive && (
+              <div className="flex justify-between text-amber-600 font-bold">
+                <span>Rain Surge Add-on:</span>
+                <span>+{formatCurrency(rainSurgeFee)}</span>
+              </div>
+            )}
+            <div className="flex justify-between border-t border-[var(--border-subtle)] pt-1.5 font-bold">
+              <span>Standard Cost:</span>
+              <span className="text-[var(--text-ink)]">{formatCurrency(totalDeliveryFeePreview)}</span>
             </div>
             <div className="flex justify-between">
               <span>Free Delivery:</span>

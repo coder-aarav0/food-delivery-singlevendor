@@ -5,8 +5,20 @@ import { updateStoreSettingsAction } from '@/actions/admin-actions';
 import { Button } from '@/components/ui/Button';
 import { Save, CheckCircle2, Sparkles, Store, Palette, Phone } from 'lucide-react';
 
+export interface StoreSettingsData {
+  id: string;
+  name?: string | null;
+  tagline?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  brand_primary_hex?: string | null;
+  brand_accent_hex?: string | null;
+  opening_time?: string | null;
+  closing_time?: string | null;
+}
+
 export interface StoreSettingsFormProps {
-  store: any;
+  store: StoreSettingsData | null;
 }
 
 export function StoreSettingsForm({ store }: StoreSettingsFormProps) {
@@ -45,6 +57,12 @@ export function StoreSettingsForm({ store }: StoreSettingsFormProps) {
       opening_time: openingTime,
       closing_time: closingTime,
     });
+
+    // Instant runtime CSS token reflection across root document
+    if (typeof document !== 'undefined') {
+      document.documentElement.style.setProperty('--brand-primary', primaryColor);
+      document.documentElement.style.setProperty('--brand-accent', accentColor);
+    }
 
     setIsSaving(false);
     setSuccessMsg(true);

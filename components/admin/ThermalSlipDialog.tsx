@@ -4,10 +4,43 @@ import React from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { formatCurrency } from '@/lib/utils';
-import { Printer, X } from 'lucide-react';
+import { Printer } from 'lucide-react';
+
+export interface ThermalSlipItem {
+  id: string;
+  product_name: string;
+  variation_title?: string;
+  quantity: number;
+  unit_price: number;
+  total_price?: number;
+}
+
+export interface ThermalSlipAddress {
+  label?: string;
+  address_line_1?: string;
+  address_line_2?: string;
+  landmark?: string;
+  city?: string;
+  pincode?: string;
+}
+
+export interface ThermalSlipOrder {
+  id: string;
+  order_number?: number;
+  payment_method: string;
+  created_at?: string;
+  items_subtotal?: number;
+  delivery_fee?: number;
+  discount_amount?: number;
+  total_amount: number;
+  delivery_otp?: string | null;
+  customer_notes?: string | null;
+  delivery_address_snapshot?: ThermalSlipAddress | null;
+  order_items?: ThermalSlipItem[];
+}
 
 export interface ThermalSlipDialogProps {
-  order: any | null;
+  order: ThermalSlipOrder | null;
   isOpen: boolean;
   onClose: () => void;
   storeName?: string;
@@ -34,6 +67,38 @@ export function ThermalSlipDialog({
   return (
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="sm">
       <div className="flex flex-col gap-4">
+        {/* Print Stylesheet Isolation */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            @media print {
+              body * {
+                visibility: hidden !important;
+              }
+              #printable-slip, #printable-slip * {
+                visibility: visible !important;
+              }
+              #printable-slip {
+                position: fixed !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 72mm !important;
+                max-width: 72mm !important;
+                margin: 0 !important;
+                padding: 4mm !important;
+                border: none !important;
+                box-shadow: none !important;
+                background: white !important;
+                color: black !important;
+                font-family: monospace !important;
+              }
+              @page {
+                size: 80mm auto;
+                margin: 0mm;
+              }
+            }
+          `
+        }} />
+
         {/* Print Action Header */}
         <div className="flex items-center justify-between no-print">
           <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">
@@ -43,7 +108,7 @@ export function ThermalSlipDialog({
             size="sm"
             variant="primary"
             onClick={handlePrint}
-            className="flex items-center gap-1.5"
+            className="flex items-center gap-1.5 cursor-pointer"
           >
             <Printer className="w-4 h-4" />
             <span>Print Receipt</span>
@@ -78,6 +143,11 @@ export function ThermalSlipDialog({
               <span className="font-bold">Deliver To: </span>
               <span>{address.label || 'Home'} - {address.address_line_1 || 'Address details'}</span>
             </div>
+            {order.customer_notes && (
+              <div className="text-[10px] text-slate-700 italic pt-0.5">
+                Note: {order.customer_notes}
+              </div>
+            )}
           </div>
 
           {/* Packing Items Checklist */}
@@ -88,7 +158,7 @@ export function ThermalSlipDialog({
             </div>
 
             <div className="space-y-2">
-              {(order.order_items || []).map((item: any) => (
+              {(order.order_items || []).map((item) => (
                 <div key={item.id} className="flex items-start justify-between gap-2 text-[11px]">
                   <div className="flex items-start gap-1.5 min-w-0">
                     <span className="inline-block w-3.5 h-3.5 border border-slate-700 rounded-xs shrink-0 mt-0.5" />
@@ -97,7 +167,7 @@ export function ThermalSlipDialog({
                         {item.product_name}
                       </span>
                       <span className="text-[10px] text-slate-600 block">
-                        {item.variation_title}
+                        {item.variation_title || 'Standard'}
                       </span>
                     </div>
                   </div>
@@ -113,16 +183,16 @@ export function ThermalSlipDialog({
           <div className="pt-2 border-t border-dashed border-slate-400 space-y-1 text-[11px]">
             <div className="flex justify-between text-slate-600">
               <span>Subtotal:</span>
-              <span>{formatCurrency(order.items_subtotal)}</span>
+              <span>{formatCurrency(order.items_subtotal ?? order.total_amount)}</span>
             </div>
             <div className="flex justify-between text-slate-600">
               <span>Delivery Fee:</span>
-              <span>{order.delivery_fee === 0 ? 'FREE' : formatCurrency(order.delivery_fee)}</span>
+              <span>{(order.delivery_fee ?? 0) === 0 ? 'FREE' : formatCurrency(order.delivery_fee ?? 0)}</span>
             </div>
-            {order.discount_amount > 0 && (
+            {(order.discount_amount ?? 0) > 0 && (
               <div className="flex justify-between text-emerald-700 font-semibold">
                 <span>Discount:</span>
-                <span>-{formatCurrency(order.discount_amount)}</span>
+                <span>-{formatCurrency(order.discount_amount ?? 0)}</span>
               </div>
             )}
             <div className="flex justify-between font-black text-sm pt-1 border-t border-slate-800">
