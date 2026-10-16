@@ -235,7 +235,7 @@ export function RidersManager({ initialRiders }: RidersManagerProps) {
           {/* Share on WhatsApp Button */}
           <a
             href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-              'Namaste! Keshri Mart Delivery Partner App download karein aur orders deliver karna shuru karein:\n\n📱 Direct Download:\nhttps://keshrimart.com/download/rider\n\n(Install karne ke baad apne store manager se Login ID le lein)'
+              'Namaste! FreshMart Delivery Partner App download karein aur orders deliver karna shuru karein:\n\n📱 Direct Download:\nhttps://food-delivery-singlevendor-nu.vercel.app/download/rider\n\n(Install karne ke baad apne store manager se Login ID le lein)'
             )}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -492,7 +492,7 @@ export function RidersManager({ initialRiders }: RidersManagerProps) {
                               ? '91' + r.phone.replace(/[^0-9]/g, '')
                               : r.phone.replace(/[^0-9]/g, '')
                           }?text=${encodeURIComponent(
-                            `Namaste ${r.name}! Keshri Mart Delivery Partner App download karein aur shifts accept karna shuru karein:\n\n📱 Direct Download: https://keshrimart.com/download/rider\n\n🔑 Username: ${r.username}\n📞 Phone: ${r.phone}`
+                            `Namaste ${r.name}! FreshMart Delivery Partner App download karein aur shifts accept karna shuru karein:\n\n📱 Direct Download: https://food-delivery-singlevendor-nu.vercel.app/download/rider\n\n🔑 Username: ${r.username}\n📞 Phone: ${r.phone}`
                           )}`}
                           target="_blank"
                           rel="noopener noreferrer"

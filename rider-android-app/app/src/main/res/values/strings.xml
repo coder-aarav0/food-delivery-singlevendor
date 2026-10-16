@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FreshMart Rider</string>
+    <string name="rider_hub_title">Delivery Fleet Dispatch</string>
+    <string name="offline_title">You Are Currently Offline</string>
+    <string name="offline_desc">Unable to reach the dark store dispatch station. Please check your mobile data or Wi-Fi.</string>
+    <string name="retry_connection">Retry Connection</string>
+    <string name="permission_location_rationale">FreshMart Rider needs continuous location access to route live customer orders and estimate arrival times.</string>
+    <string name="permission_camera_rationale">FreshMart Rider requires camera access for mandatory helmet safety check-ins and delivery verification.</string>
+</resources>
