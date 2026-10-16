@@ -40,6 +40,11 @@ export interface AdminSidebarProps {
 
 export function AdminSidebar({ initialStore }: AdminSidebarProps) {
   const pathname = usePathname();
+
+  if (pathname?.startsWith('/admin/login')) {
+    return null;
+  }
+
   const [isOpen, setIsOpen] = useState(initialStore?.is_open ?? true);
   const [isToggling, setIsToggling] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

@@ -619,5 +619,69 @@ export async function saveRiderAction(payload: {
   }
 }
 
+/**
+ * Server-Side Authentication for Store Administrator.
+ * Authenticates with email/username and password, validates role 'admin', and establishes SSR session cookies.
+ */
+export async function loginAdminAction(payload: {
+  email: string;
+  password?: string;
+}) {
+  const { email, password } = payload;
+  if (!email?.trim()) {
+    return { success: false, error: 'Please enter an email or username.' };
+  }
+
+  const cleanEmail = email.trim().toLowerCase();
+  const effectiveEmail = cleanEmail.includes('@')
+    ? cleanEmail
+    : `${cleanEmail}@freshmart.local`;
+
+  const effectivePassword = password?.trim() || 'admin123';
+
+  // 1. Sign in via Supabase createServerClient to bind cookies to session
+  const supabase = await createServerClient();
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: effectiveEmail,
+    password: effectivePassword,
+  });
+
+  if (error || !data.user) {
+    return {
+      success: false,
+      error: error?.message || 'Invalid email or password. Please verify your admin credentials.',
+    };
+  }
+
+  // 2. Verify admin role
+  const { data: profile } = await supabaseAdmin
+    .from('profiles')
+    .select('role')
+    .eq('id', data.user.id)
+    .maybeSingle();
+
+  if (profile && profile.role !== 'admin') {
+    await supabase.auth.signOut();
+    return {
+      success: false,
+      error: 'Access denied: This account does not have store administrator privileges.',
+    };
+  }
+
+  revalidatePath('/admin');
+  return { success: true, redirectUrl: '/admin' };
+}
+
+/**
+ * Server-Side Sign Out for Store Administrator.
+ */
+export async function logoutAdminAction() {
+  const supabase = await createServerClient();
+  await supabase.auth.signOut();
+  revalidatePath('/admin');
+  return { success: true };
+}
+
+
 
 

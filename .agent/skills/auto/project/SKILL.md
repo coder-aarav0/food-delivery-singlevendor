@@ -10,7 +10,7 @@ enabled: true
 
 # Project
 
-Auto-compiled from **280 real patterns** in **food-delivery-singlevendor**. This skill is auto-routed to agents when working on project files.
+Auto-compiled from **285 real patterns** in **food-delivery-singlevendor**. This skill is auto-routed to agents when working on project files.
 
 ## ⚠️ Anti-Patterns & Gotchas
 

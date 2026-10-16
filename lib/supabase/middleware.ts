@@ -47,6 +47,13 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
+  // Auto-redirect if already logged in as Admin
+  if (pathname === '/admin/login' && user) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/admin';
+    return NextResponse.redirect(url);
+  }
+
   // Protected Rider Routes
   if (pathname.startsWith('/rider') && !pathname.startsWith('/rider/login')) {
     if (!user && process.env.NODE_ENV === 'production') {
@@ -55,6 +62,13 @@ export async function updateSession(request: NextRequest) {
       url.searchParams.set('returnUrl', pathname);
       return NextResponse.redirect(url);
     }
+  }
+
+  // Auto-redirect if already logged in as Rider
+  if (pathname === '/rider/login' && user) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/rider';
+    return NextResponse.redirect(url);
   }
 
   return supabaseResponse;
