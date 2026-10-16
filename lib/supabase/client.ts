@@ -1,18 +1,14 @@
 import { createBrowserClient } from '@supabase/ssr';
 import { Database } from '@/types/database.types';
+import { getSupabaseConfig } from './config';
+
+const { url, anonKey } = getSupabaseConfig();
 
 export function createClient() {
-  return createBrowserClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  return createBrowserClient<Database>(url, anonKey);
 }
 
 // Singleton for client-side components & Realtime subscriptions
-export const supabase = createBrowserClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+export const supabase = createBrowserClient<Database>(url, anonKey);
 
 export const getSupabaseBrowserClient = createClient;
-

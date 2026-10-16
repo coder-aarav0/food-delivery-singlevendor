@@ -1,17 +1,20 @@
 import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/types/database.types';
+import { getSupabaseConfig } from './config';
 
-if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+const { url, serviceRoleKey } = getSupabaseConfig();
+
+if (!url) {
   throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL in environment variables');
 }
 
-if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+if (!serviceRoleKey) {
   throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY in environment variables');
 }
 
 export const supabaseAdmin = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY,
+  url,
+  serviceRoleKey,
   {
     auth: {
       autoRefreshToken: false,
