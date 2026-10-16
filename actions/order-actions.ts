@@ -52,7 +52,7 @@ export async function placeOrderAction(
       .limit(1)
       .maybeSingle();
 
-    customerId = defaultCustomer?.id || 'ae460151-3126-4998-aec1-d81a36d3b639';
+    customerId = defaultCustomer?.id || '11111111-2222-3333-4444-555555555555';
   }
 
   // 2. Fetch or Resolve Selected Address Snapshot
