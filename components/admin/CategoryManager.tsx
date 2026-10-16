@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { saveCategoryAction, deleteCategoryAction } from '@/actions/admin-actions';
 import { Check, Edit2, Trash2, Image as ImageIcon, Plus, Loader2 } from 'lucide-react';
+import { ImageUploader } from '@/components/ui/ImageUploader';
 
 export interface CategoryItem {
   id: string;
@@ -152,32 +153,33 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
             />
           </div>
 
-          {/* Image URL / Upload */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-700">
-              Image URL or Cloudinary Link
-            </label>
-            <div className="flex items-center gap-3">
-              <input
-                type="url"
-                placeholder="https://images.unsplash.com/... or Choose file"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#5e72e4]"
-              />
-              <button
-                type="button"
-                onClick={() =>
-                  setImageUrl(
-                    'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80'
-                  )
-                }
-                className="px-3 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 shrink-0"
-              >
-                Sample Image
-              </button>
-            </div>
-          </div>
+          {/* Category Image Uploader (Device Upload + URL) */}
+          <ImageUploader
+            value={imageUrl}
+            onChange={setImageUrl}
+            label="Category Image"
+            description="Upload category tile image from device or paste direct URL"
+            folder="categories"
+            aspectRatio="square"
+            presets={[
+              {
+                label: 'Vegetables',
+                url: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=400&q=80',
+              },
+              {
+                label: 'Dairy',
+                url: 'https://images.unsplash.com/photo-1528750997573-59b89d56f4f7?auto=format&fit=crop&w=400&q=80',
+              },
+              {
+                label: 'Bakery',
+                url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80',
+              },
+              {
+                label: 'Beverages',
+                url: 'https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=400&q=80',
+              },
+            ]}
+          />
 
           {/* Submit Button */}
           <div className="pt-2 flex justify-end">

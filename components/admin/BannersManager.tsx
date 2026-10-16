@@ -15,6 +15,7 @@ import {
   Clock,
   ArrowRight,
 } from 'lucide-react';
+import { ImageUploader } from '@/components/ui/ImageUploader';
 
 export interface AdminBannerItem {
   id: string;
@@ -313,46 +314,35 @@ export function BannersManager() {
                 />
               </div>
 
-              {/* Image URL */}
+              {/* Banner Graphic Image Uploader (Device Upload + URL) */}
               <div className="md:col-span-2">
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                  Banner Image URL (Cloudinary / Unsplash) *
-                </label>
-                <input
-                  type="url"
-                  required
+                <ImageUploader
                   value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  placeholder="https://images.unsplash.com/photo-1610832958506-aa56368176cf?..."
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-[#fb6340] focus:ring-1 focus:ring-[#fb6340] outline-none"
+                  onChange={setImageUrl}
+                  label="Banner Graphic Image *"
+                  description="Upload banner graphic from your device or paste direct image URL (21:9 or 16:9 recommended)"
+                  folder="banners"
+                  aspectRatio="banner"
+                  recommendedSize="1400 × 600px (JPG, PNG, WebP up to 10MB)"
+                  presets={[
+                    {
+                      label: 'Fruits Harvest',
+                      url: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=1400&q=80',
+                    },
+                    {
+                      label: 'Cold Drinks',
+                      url: 'https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=1400&q=80',
+                    },
+                    {
+                      label: 'Bakery Fresh',
+                      url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80',
+                    },
+                    {
+                      label: 'Supermarket Aisles',
+                      url: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1400&q=80',
+                    },
+                  ]}
                 />
-                {/* Sample Presets */}
-                <div className="flex flex-wrap items-center gap-2 mt-2">
-                  <span className="text-[11px] text-slate-500 font-semibold">Quick Presets:</span>
-                  <button
-                    type="button"
-                    onClick={() => setImageUrl('https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=1400&q=80')}
-                    className="text-[11px] text-[#fb6340] hover:underline"
-                  >
-                    Fruits Harvest
-                  </button>
-                  <span>•</span>
-                  <button
-                    type="button"
-                    onClick={() => setImageUrl('https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=1400&q=80')}
-                    className="text-[11px] text-[#fb6340] hover:underline"
-                  >
-                    Cold Drinks
-                  </button>
-                  <span>•</span>
-                  <button
-                    type="button"
-                    onClick={() => setImageUrl('https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80')}
-                    className="text-[11px] text-[#fb6340] hover:underline"
-                  >
-                    Bakery Fresh
-                  </button>
-                </div>
               </div>
 
               {/* Destination URL */}

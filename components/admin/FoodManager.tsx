@@ -20,6 +20,7 @@ import {
   X,
   Package,
 } from 'lucide-react';
+import { ImageUploader } from '@/components/ui/ImageUploader';
 
 export interface FoodVariation {
   id?: string;
@@ -339,19 +340,33 @@ export function FoodManager({ initialFoods, categories }: FoodManagerProps) {
                 />
               </div>
 
-              {/* Food Image */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700">
-                  Food Image URL
-                </label>
-                <input
-                  type="url"
-                  placeholder="https://images.unsplash.com/... or sample"
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#5e72e4]"
-                />
-              </div>
+              {/* Product/Food Image Uploader (Device Upload + URL) */}
+              <ImageUploader
+                value={imageUrl}
+                onChange={setImageUrl}
+                label="Product Image"
+                description="Upload product photo from device or paste direct image URL"
+                folder="products"
+                aspectRatio="square"
+                presets={[
+                  {
+                    label: 'Milk & Dairy',
+                    url: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=400&q=80',
+                  },
+                  {
+                    label: 'Farm Apples',
+                    url: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=400&q=80',
+                  },
+                  {
+                    label: 'Bakery Bread',
+                    url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80',
+                  },
+                  {
+                    label: 'Fresh Juice',
+                    url: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?auto=format&fit=crop&w=400&q=80',
+                  },
+                ]}
+              />
             </div>
 
             {/* Right Column: Variations & Addons Matrix */}
