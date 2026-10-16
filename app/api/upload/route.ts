@@ -49,8 +49,9 @@ export async function POST(req: NextRequest) {
         const signatureString = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
         const signature = crypto.createHash('sha1').update(signatureString).digest('hex');
 
+        const base64Data = `data:${file.type};base64,${buffer.toString('base64')}`;
         const cloudinaryForm = new FormData();
-        cloudinaryForm.append('file', new Blob([buffer], { type: file.type }));
+        cloudinaryForm.append('file', base64Data);
         cloudinaryForm.append('api_key', apiKey);
         cloudinaryForm.append('timestamp', timestamp.toString());
         cloudinaryForm.append('folder', folder);

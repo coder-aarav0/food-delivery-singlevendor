@@ -1,8 +1,8 @@
 {
   "project": {
     "enabled": true,
-    "lastGenerated": "2026-10-16T05:50:57.121Z",
-    "observationCount": 279,
+    "lastGenerated": "2026-10-16T06:20:58.594Z",
+    "observationCount": 280,
     "skillCount": 0,
     "domain": "project",
     "triggerGlobs": [
@@ -12,7 +12,7 @@
   },
   "typescript-react": {
     "enabled": true,
-    "lastGenerated": "2026-10-16T05:50:57.123Z",
+    "lastGenerated": "2026-10-16T06:20:58.678Z",
     "observationCount": 2,
     "skillCount": 0,
     "domain": "typescript-react",
@@ -23,7 +23,7 @@
   },
   "gotcha": {
     "enabled": true,
-    "lastGenerated": "2026-10-16T05:50:57.125Z",
+    "lastGenerated": "2026-10-16T06:20:58.680Z",
     "observationCount": 0,
     "skillCount": 2,
     "domain": "gotcha",
