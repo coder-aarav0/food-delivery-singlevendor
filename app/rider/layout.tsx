@@ -6,6 +6,9 @@ import { RiderBottomNav } from '@/components/rider/RiderBottomNav';
 import Link from 'next/link';
 import { Smartphone, ArrowLeft, Download } from 'lucide-react';
 
+import { createServerClient } from '@/lib/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
+
 export const dynamic = 'force-dynamic';
 
 export default async function RiderLayout({
@@ -13,7 +16,25 @@ export default async function RiderLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { rider } = await ensureDemoRiderAction();
+  let targetRiderId: string | undefined;
+  const supabase = await createServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    const { data: profile } = await supabaseAdmin
+      .from('profiles')
+      .select('id, role')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (profile?.role === 'rider') {
+      targetRiderId = user.id;
+    }
+  }
+
+  const { rider } = await ensureDemoRiderAction(targetRiderId);
 
   const defaultRider = rider || {
     id: '00000000-0000-0000-0000-000000000000',

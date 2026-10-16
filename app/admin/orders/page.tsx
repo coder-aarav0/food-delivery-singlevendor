@@ -1,12 +1,12 @@
 import React from 'react';
-import { createServerClient } from '@/lib/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { ArgonHeader } from '@/components/admin/ArgonHeader';
 import { OrdersManager, OrderRowData, RiderOption } from '@/components/admin/OrdersManager';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminOrdersPage() {
-  const supabase = await createServerClient();
+  const supabase = supabaseAdmin;
 
   // 1. Fetch Orders with profiles, rider profile, and items
   const { data: rawOrders } = await (supabase as any)

@@ -29,7 +29,28 @@ export function useRealtimeOrder(initialOrder: Order) {
       )
       .subscribe();
 
+    // Auto-polling fallback to guarantee customer tracking updates live
+    const pollInterval = setInterval(async () => {
+      try {
+        const { data } = await supabase
+          .from('orders')
+          .select('*')
+          .eq('id', initialOrder.id)
+          .maybeSingle();
+
+        if (data) {
+          setOrder((prev) => ({
+            ...prev,
+            ...(data as Partial<Order>),
+          }));
+        }
+      } catch (err) {
+        console.warn('Order polling error:', err);
+      }
+    }, 3500);
+
     return () => {
+      clearInterval(pollInterval);
       supabase.removeChannel(channel);
     };
   }, [initialOrder.id]);

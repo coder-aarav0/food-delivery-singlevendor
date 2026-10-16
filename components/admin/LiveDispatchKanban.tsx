@@ -59,6 +59,13 @@ export function LiveDispatchKanban({
     };
   }, [audioEnabled]);
 
+  // Sync props on SSR revalidation
+  useEffect(() => {
+    if (initialOrders) {
+      setOrders(initialOrders);
+    }
+  }, [initialOrders]);
+
   const refreshOrders = async () => {
     setIsRefreshing(true);
     const { data } = await supabase
@@ -74,6 +81,14 @@ export function LiveDispatchKanban({
     }
     setIsRefreshing(false);
   };
+
+  // Auto-polling fallback every 4 seconds to catch new customer orders
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refreshOrders();
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Group into 4 columns
   const newOrders = orders.filter(

@@ -200,8 +200,43 @@ export function KanbanOrderCard({
         </Badge>
       </div>
 
+      {/* Rider Assignment Selector / Indicator */}
+      <div className="pt-2 border-t border-[var(--border-subtle)] text-xs">
+        {order.rider_id ? (
+          <div className="flex items-center gap-1.5 text-slate-700 bg-slate-50 px-2.5 py-1.5 rounded-xl border border-slate-200 w-full truncate">
+            <Bike className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+            <span className="font-extrabold truncate text-[11px] text-slate-800">
+              Rider: {availableRiders.find((r) => r.id === order.rider_id)?.full_name || order.rider_profile?.full_name || 'Partner Assigned'}
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-1.5 w-full">
+            <select
+              value={selectedRiderId}
+              onChange={(e) => setSelectedRiderId(e.target.value)}
+              className="text-[11px] font-bold py-1.5 px-2 rounded-xl border border-slate-200 bg-white flex-1 text-slate-700 truncate focus:outline-none focus:ring-1 focus:ring-[#5e72e4]"
+            >
+              <option value="">⚡ Quick Assign Rider...</option>
+              {availableRiders.map((r) => (
+                <option key={r.id} value={r.id}>
+                  {r.full_name || 'Rider'}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              disabled={!selectedRiderId || isUpdating}
+              onClick={handleAssignRider}
+              className="px-2.5 py-1.5 rounded-xl bg-[#5e72e4] hover:bg-[#485ec4] text-white font-black text-[11px] shrink-0 disabled:opacity-40 transition cursor-pointer shadow-2xs"
+            >
+              {isUpdating ? 'Assigning...' : 'Assign'}
+            </button>
+          </div>
+        )}
+      </div>
+
       {/* Action Row */}
-      <div className="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between gap-2">
+      <div className="pt-1 flex items-center justify-between gap-2">
         {/* Thermal Slip Button */}
         <button
           type="button"

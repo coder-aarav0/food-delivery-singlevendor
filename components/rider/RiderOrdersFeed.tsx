@@ -33,11 +33,25 @@ export function RiderOrdersFeed({
   newOrders: initialNewOrders,
 }: RiderOrdersFeedProps) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'my' | 'new'>('new');
+  const [activeTab, setActiveTab] = useState<'my' | 'new'>(
+    initialMyOrders.length > 0 ? 'my' : 'new'
+  );
   const [myOrders, setMyOrders] = useState<RiderDashboardOrder[]>(initialMyOrders);
   const [newOrders, setNewOrders] = useState<RiderDashboardOrder[]>(initialNewOrders);
   const [assigningId, setAssigningId] = useState<string | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
+
+  // Sync state whenever parent live poll / realtime stream updates
+  React.useEffect(() => {
+    setMyOrders(initialMyOrders);
+    if (initialMyOrders.length > 0 && activeTab === 'new' && initialNewOrders.length === 0) {
+      setActiveTab('my');
+    }
+  }, [initialMyOrders]);
+
+  React.useEffect(() => {
+    setNewOrders(initialNewOrders);
+  }, [initialNewOrders]);
 
   const handleAssignToMe = async (orderId: string) => {
     setAssigningId(orderId);
@@ -46,7 +60,7 @@ export function RiderOrdersFeed({
       const order = newOrders.find((o) => o.id === orderId);
       if (order) {
         setNewOrders((prev) => prev.filter((o) => o.id !== orderId));
-        setMyOrders((prev) => [{ ...order, status: 'READY_FOR_PICKUP' }, ...prev]);
+        setMyOrders((prev) => [{ ...order, status: 'READY_FOR_PICKUP', riderId }, ...prev]);
         setFlash(`Order #${order.orderNumber} assigned to your shift!`);
         setActiveTab('my');
         setTimeout(() => setFlash(null), 3000);

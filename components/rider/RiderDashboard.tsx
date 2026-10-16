@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
+import { getRiderLiveOrdersAction } from '@/actions/rider-actions';
+import { playNewOrderChime } from '@/lib/audio-alert';
 import { IncomingOrderModal, IncomingOrderData } from '@/components/rider/IncomingOrderModal';
 import { RiderOrdersFeed } from '@/components/rider/RiderOrdersFeed';
 import {
@@ -26,6 +28,7 @@ import {
   Fuel,
   Users,
   Compass,
+  RefreshCw,
 } from 'lucide-react';
 
 export interface RiderDashboardOrder {
@@ -43,76 +46,117 @@ export interface RiderDashboardOrder {
 export interface RiderDashboardProps {
   riderId: string;
   isOnline: boolean;
-  activeOrder: RiderDashboardOrder | null;
+  myOrders: RiderDashboardOrder[];
   availableOrders: RiderDashboardOrder[];
+  activeOrder?: RiderDashboardOrder | null;
   storeName?: string;
   storeAddress?: string;
+  allRiders?: Array<{ id: string; fullName: string; vehicleType?: string; vehicleNumber?: string; email?: string }>;
+  activeRiderName?: string;
+  todayEarnings?: number;
+  cashInHand?: number;
+  todayCompletedCount?: number;
 }
 
 export function RiderDashboard({
   riderId,
   isOnline,
-  activeOrder: initialActiveOrder,
+  myOrders: initialMyOrders,
   availableOrders: initialAvailableOrders,
   storeName = 'Keshri Mart Hub #BL-082',
   storeAddress = 'Dharamshala Road, Sasaram',
+  allRiders = [],
+  activeRiderName = 'Rider Partner',
+  todayEarnings = 0,
+  cashInHand = 0,
+  todayCompletedCount = 0,
 }: RiderDashboardProps) {
   const router = useRouter();
-  const [activeOrder, setActiveOrder] = useState<RiderDashboardOrder | null>(
-    initialActiveOrder
-  );
-  const [availableOrders, setAvailableOrders] = useState<RiderDashboardOrder[]>(
-    initialAvailableOrders
-  );
+  const [myOrders, setMyOrders] = useState<RiderDashboardOrder[]>(initialMyOrders);
+  const [availableOrders, setAvailableOrders] = useState<RiderDashboardOrder[]>(initialAvailableOrders);
+  const [liveStats, setLiveStats] = useState({
+    todayEarnings,
+    cashInHand,
+    todayCompletedCount,
+  });
   const [incomingOrder, setIncomingOrder] = useState<IncomingOrderData | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [lastRefreshedAt, setLastRefreshedAt] = useState<Date>(new Date());
 
   // Helmet Selfie Simulation state
   const [selfieTaken, setSelfieTaken] = useState(false);
   const [takingSelfie, setTakingSelfie] = useState(false);
 
-  // 1. Supabase Realtime Subscription for incoming dispatches
+  // Sync props when SSR data revalidates
   useEffect(() => {
-    const channel = supabase
-      .channel('rider-dispatch-channel')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'orders' },
-        (payload) => {
-          const updated = payload.new as {
-            id: string;
-            order_number: number;
-            total_amount: number | string;
-            payment_method: 'RAZORPAY' | 'COD';
-            status: string;
-            rider_id?: string | null;
-            delivery_address_snapshot?: { address_line?: string; address_line_1?: string } | null;
-          } | null;
-          if (!updated) return;
+    setMyOrders(initialMyOrders);
+  }, [initialMyOrders]);
 
-          if (
-            updated.status === 'READY_FOR_PICKUP' &&
-            (!updated.rider_id || updated.rider_id === riderId)
-          ) {
+  useEffect(() => {
+    setAvailableOrders(initialAvailableOrders);
+  }, [initialAvailableOrders]);
+
+  // Master fetch function to poll live Supabase state
+  const refreshLiveOrders = useCallback(async (isManual = false) => {
+    if (isManual) setIsRefreshing(true);
+    try {
+      const res = await getRiderLiveOrdersAction(riderId);
+      if (res.success) {
+        // Detect if an order was just assigned to this rider that wasn't already in myOrders
+        setMyOrders((prev) => {
+          const prevIds = new Set(prev.map((o) => o.id));
+          const newlyAssigned = res.myOrders?.find((o: RiderDashboardOrder) => !prevIds.has(o.id));
+          if (newlyAssigned) {
+            playNewOrderChime();
             setIncomingOrder({
-              id: updated.id,
-              orderNumber: updated.order_number,
-              totalAmount: Number(updated.total_amount),
-              paymentMethod: updated.payment_method,
-              itemCount: 3,
-              customerAddress:
-                updated.delivery_address_snapshot?.address_line ||
-                'DLF Phase 4, Gurugram',
+              id: newlyAssigned.id,
+              orderNumber: newlyAssigned.orderNumber,
+              totalAmount: newlyAssigned.totalAmount,
+              paymentMethod: newlyAssigned.paymentMethod,
+              itemCount: newlyAssigned.itemCount,
+              customerAddress: newlyAssigned.customerAddress,
               storeName,
               storeAddress,
               estimatedEarnings: 55,
             });
           }
+          return res.myOrders;
+        });
 
-          if (activeOrder && activeOrder.id === updated.id) {
-            if (updated.status === 'DELIVERED') {
-              setActiveOrder(null);
-            }
-          }
+        setAvailableOrders(res.newOrders);
+        if (res.stats) {
+          setLiveStats({
+            todayEarnings: res.stats.todayEarnings,
+            cashInHand: res.stats.cashInHand,
+            todayCompletedCount: res.stats.todayCompletedCount,
+          });
+        }
+        setLastRefreshedAt(new Date());
+      }
+    } catch (err) {
+      console.warn('Rider live poll check error:', err);
+    } finally {
+      if (isManual) setIsRefreshing(false);
+    }
+  }, [riderId, storeName, storeAddress]);
+
+  // 1. Live auto-polling every 3.5 seconds to guarantee instant response to admin panel assignments
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refreshLiveOrders(false);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [refreshLiveOrders]);
+
+  // 2. Supabase Realtime Subscription for instant WebSocket events
+  useEffect(() => {
+    const channel = supabase
+      .channel(`rider-live-feed-${riderId}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'orders' },
+        () => {
+          refreshLiveOrders(false);
         }
       )
       .subscribe();
@@ -120,7 +164,7 @@ export function RiderDashboard({
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [riderId, activeOrder, storeName, storeAddress]);
+  }, [riderId, refreshLiveOrders]);
 
   const handleOrderAccepted = (orderId: string) => {
     setIncomingOrder(null);
@@ -137,6 +181,76 @@ export function RiderDashboard({
 
   return (
     <div className="space-y-4">
+      {/* ============================================================== */}
+      {/* 0. LIVE DATABASE SYNC STATUS & FLEET PARTNER SWITCHER          */}
+      {/* ============================================================== */}
+      <div className="bg-slate-900 text-white p-3 rounded-2xl border border-slate-800 shadow-md space-y-2.5">
+        <div className="flex items-center justify-between gap-2 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span className="font-extrabold text-[11px] text-emerald-400 uppercase tracking-wider">
+              Supabase Live Stream
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-slate-400 font-medium">
+              Synced {lastRefreshedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+            </span>
+            <button
+              type="button"
+              disabled={isRefreshing}
+              onClick={() => refreshLiveOrders(true)}
+              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 transition cursor-pointer flex items-center gap-1 text-[10px] font-bold"
+              title="Force Refresh Live Orders"
+            >
+              <RefreshCw className={`w-3 h-3 ${isRefreshing ? 'animate-spin text-[#F7D02C]' : ''}`} />
+              <span className="hidden sm:inline">Refresh</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Fleet Rider Selector for Demo Multi-User Testing */}
+        {allRiders.length > 1 && (
+          <div className="pt-2 border-t border-slate-800 flex items-center justify-between gap-2">
+            <span className="text-[11px] font-bold text-slate-400 shrink-0">
+              Active Partner:
+            </span>
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+              {allRiders.map((r) => {
+                const isCurrent = r.id === riderId;
+                return (
+                  <button
+                    key={r.id}
+                    type="button"
+                    onClick={() => {
+                      if (!isCurrent) {
+                        router.push(`/rider?riderId=${r.id}`);
+                      }
+                    }}
+                    className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition cursor-pointer shrink-0 flex items-center gap-1.5 ${
+                      isCurrent
+                        ? 'bg-[#F7D02C] text-[#121C28] shadow-xs'
+                        : 'bg-slate-800 hover:bg-slate-700 text-slate-300'
+                    }`}
+                  >
+                    <span>{r.fullName.split(' ')[0]}</span>
+                    <span className={`text-[9px] px-1 py-0.2 rounded-md ${
+                      isCurrent ? 'bg-[#121C28] text-white' : 'bg-slate-700 text-slate-300'
+                    }`}>
+                      {r.vehicleType?.includes('EV') ? 'EV' : 'Bike'}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* ============================================================== */}
       {/* 1. STATE A: ON DUTY (ACTIVE RADAR WAITING AT DARK STORE)        */}
       {/* ============================================================== */}
@@ -351,13 +465,13 @@ export function RiderDashboard({
                   <TrendingUp className="w-4 h-4 text-emerald-600" />
                 </div>
                 <p className="text-2xl font-black text-[#121C28] mt-1 tracking-tight">
-                  ₹640.00
+                  ₹{liveStats.todayEarnings.toFixed(2)}
                 </p>
-                <p className="text-[11px] text-slate-500">8 Orders completed</p>
+                <p className="text-[11px] text-slate-500">{liveStats.todayCompletedCount} Orders completed</p>
               </div>
               <div className="pt-2 border-t border-slate-100 flex items-center gap-1 text-[10px] font-bold text-emerald-700">
                 <Sparkles className="w-3 h-3" />
-                <span>+₹80 Tips Included</span>
+                <span>+₹55/drop Base Payout</span>
               </div>
             </div>
 
@@ -369,12 +483,12 @@ export function RiderDashboard({
                   <Banknote className="w-4 h-4 text-amber-600" />
                 </div>
                 <p className="text-2xl font-black text-[#121C28] mt-1 tracking-tight">
-                  ₹1,240.00
+                  ₹{liveStats.cashInHand.toFixed(2)}
                 </p>
                 <p className="text-[11px] text-slate-500">Deposit at cashier</p>
               </div>
               <div className="pt-2 border-t border-slate-100 flex items-center gap-1 text-[10px] font-bold text-slate-600">
-                <span>Limit: ₹2,500</span>
+                <span>Safe Limit: ₹2,500</span>
               </div>
             </div>
           </div>
@@ -386,7 +500,7 @@ export function RiderDashboard({
       {/* ============================================================== */}
       <RiderOrdersFeed
         riderId={riderId}
-        myOrders={activeOrder ? [activeOrder] : []}
+        myOrders={myOrders}
         newOrders={availableOrders}
       />
 

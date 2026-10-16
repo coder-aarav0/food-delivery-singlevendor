@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
-import { createServerClient } from '@/lib/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { ensureDemoRiderAction } from '@/actions/rider-actions';
 import {
   DeliveryNavigationCard,
@@ -17,11 +17,10 @@ interface PageProps {
 
 export default async function RiderOrderExecutionPage({ params }: PageProps) {
   const { id } = await params;
-  const supabase = await createServerClient();
   const { rider } = await ensureDemoRiderAction();
 
-  // 1. Fetch Order with Items, Customer, and Store
-  const { data: orderData, error } = await (supabase as any)
+  // 1. Fetch Order with Items, Customer, and Store using authoritative supabaseAdmin
+  const { data: orderData, error } = await (supabaseAdmin as any)
     .from('orders')
     .select(`
       id,
@@ -32,6 +31,7 @@ export default async function RiderOrderExecutionPage({ params }: PageProps) {
       customer_notes,
       delivery_address_snapshot,
       customer_id,
+      rider_id,
       profiles:customer_id (
         full_name,
         phone
@@ -46,10 +46,10 @@ export default async function RiderOrderExecutionPage({ params }: PageProps) {
       order_items (
         id,
         quantity,
-        product_variations (
-          title,
-          products (name)
-        )
+        product_name,
+        variation_title,
+        unit_price,
+        total_price
       )
     `)
     .eq('id', id)
@@ -117,8 +117,8 @@ export default async function RiderOrderExecutionPage({ params }: PageProps) {
     },
     items: (orderData.order_items || []).map((item: any) => ({
       id: item.id,
-      name: item.product_variations?.products?.name || 'Grocery Item',
-      variationTitle: item.product_variations?.title,
+      name: item.product_name || 'Grocery Item',
+      variationTitle: item.variation_title || undefined,
       quantity: item.quantity,
     })),
   };

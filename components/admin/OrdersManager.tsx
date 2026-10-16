@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import {
   assignRiderToOrderAction,
   updateOrderStatusAction,
   updatePaymentStatusAction,
+  getAdminLiveOrdersAction,
 } from '@/actions/admin-actions';
+import { supabase } from '@/lib/supabase/client';
 import {
   Search,
   X,
@@ -21,6 +23,7 @@ import {
   MapPin,
   Clock,
   Loader2,
+  RefreshCw,
 } from 'lucide-react';
 
 export interface DeliveryAddressSnapshotData {
@@ -83,6 +86,8 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
   const [orders, setOrders] = useState<OrderRowData[]>(initialOrders);
   const [search, setSearch] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<OrderRowData | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [lastSynced, setLastSynced] = useState<Date>(new Date());
 
   // Modal State
   const [rejectReason, setRejectReason] = useState('');
@@ -93,6 +98,52 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
   const [orderDetailsExpanded, setOrderDetailsExpanded] = useState(true);
   const [flashMessage, setFlashMessage] = useState<string | null>(null);
   const [isMutating, setIsMutating] = useState(false);
+
+  // Sync state whenever SSR props revalidate
+  useEffect(() => {
+    setOrders(initialOrders);
+  }, [initialOrders]);
+
+  const fetchLiveOrders = useCallback(async (isManual = false) => {
+    if (isManual) setIsRefreshing(true);
+    try {
+      const res = await getAdminLiveOrdersAction();
+      if (res.success && res.orders) {
+        setOrders(res.orders as OrderRowData[]);
+        setLastSynced(new Date());
+      }
+    } catch (err) {
+      console.warn('Admin live orders poll error:', err);
+    } finally {
+      if (isManual) setIsRefreshing(false);
+    }
+  }, []);
+
+  // 1. Auto-poll every 4 seconds so orders placed on Customer Storefront appear live
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchLiveOrders(false);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [fetchLiveOrders]);
+
+  // 2. Realtime WebSocket subscription
+  useEffect(() => {
+    const channel = supabase
+      .channel('admin-orders-stream')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'orders' },
+        () => {
+          fetchLiveOrders(false);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [fetchLiveOrders]);
 
   // Open modal on row click
   const openOrderModal = (order: OrderRowData) => {
@@ -238,19 +289,36 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
         {/* Table Search & Filter Bar */}
         <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <h2 className="text-base font-black text-[#0b0b0b] tracking-tight">
-              Orders ({filteredOrders.length})
-            </h2>
-            <span className="text-xs text-slate-400 font-semibold">
-              Click any order row to inspect details or assign rider
+            <div className="flex items-center gap-2">
+              <h2 className="text-base font-black text-[#0b0b0b] tracking-tight">
+                Orders ({filteredOrders.length})
+              </h2>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-bold">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Live Sync
+              </span>
+            </div>
+            <span className="text-xs text-slate-400 font-semibold block mt-0.5">
+              Click any order row to inspect details or assign rider • Auto-synced {lastSynced.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 w-full sm:w-auto">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <button
+              type="button"
+              disabled={isRefreshing}
+              onClick={() => fetchLiveOrders(true)}
+              className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition cursor-pointer flex items-center gap-1.5 text-xs font-bold shrink-0 border border-slate-200"
+              title="Refresh Orders Stream"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#5e72e4]' : ''}`} />
+              <span>Refresh</span>
+            </button>
+
             <div className="relative flex-1 sm:w-64">
               <input
                 type="text"
-                placeholder="Filter By Order Id"
+                placeholder="Filter By Order Id or Customer"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#5e72e4] pr-8"
@@ -269,7 +337,7 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
             <button
               type="button"
               onClick={() => setSearch('')}
-              className="p-2 rounded-xl bg-[#5e72e4] text-white hover:bg-[#485ec4] transition-colors"
+              className="p-2 rounded-xl bg-[#5e72e4] text-white hover:bg-[#485ec4] transition-colors shrink-0"
               title="Reset Search"
             >
               <X className="w-4 h-4" />

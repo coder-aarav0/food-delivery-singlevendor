@@ -16,7 +16,18 @@ async function resolveRiderId(explicitId?: string): Promise<string | null> {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (user) return user.id;
+  if (user) {
+    // Check if user is a registered rider
+    const { data: profile } = await supabaseAdmin
+      .from('profiles')
+      .select('id, role')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (profile?.role === 'rider') {
+      return user.id;
+    }
+  }
 
   const { data: firstRider } = await supabaseAdmin
     .from('rider_profiles')
@@ -28,15 +39,57 @@ async function resolveRiderId(explicitId?: string): Promise<string | null> {
 }
 
 /**
- * Ensures at least one demo rider exists in the database.
- * Auto-creates 'Rohan Verma' if no rider exists.
+ * Fetches all registered riders for demo fleet switching and dispatch assignments.
  */
-export async function ensureDemoRiderAction() {
-  const { data: existing } = await supabaseAdmin
+export async function getAllRidersAction() {
+  const { data: riders } = await supabaseAdmin
     .from('rider_profiles')
-    .select('id, vehicle_type, vehicle_number, is_online, is_busy, cash_in_hand, current_latitude, current_longitude')
-    .limit(1)
-    .maybeSingle();
+    .select(`
+      id,
+      vehicle_type,
+      vehicle_number,
+      is_online,
+      is_busy,
+      cash_in_hand
+    `);
+
+  const { data: profiles } = await supabaseAdmin
+    .from('profiles')
+    .select('id, full_name, phone, email')
+    .eq('role', 'rider');
+
+  const profileMap = new Map((profiles || []).map((p) => [p.id, p]));
+
+  return (riders || []).map((r) => {
+    const prof = profileMap.get(r.id);
+    return {
+      id: r.id,
+      fullName: prof?.full_name || 'Rider Partner',
+      phone: prof?.phone || '+91 98765 12345',
+      email: prof?.email || 'rider@freshmart.local',
+      vehicleType: r.vehicle_type || 'Bike',
+      vehicleNumber: r.vehicle_number || 'DL-01-BK-1024',
+      isOnline: r.is_online ?? true,
+      isBusy: r.is_busy ?? false,
+      cashInHand: Number(r.cash_in_hand || 0),
+    };
+  });
+}
+
+/**
+ * Ensures at least one demo rider exists in the database.
+ * If explicitRiderId is passed, returns that specific rider.
+ */
+export async function ensureDemoRiderAction(explicitRiderId?: string) {
+  let query = supabaseAdmin
+    .from('rider_profiles')
+    .select('id, vehicle_type, vehicle_number, is_online, is_busy, cash_in_hand, current_latitude, current_longitude');
+
+  if (explicitRiderId) {
+    query = query.eq('id', explicitRiderId);
+  }
+
+  const { data: existing } = await query.limit(1).maybeSingle();
 
   if (existing) {
     const { data: prof } = await supabaseAdmin
@@ -88,6 +141,124 @@ export async function ensureDemoRiderAction() {
       cashInHand: 0,
       currentLatitude: 28.4595,
       currentLongitude: 77.0266,
+    },
+  };
+}
+
+/**
+ * Fetches Live Orders for the Rider App directly from Supabase PostgreSQL.
+ * - myOrders: active orders assigned to this rider (ACCEPTED, PREPARING, READY_FOR_PICKUP, DISPATCHED)
+ * - newOrders: unassigned orders at the store waiting for rider dispatch
+ * - stats: cash in hand, completed orders today, earnings
+ */
+export async function getRiderLiveOrdersAction(explicitRiderId?: string) {
+  const riderId = await resolveRiderId(explicitRiderId);
+  if (!riderId) {
+    return {
+      success: false,
+      error: 'No rider profile found',
+      myOrders: [],
+      newOrders: [],
+      stats: {
+        cashInHand: 0,
+        isOnline: true,
+        isBusy: false,
+        todayCompletedCount: 0,
+        todayEarnings: 0,
+      },
+    };
+  }
+
+  // 1. Fetch orders assigned to this rider
+  const { data: myOrdersData, error: myErr } = await (supabaseAdmin as any)
+    .from('orders')
+    .select(`
+      id,
+      order_number,
+      status,
+      payment_method,
+      total_amount,
+      rider_id,
+      delivery_address_snapshot,
+      created_at,
+      order_items (id)
+    `)
+    .eq('rider_id', riderId)
+    .in('status', ['ACCEPTED', 'PREPARING', 'READY_FOR_PICKUP', 'DISPATCHED'])
+    .order('created_at', { ascending: false });
+
+  if (myErr) {
+    console.error('Error fetching my orders:', myErr);
+  }
+
+  // 2. Fetch available unassigned dispatches at store
+  const { data: availableData, error: availErr } = await (supabaseAdmin as any)
+    .from('orders')
+    .select(`
+      id,
+      order_number,
+      status,
+      payment_method,
+      total_amount,
+      rider_id,
+      delivery_address_snapshot,
+      created_at,
+      order_items (id)
+    `)
+    .is('rider_id', null)
+    .in('status', ['PENDING', 'ACCEPTED', 'PREPARING', 'READY_FOR_PICKUP'])
+    .order('created_at', { ascending: false });
+
+  if (availErr) {
+    console.error('Error fetching available dispatches:', availErr);
+  }
+
+  // 3. Fetch rider profile stats
+  const { data: riderProfile } = await supabaseAdmin
+    .from('rider_profiles')
+    .select('cash_in_hand, is_online, is_busy')
+    .eq('id', riderId)
+    .maybeSingle();
+
+  // 4. Calculate today's completed orders
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+  const { count: deliveredTodayCount } = await supabaseAdmin
+    .from('orders')
+    .select('*', { count: 'exact', head: true })
+    .eq('rider_id', riderId)
+    .eq('status', 'DELIVERED')
+    .gte('created_at', startOfDay.toISOString());
+
+  const completedCount = deliveredTodayCount || 0;
+  const todayEarnings = completedCount * 55; // ₹55 per order base payout
+
+  const formatOrder = (o: any) => ({
+    id: o.id,
+    orderNumber: o.order_number,
+    status: o.status,
+    paymentMethod: o.payment_method,
+    totalAmount: Number(o.total_amount),
+    riderId: o.rider_id,
+    customerAddress:
+      o.delivery_address_snapshot?.address_line ||
+      o.delivery_address_snapshot?.address_line_1 ||
+      'Customer Delivery Address',
+    itemCount: o.order_items?.length || 1,
+    createdAt: o.created_at,
+  });
+
+  return {
+    success: true,
+    riderId,
+    myOrders: (myOrdersData || []).map(formatOrder),
+    newOrders: (availableData || []).map(formatOrder),
+    stats: {
+      cashInHand: Number(riderProfile?.cash_in_hand || 0),
+      isOnline: riderProfile?.is_online ?? true,
+      isBusy: riderProfile?.is_busy ?? false,
+      todayCompletedCount: completedCount,
+      todayEarnings,
     },
   };
 }
