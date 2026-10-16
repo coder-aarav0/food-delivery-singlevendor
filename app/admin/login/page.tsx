@@ -46,8 +46,8 @@ export default function AdminLoginPage() {
         return;
       }
 
-      router.push(returnUrl);
-      router.refresh();
+      // Hard document navigation ensures cookies are synchronously processed by middleware
+      window.location.href = returnUrl;
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Server authentication error';
       setError(msg);

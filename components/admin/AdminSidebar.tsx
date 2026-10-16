@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { toggleStoreStatusAction } from '@/actions/admin-actions';
+import { toggleStoreStatusAction, logoutAdminAction } from '@/actions/admin-actions';
 import { EnategaLogo } from '@/components/ui/EnategaLogo';
 import {
   Tv2,
@@ -26,6 +26,7 @@ import {
   ChevronRight,
   Menu,
   X,
+  LogOut,
 } from 'lucide-react';
 
 export interface StoreSidebarData {
@@ -48,6 +49,16 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
   const [isOpen, setIsOpen] = useState(initialStore?.is_open ?? true);
   const [isToggling, setIsToggling] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await logoutAdminAction();
+    } finally {
+      window.location.href = '/admin/login';
+    }
+  };
 
   const navItems = [
     { label: 'Dashboard', href: '/admin', icon: Tv2 },
@@ -190,6 +201,15 @@ export function AdminSidebar({ initialStore }: AdminSidebarProps) {
             <ShoppingBag className="w-4 h-4 text-[#fb6340]" />
             <span>View Customer Storefront</span>
           </Link>
+          <button
+            type="button"
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-colors cursor-pointer disabled:opacity-50"
+          >
+            <LogOut className="w-4 h-4 text-rose-500" />
+            <span>{isLoggingOut ? 'Signing Out...' : 'Sign Out Admin'}</span>
+          </button>
         </div>
       </aside>
     </>
