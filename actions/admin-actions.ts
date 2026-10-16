@@ -692,11 +692,19 @@ export async function logoutAdminAction() {
  * Used for live auto-polling and instant table synchronization.
  */
 export async function getAdminLiveOrdersAction() {
+  // Fetch all active profiles to map customer and rider info safely without foreign key conflicts
+  const { data: allProfiles } = await supabaseAdmin
+    .from('profiles')
+    .select('id, full_name, email, phone');
+
+  const profileMap = new Map((allProfiles || []).map((p) => [p.id, p]));
+
   const { data: rawOrders, error } = await (supabaseAdmin as any)
     .from('orders')
     .select(`
       id,
       order_number,
+      customer_id,
       status,
       payment_status,
       payment_method,
@@ -707,15 +715,6 @@ export async function getAdminLiveOrdersAction() {
       created_at,
       rider_id,
       cancellation_reason,
-      profiles:customer_id (
-        full_name,
-        email,
-        phone
-      ),
-      rider_profile:rider_id (
-        full_name,
-        phone
-      ),
       order_items (
         id,
         product_name,
@@ -729,40 +728,50 @@ export async function getAdminLiveOrdersAction() {
     .limit(100);
 
   if (error) {
+    console.error('getAdminLiveOrdersAction error:', error);
     return { success: false, error: error.message, orders: [] };
   }
 
-  const orders = (rawOrders || []).map((o: any) => ({
-    id: o.id,
-    order_number: o.order_number || 0,
-    status: o.status || 'PENDING',
-    payment_status: o.payment_status || 'UNPAID',
-    payment_method: o.payment_method || 'COD',
-    total_amount: Number(o.total_amount || 0),
-    delivery_fee: Number(o.delivery_fee || 0),
-    discount_amount: Number(o.discount_amount || 0),
-    delivery_address_snapshot: o.delivery_address_snapshot || {},
-    created_at: o.created_at,
-    rider_id: o.rider_id || null,
-    cancellation_reason: o.cancellation_reason || null,
-    profiles: o.profiles ? {
-      full_name: o.profiles.full_name,
-      email: o.profiles.email,
-      phone: o.profiles.phone,
-    } : undefined,
-    rider_profile: o.rider_profile ? {
-      full_name: o.rider_profile.full_name,
-      phone: o.rider_profile.phone,
-    } : undefined,
-    order_items: (o.order_items || []).map((it: any) => ({
-      id: it.id,
-      product_name: it.product_name,
-      variation_title: it.variation_title,
-      unit_price: Number(it.unit_price || 0),
-      quantity: Number(it.quantity || 1),
-      total_price: Number(it.total_price || 0),
-    })),
-  }));
+  const orders = (rawOrders || []).map((o: any) => {
+    const custProfile = o.customer_id ? profileMap.get(o.customer_id) : undefined;
+    const riderProfile = o.rider_id ? profileMap.get(o.rider_id) : undefined;
+
+    return {
+      id: o.id,
+      order_number: o.order_number || 0,
+      status: o.status || 'PENDING',
+      payment_status: o.payment_status || 'UNPAID',
+      payment_method: o.payment_method || 'COD',
+      total_amount: Number(o.total_amount || 0),
+      delivery_fee: Number(o.delivery_fee || 0),
+      discount_amount: Number(o.discount_amount || 0),
+      delivery_address_snapshot: o.delivery_address_snapshot || {},
+      created_at: o.created_at,
+      rider_id: o.rider_id || null,
+      cancellation_reason: o.cancellation_reason || null,
+      profiles: custProfile
+        ? {
+            full_name: custProfile.full_name,
+            email: custProfile.email,
+            phone: custProfile.phone,
+          }
+        : undefined,
+      rider_profile: riderProfile
+        ? {
+            full_name: riderProfile.full_name,
+            phone: riderProfile.phone,
+          }
+        : undefined,
+      order_items: (o.order_items || []).map((it: any) => ({
+        id: it.id,
+        product_name: it.product_name,
+        variation_title: it.variation_title,
+        unit_price: Number(it.unit_price || 0),
+        quantity: Number(it.quantity || 1),
+        total_price: Number(it.total_price || 0),
+      })),
+    };
+  });
 
   return { success: true, orders };
 }
