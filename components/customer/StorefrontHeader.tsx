@@ -203,7 +203,7 @@ export function StorefrontHeader() {
               type="button"
               onClick={() => setIsDrawerOpen(true)}
               aria-label="Open menu drawer"
-              className="size-10 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-800 transition active:scale-95 cursor-pointer"
+              className="size-10 rounded-xl hover:bg-slate-100 flex items-center justify-center text-slate-800 transition active:scale-95 cursor-pointer"
             >
               <Menu className="size-5 stroke-[2]" />
             </button>
@@ -220,7 +220,7 @@ export function StorefrontHeader() {
               aria-label="Change delivery location"
               className="hidden sm:flex items-center gap-2 pl-3 border-l border-slate-200 hover:bg-slate-50 py-1.5 px-2 rounded-xl transition cursor-pointer text-left"
             >
-              <div className="size-8 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+              <div className="size-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
                 <MapPin className="size-4 text-amber-600" />
               </div>
               <div className="flex flex-col text-left">
@@ -280,7 +280,7 @@ export function StorefrontHeader() {
             <Link
               href="/search"
               aria-label="Search catalog"
-              className="md:hidden size-10 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-700 transition"
+              className="md:hidden size-10 rounded-xl hover:bg-slate-100 flex items-center justify-center text-slate-700 transition"
             >
               <Search className="size-5" />
             </Link>
@@ -296,10 +296,10 @@ export function StorefrontHeader() {
                   <img
                     src={userSession.avatar}
                     alt={userSession.name}
-                    className="size-6 rounded-full object-cover border border-emerald-500 shadow-xs"
+                    className="size-6 rounded-md object-cover border border-emerald-500 shadow-xs"
                   />
                 ) : (
-                  <div className="size-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-black text-[11px]">
+                  <div className="size-6 rounded-md bg-emerald-600 text-white flex items-center justify-center font-black text-[11px]">
                     {userSession.name?.charAt(0) || 'A'}
                   </div>
                 )}
@@ -326,7 +326,7 @@ export function StorefrontHeader() {
               <ShoppingBag className="size-4 text-amber-300" />
               <span className="font-semibold hidden sm:inline">Cart</span>
               {totalItems > 0 && (
-                <span className="inline-flex items-center justify-center size-5 rounded-full bg-[var(--brand-accent,#00b9c6)] text-white text-[10px] font-black tabular-nums">
+                <span className="inline-flex items-center justify-center size-5 rounded-md bg-[var(--brand-accent,#00b9c6)] text-white text-[10px] font-black tabular-nums">
                   {totalItems}
                 </span>
               )}
@@ -347,7 +347,7 @@ export function StorefrontHeader() {
             <span className="truncate text-slate-600">{selectedAddress?.address_line_1 || 'Galleria Market, Gurugram'}</span>
             <ChevronDown className="size-3 text-slate-400 shrink-0" />
           </button>
-          <span className="text-[10px] font-bold bg-amber-500 text-white px-2 py-0.5 rounded-full shrink-0 tracking-wide">
+          <span className="text-[10px] font-bold bg-amber-500 text-white px-2 py-0.5 rounded-md shrink-0 tracking-wide">
             15 MINS
           </span>
         </div>

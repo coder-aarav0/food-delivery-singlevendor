@@ -124,7 +124,7 @@ export function DeliveryNavigationCard({
             </span>
           </div>
 
-          <span className="px-2.5 py-1 rounded-full text-xs font-black bg-slate-100 text-[#121C28]">
+          <span className="px-2.5 py-1 rounded-md text-xs font-black bg-slate-100 text-[#121C28]">
             Order #{order.orderNumber}
           </span>
         </div>

@@ -252,7 +252,7 @@ export function AddressSelectModal({
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full hover:bg-slate-200/70 text-slate-400 hover:text-slate-700 flex items-center justify-center transition"
+            className="w-8 h-8 rounded-xl hover:bg-slate-200/70 text-slate-400 hover:text-slate-700 flex items-center justify-center transition"
           >
             <X className="w-4 h-4" />
           </button>
@@ -354,7 +354,7 @@ export function AddressSelectModal({
                   const isSelected =
                     currentAddress?.id === addr.id ||
                     (currentAddress?.address_line_1 === addr.address_line_1 &&
-                      currentAddress?.pincode === addr.pincode);
+                       currentAddress?.pincode === addr.pincode);
 
                   return (
                     <div
@@ -376,7 +376,7 @@ export function AddressSelectModal({
                               {addr.label}
                             </span>
                             {isSelected && (
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800">
+                              <span className="px-2 py-0.5 rounded-md text-[10px] font-black bg-emerald-100 text-emerald-800">
                                 Current
                               </span>
                             )}
@@ -394,7 +394,7 @@ export function AddressSelectModal({
 
                       <div className="shrink-0 mt-1">
                         <div
-                          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition ${
+                          className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition ${
                             isSelected
                               ? 'border-emerald-600 bg-emerald-600 text-white'
                               : 'border-slate-300 bg-white'

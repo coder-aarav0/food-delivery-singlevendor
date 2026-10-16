@@ -262,7 +262,7 @@ export default function CheckoutPage() {
                     <span className="text-xs font-extrabold text-[var(--text-ink)]">
                       {selectedAddress?.label || 'Home'}
                     </span>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800">
+                    <span className="px-2 py-0.5 rounded-md text-[10px] font-black bg-emerald-100 text-emerald-800">
                       Delivering to this address
                     </span>
                   </div>
@@ -405,14 +405,14 @@ export default function CheckoutPage() {
                   </div>
 
                   <div
-                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                    className={`w-5 h-5 rounded-md border-2 flex items-center justify-center ${
                       paymentMethod === 'COD'
                         ? 'border-[var(--brand-primary)]'
                         : 'border-slate-300'
                     }`}
                   >
                     {paymentMethod === 'COD' && (
-                      <div className="w-2.5 h-2.5 rounded-full bg-[var(--brand-primary)]" />
+                      <div className="w-2.5 h-2.5 rounded-sm bg-[var(--brand-primary)]" />
                     )}
                   </div>
                 </button>
@@ -442,14 +442,14 @@ export default function CheckoutPage() {
                   </div>
 
                   <div
-                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                    className={`w-5 h-5 rounded-md border-2 flex items-center justify-center ${
                       paymentMethod === 'RAZORPAY'
                         ? 'border-[var(--brand-primary)]'
                         : 'border-slate-300'
                     }`}
                   >
                     {paymentMethod === 'RAZORPAY' && (
-                      <div className="w-2.5 h-2.5 rounded-full bg-[var(--brand-primary)]" />
+                      <div className="w-2.5 h-2.5 rounded-sm bg-[var(--brand-primary)]" />
                     )}
                   </div>
                 </button>
@@ -465,7 +465,7 @@ export default function CheckoutPage() {
                     Tip your delivery partner
                   </h2>
                 </div>
-                <span className="text-[10px] font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                <span className="text-[10px] font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200">
                   100% goes to rider
                 </span>
               </div>

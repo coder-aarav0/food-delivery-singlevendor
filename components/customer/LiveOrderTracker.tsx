@@ -113,7 +113,7 @@ export function LiveOrderTracker({ initialOrder }: LiveOrderTrackerProps) {
 
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-black uppercase tracking-wider mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/20 backdrop-blur-md text-xs font-black uppercase tracking-wider mb-2">
               <span>Order #{order.order_number || initialOrder.id?.slice(0, 8)}</span>
               <span>•</span>
               <span>15-Min Express</span>
@@ -255,7 +255,7 @@ export function LiveOrderTracker({ initialOrder }: LiveOrderTrackerProps) {
           <h2 className="text-base font-bold text-[var(--text-ink)]">
             Ordered Items ({itemsList.length})
           </h2>
-          <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+          <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200">
             Live Ticket
           </span>
         </div>

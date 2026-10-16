@@ -63,7 +63,7 @@ export function UsersManager({ initialUsers }: UsersManagerProps) {
 
         <div className="flex items-center gap-3 text-xs text-[var(--text-muted)] w-full sm:w-auto justify-between sm:justify-end">
           <span className="font-semibold text-gray-700">Total Registered: {users.length}</span>
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-medium">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 font-medium">
             <ShieldCheck className="w-3.5 h-3.5" /> All Verified
           </span>
         </div>
@@ -101,7 +101,7 @@ export function UsersManager({ initialUsers }: UsersManagerProps) {
                   >
                     <td className="py-4 px-6 font-semibold text-[var(--text-ink)]">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#fb6340] to-[#febb2c] flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#fb6340] to-[#febb2c] flex items-center justify-center text-white font-bold text-xs shadow-sm">
                           {(u.full_name || 'U').charAt(0).toUpperCase()}
                         </div>
                         <div>
@@ -128,7 +128,7 @@ export function UsersManager({ initialUsers }: UsersManagerProps) {
                     </td>
                     <td className="py-4 px-6">
                       <span
-                        className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider ${
+                        className={`inline-block px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider ${
                           u.role === 'admin'
                             ? 'bg-purple-100 text-purple-700'
                             : u.role === 'rider'

@@ -311,7 +311,7 @@ export function CouponsManager({ initialCoupons }: CouponsManagerProps) {
                   </td>
                   <td className="py-4 px-6 text-center">
                     <span
-                      className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${
+                      className={`inline-block px-2 py-0.5 rounded-md text-xs font-semibold ${
                         c.is_active
                           ? 'bg-emerald-100 text-emerald-800'
                           : 'bg-gray-100 text-gray-600'

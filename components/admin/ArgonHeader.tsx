@@ -39,7 +39,7 @@ export function ArgonHeader({ title, subtitle, children }: ArgonHeaderProps) {
             </Link>
 
             <div className="flex items-center gap-2 pl-2 border-l border-white/20">
-              <div className="w-8 h-8 rounded-full bg-white/20 border border-white/40 flex items-center justify-center font-bold text-xs text-white shadow-xs overflow-hidden">
+              <div className="w-8 h-8 rounded-xl bg-white/20 border border-white/40 flex items-center justify-center font-bold text-xs text-white shadow-xs overflow-hidden">
                 <span className="text-sm">👩‍💼</span>
               </div>
               <span className="text-xs font-bold text-white hidden sm:inline-block">

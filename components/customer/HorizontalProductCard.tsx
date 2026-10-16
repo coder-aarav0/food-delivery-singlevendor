@@ -88,7 +88,7 @@ export function HorizontalProductCard({
           {isOutOfStock ? (
             <span className="text-[11px] font-bold text-rose-500">Out of Stock</span>
           ) : (
-            <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+            <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
               In Stock
             </span>
           )}

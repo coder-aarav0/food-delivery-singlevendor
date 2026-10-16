@@ -252,7 +252,7 @@ export function DutyToggleHeader({ rider }: DutyToggleHeaderProps) {
               type="button"
               onClick={handleToggleDuty}
               disabled={isToggling}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full font-black text-xs transition-all duration-200 select-none shadow-xs cursor-pointer border ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl font-black text-xs transition-all duration-200 select-none shadow-xs cursor-pointer border ${
                 isOnline
                   ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700'
                   : 'bg-slate-100 hover:bg-slate-200 text-slate-600 border-slate-300'

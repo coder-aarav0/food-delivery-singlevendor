@@ -222,7 +222,7 @@ export function RiderFleetManager({ initialRiders }: RiderFleetManagerProps) {
                 {/* Header with Avatar & Status */}
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-full bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] flex items-center justify-center font-bold text-base">
+                    <div className="w-11 h-11 rounded-xl bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] flex items-center justify-center font-bold text-base">
                       {rider.fullName.charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -239,17 +239,17 @@ export function RiderFleetManager({ initialRiders }: RiderFleetManagerProps) {
                   {/* Status Badge */}
                   <div>
                     {rider.isBusy ? (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 border border-amber-500/20 animate-pulse">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-500/10 text-amber-600 border border-amber-500/20 animate-pulse">
                         <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
                         On Delivery
                       </span>
                     ) : rider.isOnline ? (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                         Available
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-zinc-500/10 text-zinc-500 border border-zinc-500/20">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-zinc-500/10 text-zinc-500 border border-zinc-500/20">
                         <span className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
                         Offline
                       </span>

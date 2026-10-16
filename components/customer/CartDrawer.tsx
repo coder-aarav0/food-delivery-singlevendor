@@ -93,7 +93,7 @@ export function CartDrawer() {
             type="button"
             onClick={() => setIsCartOpen(false)}
             aria-label="Close cart"
-            className="w-8 h-8 rounded-full flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-ink)] hover:bg-slate-200 transition-colors"
+            className="w-8 h-8 rounded-xl flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-ink)] hover:bg-slate-200 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -120,9 +120,9 @@ export function CartDrawer() {
             </span>
             <span className="font-extrabold">{deliveryProgress}%</span>
           </div>
-          <div className="w-full h-1.5 bg-emerald-200/60 rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-emerald-200/60 rounded-md overflow-hidden">
             <div
-              className="h-full bg-[var(--brand-primary)] rounded-full transition-all duration-300"
+              className="h-full bg-[var(--brand-primary)] rounded-md transition-all duration-300"
               style={{ width: `${deliveryProgress}%` }}
             />
           </div>

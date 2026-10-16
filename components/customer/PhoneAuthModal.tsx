@@ -78,7 +78,7 @@ export function PhoneAuthModal({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition cursor-pointer"
+          className="absolute top-5 right-5 w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
@@ -90,7 +90,7 @@ export function PhoneAuthModal({
               <ShoppingBag className="w-7 h-7" />
             </div>
 
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black uppercase tracking-wider mb-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-100 text-emerald-800 text-[11px] font-black uppercase tracking-wider mb-2">
               <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
               <span>Express 15-Minute Grocery</span>
             </div>

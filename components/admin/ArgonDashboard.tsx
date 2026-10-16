@@ -124,7 +124,7 @@ export function ArgonDashboard({ initialData }: ArgonDashboardProps) {
               <span className="text-slate-400 font-normal">Since last month</span>
             </div>
           </div>
-          <div className="w-12 h-12 rounded-full bg-[#fb6340] text-white flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-[#fb6340] text-white flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0">
             <ShoppingCart className="w-5 h-5" />
           </div>
         </div>
@@ -144,7 +144,7 @@ export function ArgonDashboard({ initialData }: ArgonDashboardProps) {
               <span className="text-slate-400 font-normal">Since last month</span>
             </div>
           </div>
-          <div className="w-12 h-12 rounded-full bg-[#fb6340] text-white flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-[#fb6340] text-white flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0">
             <Users className="w-5 h-5" />
           </div>
         </div>
@@ -164,7 +164,7 @@ export function ArgonDashboard({ initialData }: ArgonDashboardProps) {
               <span className="text-slate-400 font-normal">Since last month</span>
             </div>
           </div>
-          <div className="w-12 h-12 rounded-full bg-[#fb6340] text-white flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-[#fb6340] text-white flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0">
             <BarChart3 className="w-5 h-5" />
           </div>
         </div>
@@ -183,7 +183,7 @@ export function ArgonDashboard({ initialData }: ArgonDashboardProps) {
               <span>5.0 Excellent</span>
             </div>
           </div>
-          <div className="w-12 h-12 rounded-full bg-[#fb6340] text-white flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-[#fb6340] text-white flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0">
             <Star className="w-5 h-5" />
           </div>
         </div>

@@ -55,15 +55,15 @@ export function DeliveryCelebrationModal({
         </div>
 
         {/* Top Status Pill */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
           <span>Haptic Verified • Handover Complete</span>
         </div>
 
         {/* Big Celebratory Centerpiece */}
         <div className="relative flex items-center justify-center py-2">
-          <div className="absolute w-24 h-24 rounded-full bg-emerald-100 animate-ping opacity-75"></div>
-          <div className="relative w-20 h-20 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-600/30">
+          <div className="absolute w-24 h-24 rounded-3xl bg-emerald-100 animate-ping opacity-75"></div>
+          <div className="relative w-20 h-20 rounded-3xl bg-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-600/30">
             <CheckCircle2 className="w-10 h-10 stroke-[2.5]" />
           </div>
         </div>
@@ -76,7 +76,7 @@ export function DeliveryCelebrationModal({
           <p className="text-xs text-slate-600">
             Great job! Customer <strong className="text-[#121C28]">{customerName}</strong> received their items safely.
           </p>
-          <div className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full mt-1">
+          <div className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md mt-1">
             <Clock className="w-3 h-3" />
             <span>Delivered 4 mins ahead of SLA ⚡</span>
           </div>

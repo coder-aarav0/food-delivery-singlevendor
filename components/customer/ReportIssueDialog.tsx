@@ -125,7 +125,7 @@ export function ReportIssueDialog({
           </div>
 
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-black uppercase tracking-wider mb-2 border border-emerald-200">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-50 text-emerald-700 text-xs font-black uppercase tracking-wider mb-2 border border-emerald-200">
               <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
               <span>Instant Resolution Complete</span>
             </div>

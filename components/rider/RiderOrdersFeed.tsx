@@ -82,7 +82,7 @@ export function RiderOrdersFeed({
         >
           <span>My Active Deliveries</span>
           <span
-            className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
+            className={`px-2 py-0.5 rounded-md text-[10px] font-black ${
               activeTab === 'my'
                 ? 'bg-[#121C28] text-white'
                 : 'bg-slate-200 text-slate-700'
@@ -103,7 +103,7 @@ export function RiderOrdersFeed({
         >
           <span>Available Dispatches</span>
           <span
-            className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
+            className={`px-2 py-0.5 rounded-md text-[10px] font-black ${
               activeTab === 'new'
                 ? 'bg-[#121C28] text-white'
                 : 'bg-slate-200 text-slate-700'
@@ -148,7 +148,7 @@ export function RiderOrdersFeed({
                       <span className="font-extrabold text-sm text-[#121C28]">
                         Order #{order.orderNumber}
                       </span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">
                         {order.itemCount} items
                       </span>
                     </div>

@@ -142,7 +142,7 @@ export function RatingsManager() {
             <div key={item.id} className="p-6 hover:bg-[#fffaf2] transition-colors">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-2">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs">
+                  <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs">
                     {item.customerName.charAt(0)}
                   </div>
                   <div>
@@ -155,7 +155,7 @@ export function RatingsManager() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
+                <div className="flex items-center gap-1.5 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">
                   <div className="flex text-amber-400">
                     {[...Array(5)].map((_, i) => (
                       <Star

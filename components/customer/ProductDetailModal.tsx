@@ -90,17 +90,17 @@ export function ProductDetailModal({
           {/* Top Badges */}
           <div className="w-full flex items-center justify-between z-10 pr-8 md:pr-0">
             {hasDiscount ? (
-              <span className="inline-flex items-center gap-1 bg-emerald-600 text-white font-black text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-full shadow-xs">
+              <span className="inline-flex items-center gap-1 bg-emerald-600 text-white font-black text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-xs">
                 <Sparkles className="w-3 h-3 fill-white" />
                 <span>{discountPercentage}% OFF</span>
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1 bg-amber-500/15 text-amber-800 font-extrabold text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-amber-500/20">
+              <span className="inline-flex items-center gap-1 bg-amber-500/15 text-amber-800 font-extrabold text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-lg border border-amber-500/20">
                 Fresh Supermarket
               </span>
             )}
 
-            <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-xs px-2.5 py-1 rounded-full border border-slate-200 text-[10px] font-black text-slate-700">
+            <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-xs px-2.5 py-1 rounded-lg border border-slate-200 text-[10px] font-black text-slate-700">
               <span className={`w-2 h-2 rounded-full ${isOutOfStock ? 'bg-rose-500' : 'bg-emerald-500 animate-pulse'}`} />
               <span>{isOutOfStock ? 'Sold Out' : 'In Stock'}</span>
             </div>
@@ -195,11 +195,11 @@ export function ProductDetailModal({
                             {v.title}
                           </span>
                           {isSelected ? (
-                            <div className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                            <div className="w-5 h-5 rounded-md bg-emerald-600 text-white flex items-center justify-center shrink-0">
                               <Check className="w-3 h-3 stroke-[3]" />
                             </div>
                           ) : (
-                            <div className="w-5 h-5 rounded-full border-2 border-slate-300 shrink-0" />
+                            <div className="w-5 h-5 rounded-md border-2 border-slate-300 shrink-0" />
                           )}
                         </div>
                         <div className="flex items-baseline gap-1.5">

@@ -272,7 +272,7 @@ export function StoreSettingsForm({ store }: StoreSettingsFormProps) {
               </div>
 
               <span
-                className="w-5 h-5 rounded-full text-white text-[10px] font-black flex items-center justify-center shadow-xs"
+                className="w-5 h-5 rounded-md text-white text-[10px] font-black flex items-center justify-center shadow-xs"
                 style={{ backgroundColor: accentColor }}
               >
                 3

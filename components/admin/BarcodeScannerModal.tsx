@@ -192,7 +192,7 @@ export function BarcodeScannerModal({
 
           {/* Reticle Target */}
           <div className="relative z-10 flex flex-col items-center gap-2">
-            <div className="p-3 rounded-full bg-slate-900 border border-slate-700 text-emerald-400">
+            <div className="p-3 rounded-2xl bg-slate-900 border border-slate-700 text-emerald-400">
               <ScanLine className="w-8 h-8 animate-pulse" />
             </div>
             <span className="text-xs font-bold text-slate-300">
@@ -241,7 +241,7 @@ export function BarcodeScannerModal({
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
+                    className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 ${
                       isScanned
                         ? 'bg-emerald-600 text-white'
                         : 'border-2 border-slate-300 text-transparent'
@@ -260,7 +260,7 @@ export function BarcodeScannerModal({
                 </div>
 
                 <span
-                  className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full ${
+                  className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md ${
                     isScanned
                       ? 'bg-emerald-200 text-emerald-800'
                       : 'bg-slate-100 text-slate-500'

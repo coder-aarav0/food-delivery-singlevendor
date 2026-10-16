@@ -336,7 +336,7 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
                     </td>
                     <td className="py-3.5 px-4">
                       <span
-                        className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
+                        className={`text-[10px] font-extrabold px-2 py-0.5 rounded-md ${
                           ord.payment_status === 'PAID'
                             ? 'bg-emerald-100 text-emerald-800'
                             : 'bg-amber-100 text-amber-800'
@@ -347,7 +347,7 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
                     </td>
                     <td className="py-3.5 px-4">
                       <span
-                        className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
+                        className={`text-[10px] font-extrabold px-2 py-0.5 rounded-md ${
                           ord.status === 'DELIVERED'
                             ? 'bg-emerald-100 text-emerald-800'
                             : ord.status === 'CANCELLED'
@@ -390,7 +390,7 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
                 <h3 className="text-lg font-black text-[#0b0b0b] tracking-tight">
                   Order#ORDID{selectedOrder.order_number}
                 </h3>
-                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">
+                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-800">
                   {selectedOrder.status}
                 </span>
               </div>
@@ -632,14 +632,14 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
                         className="flex items-center justify-between p-2 rounded-xl bg-slate-50"
                       >
                         <div className="flex items-center gap-2">
-                          <span className="w-5 h-5 rounded-full bg-slate-300 text-slate-800 text-[10px] font-black flex items-center justify-center">
+                          <span className="w-5 h-5 rounded-md bg-slate-300 text-slate-800 text-[10px] font-black flex items-center justify-center">
                             {it.quantity}
                           </span>
                           <span className="font-bold text-slate-800">
                             {it.product_name}
                           </span>
                         </div>
-                        <span className="px-2 py-0.5 rounded-full bg-slate-900 text-white font-black text-[11px] tabular-nums">
+                        <span className="px-2 py-0.5 rounded-md bg-slate-900 text-white font-black text-[11px] tabular-nums">
                           ₹{Number(it.total_price).toFixed(2)}
                         </span>
                       </div>

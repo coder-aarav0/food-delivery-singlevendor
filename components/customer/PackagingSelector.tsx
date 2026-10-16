@@ -75,7 +75,7 @@ export function PackagingSelector({ packaging, onChange }: PackagingSelectorProp
         </div>
 
         {packaging.type === 'GIFT' && (
-          <span className="px-2.5 py-1 rounded-full text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300 animate-pulse">
+          <span className="px-2.5 py-1 rounded-md text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300 animate-pulse">
             🎁 Gift Wrap Applied
           </span>
         )}
@@ -109,7 +109,7 @@ export function PackagingSelector({ packaging, onChange }: PackagingSelectorProp
                 </div>
 
                 <span
-                  className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
+                  className={`text-[10px] font-black px-2 py-0.5 rounded-md ${
                     opt.fee > 0
                       ? 'bg-amber-100 text-amber-900 border border-amber-300'
                       : 'bg-emerald-100 text-emerald-800'

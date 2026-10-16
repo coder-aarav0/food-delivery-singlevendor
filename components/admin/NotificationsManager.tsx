@@ -201,7 +201,7 @@ export function NotificationsManager() {
                   <td className="py-4 px-6 font-bold text-[var(--text-ink)]">{h.title}</td>
                   <td className="py-4 px-6 text-xs text-gray-600 max-w-xs truncate">{h.body}</td>
                   <td className="py-4 px-6">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-50 text-purple-700">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-purple-50 text-purple-700">
                       <Users className="w-3 h-3" />
                       {h.target} ({h.recipientCount})
                     </span>
@@ -213,7 +213,7 @@ export function NotificationsManager() {
                     </div>
                   </td>
                   <td className="py-4 px-6 text-center">
-                    <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                    <span className="inline-block px-2.5 py-0.5 rounded-md text-xs font-semibold bg-emerald-100 text-emerald-800">
                       Delivered
                     </span>
                   </td>

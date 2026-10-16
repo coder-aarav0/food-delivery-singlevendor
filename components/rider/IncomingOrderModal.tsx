@@ -109,7 +109,7 @@ export function IncomingOrderModal({
               Audio Alert Active
             </span>
           </div>
-          <div className="flex items-center gap-1.5 bg-white/90 px-2.5 py-0.5 rounded-full shadow-xs">
+          <div className="flex items-center gap-1.5 bg-white/90 px-2.5 py-0.5 rounded-md shadow-xs">
             <span className="w-2 h-2 rounded-full bg-rose-600 animate-ping"></span>
             <span className="text-[10px] font-extrabold text-[#121C28] uppercase">
               Live Dispatch
@@ -121,7 +121,7 @@ export function IncomingOrderModal({
         <div className="w-full bg-[#F7D02C] px-5 pt-3 pb-5 shadow-sm relative overflow-hidden shrink-0">
           <div className="flex items-start justify-between relative z-10">
             <div className="space-y-1">
-              <div className="inline-flex items-center gap-1.5 bg-[#121C28] text-[#F7D02C] px-2.5 py-0.5 rounded-full shadow-xs">
+              <div className="inline-flex items-center gap-1.5 bg-[#121C28] text-[#F7D02C] px-2.5 py-0.5 rounded-md shadow-xs">
                 <Zap className="w-3.5 h-3.5 fill-[#F7D02C]" />
                 <span className="text-[10px] font-black uppercase tracking-wider">
                   New Batch Assigned
@@ -198,7 +198,7 @@ export function IncomingOrderModal({
               <span className="font-extrabold uppercase tracking-wider text-slate-500 text-[10px]">
                 Trip Route • ~1.8 km
               </span>
-              <span className="bg-emerald-50 text-emerald-700 font-bold text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1">
+              <span className="bg-emerald-50 text-emerald-700 font-bold text-[10px] px-2 py-0.5 rounded-md flex items-center gap-1">
                 <CheckCircle2 className="w-3 h-3" />
                 Ready to Pick
               </span>
@@ -210,7 +210,7 @@ export function IncomingOrderModal({
 
               {/* Store Pickup Point */}
               <div className="relative">
-                <div className="absolute -left-6 top-0.5 w-4.5 h-4.5 rounded-full bg-[#F7D02C] text-[#121C28] flex items-center justify-center shadow-xs">
+                <div className="absolute -left-6 top-0.5 w-4.5 h-4.5 rounded-md bg-[#F7D02C] text-[#121C28] flex items-center justify-center shadow-xs">
                   <Store className="w-2.5 h-2.5 stroke-[2.5]" />
                 </div>
                 <div>
@@ -230,7 +230,7 @@ export function IncomingOrderModal({
 
               {/* Customer Drop Point */}
               <div className="relative pt-1">
-                <div className="absolute -left-6 top-1.5 w-4.5 h-4.5 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+                <div className="absolute -left-6 top-1.5 w-4.5 h-4.5 rounded-md bg-emerald-600 text-white flex items-center justify-center shadow-xs">
                   <MapPin className="w-2.5 h-2.5 stroke-[2.5]" />
                 </div>
                 <div>

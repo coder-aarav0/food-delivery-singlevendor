@@ -19,7 +19,7 @@ export function Badge({
   ...props
 }: BadgeProps) {
   const baseStyles =
-    'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold tracking-wide select-none';
+    'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold tracking-wide select-none';
 
   const variants: Record<string, string> = {
     // Order Status Badges (Strict AA Contrast)

@@ -79,7 +79,7 @@ export function RiderDrawer({
             </div>
             <button
               onClick={onClose}
-              className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition cursor-pointer"
+              className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition cursor-pointer"
               aria-label="Close rider menu"
             >
               <X className="w-5 h-5 stroke-[2.5]" />
@@ -104,7 +104,7 @@ export function RiderDrawer({
                   <h3 className="font-extrabold text-[#121C28] text-base leading-snug truncate">
                     {riderName}
                   </h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-200 text-slate-700">
                     BK-9941
                   </span>
                 </div>
@@ -118,7 +118,7 @@ export function RiderDrawer({
                     <span className="text-slate-500 font-normal">(420+)</span>
                   </div>
                   <span
-                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
                       isOnline
                         ? 'bg-emerald-100 text-emerald-800'
                         : 'bg-slate-200 text-slate-600'
@@ -158,7 +158,7 @@ export function RiderDrawer({
                   </div>
                   <div className="flex items-center gap-2">
                     {item.badge && (
-                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase">
+                      <span className="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase">
                         {item.badge}
                       </span>
                     )}

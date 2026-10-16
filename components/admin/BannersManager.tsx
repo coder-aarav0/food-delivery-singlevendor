@@ -426,7 +426,7 @@ export function BannersManager() {
               >
                 <div className="flex items-center gap-4">
                   {/* Sequence pill */}
-                  <span className="size-7 rounded-full bg-slate-100 text-slate-600 font-bold text-xs flex items-center justify-center shrink-0">
+                  <span className="size-7 rounded-md bg-slate-100 text-slate-600 font-bold text-xs flex items-center justify-center shrink-0">
                     {index + 1}
                   </span>
 
@@ -467,7 +467,7 @@ export function BannersManager() {
                   <button
                     type="button"
                     onClick={() => handleToggle(banner.id)}
-                    className={`px-3 py-1 rounded-full text-xs font-bold transition cursor-pointer ${
+                    className={`px-3 py-1 rounded-md text-xs font-bold transition cursor-pointer ${
                       banner.isActive
                         ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
                         : 'bg-slate-100 text-slate-500 hover:bg-slate-200'

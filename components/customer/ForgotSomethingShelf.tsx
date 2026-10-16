@@ -144,7 +144,7 @@ export function ForgotSomethingShelf({
               <span className="text-xs font-black uppercase tracking-wider text-amber-900">
                 180-Sec Grace Window
               </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-600 text-white uppercase tracking-wider animate-pulse">
+              <span className="px-2 py-0.5 rounded-md text-[10px] font-black bg-emerald-600 text-white uppercase tracking-wider animate-pulse">
                 Zero Extra Delivery Fee
               </span>
             </div>

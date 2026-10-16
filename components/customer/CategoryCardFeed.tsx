@@ -52,7 +52,7 @@ export function CategoryCardFeed({ categories }: CategoryCardFeedProps) {
             <div className="absolute inset-0 p-5 flex flex-col justify-end">
               <div className="flex items-end justify-between">
                 <div>
-                  <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#febb2c] text-black text-[10px] font-black uppercase tracking-wider mb-1.5 shadow-xs">
+                  <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#febb2c] text-black text-[10px] font-black uppercase tracking-wider mb-1.5 shadow-xs">
                     AISLE #{idx + 1}
                   </span>
                   <h3 className="text-lg sm:text-xl font-black text-white leading-snug tracking-tight drop-shadow-sm group-hover:text-[#febb2c] transition-colors">
@@ -63,7 +63,7 @@ export function CategoryCardFeed({ categories }: CategoryCardFeedProps) {
                   </p>
                 </div>
 
-                <div className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center shrink-0 group-hover:bg-[#febb2c] group-hover:text-black transition-all">
+                <div className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-md text-white flex items-center justify-center shrink-0 group-hover:bg-[#febb2c] group-hover:text-black transition-all">
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>

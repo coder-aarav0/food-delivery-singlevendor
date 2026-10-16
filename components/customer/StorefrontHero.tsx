@@ -174,7 +174,7 @@ export function StorefrontHero() {
             <div className="relative z-10 p-6 sm:p-8 md:p-10 max-w-xl text-white flex flex-col justify-between h-full min-h-[300px] sm:min-h-[340px]">
               <div>
                 {/* Badge */}
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-amber-300 text-xs font-bold mb-3 border border-white/20">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/20 backdrop-blur-md text-amber-300 text-xs font-bold mb-3 border border-white/20">
                   <Sparkles className="size-3.5 text-amber-300" />
                   <span>{current.badge}</span>
                 </div>
@@ -221,7 +221,7 @@ export function StorefrontHero() {
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center h-full">
               {/* Left Column: Text & Coupons */}
               <div className="lg:col-span-7">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/20 text-white text-xs font-medium mb-3 backdrop-blur-sm">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-black/20 text-white text-xs font-medium mb-3 backdrop-blur-sm">
                   <Clock className="size-3.5 text-amber-200" />
                   <span>{current.badge}</span>
                 </div>
@@ -292,7 +292,7 @@ export function StorefrontHero() {
           type="button"
           onClick={prevBanner}
           aria-label="Previous banner"
-          className="absolute left-3 top-1/2 -translate-y-1/2 size-9 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all cursor-pointer z-20 shadow-md"
+          className="absolute left-3 top-1/2 -translate-y-1/2 size-9 rounded-xl bg-black/40 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all cursor-pointer z-20 shadow-md"
         >
           <ChevronLeft className="size-5" />
         </button>
@@ -300,13 +300,13 @@ export function StorefrontHero() {
           type="button"
           onClick={nextBanner}
           aria-label="Next banner"
-          className="absolute right-3 top-1/2 -translate-y-1/2 size-9 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all cursor-pointer z-20 shadow-md"
+          className="absolute right-3 top-1/2 -translate-y-1/2 size-9 rounded-xl bg-black/40 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all cursor-pointer z-20 shadow-md"
         >
           <ChevronRight className="size-5" />
         </button>
 
         {/* Auto-Loop Segmented Progress Bars (Blinkit / Zepto Style) */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-full">
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-xl">
           {banners.map((b, index) => {
             const isActive = index === currentIndex;
             return (
@@ -315,7 +315,7 @@ export function StorefrontHero() {
                 type="button"
                 onClick={() => setCurrentIndex(index)}
                 aria-label={`Jump to banner ${index + 1}`}
-                className="relative h-1.5 rounded-full overflow-hidden transition-all duration-300 cursor-pointer"
+                className="relative h-1.5 rounded-md overflow-hidden transition-all duration-300 cursor-pointer"
                 style={{
                   width: isActive ? '28px' : '8px',
                   backgroundColor: isActive ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.25)',
@@ -323,7 +323,7 @@ export function StorefrontHero() {
               >
                 {isActive && (
                   <div
-                    className={`h-full bg-amber-400 rounded-full ${
+                    className={`h-full bg-amber-400 rounded-md ${
                       isPaused ? '' : 'animate-progress-5s'
                     }`}
                     style={{

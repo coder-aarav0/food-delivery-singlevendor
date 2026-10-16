@@ -86,7 +86,7 @@ export function CustomerDrawer({
             </Link>
             <button
               onClick={onClose}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-black/10 hover:bg-black/20 text-gray-950 font-bold text-xs transition cursor-pointer"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-black/10 hover:bg-black/20 text-gray-950 font-bold text-xs transition cursor-pointer"
               aria-label="Close menu"
             >
               <span>Close</span>
@@ -101,7 +101,7 @@ export function CustomerDrawer({
               onClick={onClose}
               className="flex items-center gap-4 p-4 rounded-2xl bg-black/10 hover:bg-black/15 transition backdrop-blur-xs border border-black/10 mb-6 block cursor-pointer"
             >
-              <div className="size-12 rounded-full bg-black text-[#febb2c] font-black text-xl flex items-center justify-center shadow-md shrink-0">
+              <div className="size-12 rounded-xl bg-black text-[#febb2c] font-black text-xl flex items-center justify-center shadow-md shrink-0">
                 {userName.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0">
@@ -116,7 +116,7 @@ export function CustomerDrawer({
           ) : (
             <div className="p-4 rounded-2xl bg-black/10 border border-black/10 mb-6 space-y-3">
               <div className="flex items-center gap-3">
-                <div className="size-11 rounded-full bg-black/15 text-gray-950 flex items-center justify-center font-black shrink-0">
+                <div className="size-11 rounded-xl bg-black/15 text-gray-950 flex items-center justify-center font-black shrink-0">
                   <User className="size-5" />
                 </div>
                 <div className="min-w-0">
@@ -196,7 +196,7 @@ export function CustomerDrawer({
                 <span>Sign In</span>
               </button>
             )}
-            <span className="px-2.5 py-0.5 rounded-full bg-black text-white text-[10px] font-mono font-bold">
+            <span className="px-2.5 py-0.5 rounded-md bg-black text-white text-[10px] font-mono font-bold">
               v2.4.0
             </span>
           </div>

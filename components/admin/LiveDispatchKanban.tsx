@@ -189,7 +189,7 @@ export function LiveDispatchKanban({
                   </span>
                 </div>
                 <span
-                  className={`px-2 py-0.5 rounded-full text-xs font-black border ${col.badgeColor}`}
+                  className={`px-2 py-0.5 rounded-md text-xs font-black border ${col.badgeColor}`}
                 >
                   {col.count}
                 </span>

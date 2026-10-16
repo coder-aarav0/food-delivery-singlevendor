@@ -212,7 +212,7 @@ export function RidersManager({ initialRiders }: RidersManagerProps) {
               <span className="font-extrabold text-base text-[#121C28]">
                 Delivery Partner Mobile App
               </span>
-              <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md">
                 v2.4.0 APK
               </span>
             </div>
@@ -448,7 +448,7 @@ export function RidersManager({ initialRiders }: RidersManagerProps) {
                   >
                     <td className="py-4 px-6 font-semibold text-[var(--text-ink)]">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#11cdef] to-[#1171ef] flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#11cdef] to-[#1171ef] flex items-center justify-center text-white font-bold text-xs shadow-sm">
                           {r.name.charAt(0).toUpperCase()}
                         </div>
                         <span className="font-semibold text-gray-900">{r.name}</span>
@@ -464,7 +464,7 @@ export function RidersManager({ initialRiders }: RidersManagerProps) {
                       {r.phone}
                     </td>
                     <td className="py-4 px-6">
-                      <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700">
+                      <span className="inline-block px-2.5 py-0.5 rounded-md text-xs font-semibold bg-blue-50 text-blue-700">
                         {r.zone}
                       </span>
                     </td>

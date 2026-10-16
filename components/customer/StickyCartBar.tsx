@@ -33,7 +33,7 @@ export function StickyCartBar({ onOpenCart }: StickyCartBarProps) {
         <div className="flex items-center gap-3">
           <div className="relative w-10 h-10 rounded-xl bg-slate-950/10 flex items-center justify-center shrink-0">
             <ShoppingBag className="w-5 h-5 text-slate-950 stroke-[2.2]" />
-            <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-slate-950 text-white text-[11px] font-black flex items-center justify-center shadow-sm">
+            <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-md bg-slate-950 text-white text-[11px] font-black flex items-center justify-center shadow-sm">
               {totalItems}
             </span>
           </div>

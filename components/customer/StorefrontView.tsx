@@ -105,7 +105,7 @@ export function StorefrontView({ categories, products }: StorefrontViewProps) {
         <section className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 px-1 gap-1">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase tracking-wider mb-1">
+              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 text-[10px] font-black uppercase tracking-wider mb-1">
                 <span>{timeOfDayShelf.emoji}</span>
                 <span>{timeOfDayShelf.badge}</span>
               </div>

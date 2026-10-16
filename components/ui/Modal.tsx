@@ -84,7 +84,7 @@ export function Modal({
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="absolute top-3.5 right-3.5 z-20 w-9 h-9 rounded-full bg-slate-900/10 hover:bg-slate-900/20 backdrop-blur-md flex items-center justify-center text-slate-700 hover:text-slate-950 transition active:scale-95 cursor-pointer shadow-xs"
+            className="absolute top-3.5 right-3.5 z-20 w-9 h-9 rounded-xl bg-slate-900/10 hover:bg-slate-900/20 backdrop-blur-md flex items-center justify-center text-slate-700 hover:text-slate-950 transition active:scale-95 cursor-pointer shadow-xs"
           >
             <X className="w-4 h-4 stroke-[2.5]" />
           </button>
@@ -109,7 +109,7 @@ export function Modal({
               type="button"
               onClick={onClose}
               aria-label="Close dialog"
-              className="w-9 h-9 rounded-full flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-ink)] hover:bg-[var(--bg-muted)] transition-colors active:scale-95 cursor-pointer"
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-ink)] hover:bg-[var(--bg-muted)] transition-colors active:scale-95 cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>

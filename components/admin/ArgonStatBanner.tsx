@@ -72,7 +72,7 @@ export function ArgonStatBanner({
               </span>
             </div>
             <div
-              className={`w-12 h-12 rounded-full ${stat.iconBg} text-white flex items-center justify-center shadow-sm shrink-0`}
+              className={`w-12 h-12 rounded-2xl ${stat.iconBg} text-white flex items-center justify-center shadow-sm shrink-0`}
             >
               <Icon className="w-5 h-5 text-white" />
             </div>

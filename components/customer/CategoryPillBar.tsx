@@ -33,7 +33,7 @@ export function CategoryPillBar({
           type="button"
           onClick={() => onSelectCategory(null)}
           className={cn(
-            'flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-xs md:text-sm font-bold transition-all duration-150 min-h-[44px] select-none border',
+            'flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all duration-150 min-h-[44px] select-none border',
             selectedSlug === null
               ? 'bg-[var(--brand-primary)] text-slate-950 font-black border-[var(--brand-primary)] shadow-sm'
               : 'bg-[var(--bg-surface)] text-[var(--text-body)] border-[var(--border-subtle)] hover:border-[var(--brand-primary)] hover:bg-[var(--bg-muted)]'
@@ -52,14 +52,14 @@ export function CategoryPillBar({
               type="button"
               onClick={() => onSelectCategory(cat.slug)}
               className={cn(
-                'flex items-center gap-2.5 px-3.5 py-2 rounded-2xl text-xs md:text-sm font-semibold transition-all duration-150 min-h-[44px] select-none border',
+                'flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all duration-150 min-h-[44px] select-none border',
                 isSelected
                   ? 'bg-[var(--brand-primary)] text-slate-950 font-black border-[var(--brand-primary)] shadow-sm'
                   : 'bg-[var(--bg-surface)] text-[var(--text-body)] border-[var(--border-subtle)] hover:border-[var(--brand-primary)] hover:bg-[var(--bg-muted)]'
               )}
             >
               {cat.image_url ? (
-                <div className="relative w-7 h-7 rounded-full overflow-hidden bg-white/20 shrink-0">
+                <div className="relative w-7 h-7 rounded-lg overflow-hidden bg-white/20 shrink-0">
                   <Image
                     src={getOptimizedImageUrl(cat.image_url, { width: 80, height: 80 })}
                     alt={cat.name}

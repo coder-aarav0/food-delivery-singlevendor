@@ -184,7 +184,7 @@ export function SKUTable({ initialItems, categories }: SKUTableProps) {
                     {/* Stock Count */}
                     <td className="p-4">
                       <span
-                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold ${
+                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-bold ${
                           item.stockQuantity <= 0
                             ? 'bg-rose-100 text-rose-800'
                             : isLowStock

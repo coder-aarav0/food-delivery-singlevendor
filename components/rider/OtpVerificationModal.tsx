@@ -126,7 +126,7 @@ export function OtpVerificationModal({
             <button
               type="button"
               onClick={onClose}
-              className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition cursor-pointer"
+              className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition cursor-pointer"
             >
               <X className="w-5 h-5 stroke-[2.5]" />
             </button>
@@ -134,7 +134,7 @@ export function OtpVerificationModal({
               Customer Handover &amp; OTP
             </h2>
           </div>
-          <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">
+          <span className="text-[10px] font-bold px-2.5 py-1 rounded-md bg-slate-100 text-slate-700">
             Order #{orderNumber}
           </span>
         </div>
@@ -205,7 +205,7 @@ export function OtpVerificationModal({
 
           {/* OTP Input Section */}
           <div className="text-center space-y-2 pt-1">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-semibold">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-slate-100 text-slate-600 text-[11px] font-semibold">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
               <span>Encrypted Handover • Auto-verifies on 4 digits</span>
             </div>
