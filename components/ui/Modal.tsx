@@ -11,7 +11,9 @@ export interface ModalProps {
   description?: string;
   children: React.ReactNode;
   className?: string;
-  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  contentClassName?: string;
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
+  hideHeader?: boolean;
 }
 
 export function Modal({
@@ -21,7 +23,9 @@ export function Modal({
   description,
   children,
   className,
+  contentClassName,
   maxWidth = 'md',
+  hideHeader,
 }: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -50,8 +54,12 @@ export function Modal({
     md: 'max-w-md',
     lg: 'max-w-lg',
     xl: 'max-w-xl',
+    '2xl': 'max-w-2xl',
+    '3xl': 'max-w-3xl',
     full: 'max-w-full m-4',
   };
+
+  const showHeader = !hideHeader && (Boolean(title) || Boolean(description));
 
   return (
     <div
@@ -59,43 +67,59 @@ export function Modal({
       onClick={(e) => {
         if (e.target === overlayRef.current) onClose();
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-slate-950/70 backdrop-blur-md animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
     >
       <div
         className={cn(
-          'relative w-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-3xl shadow-elevated overflow-hidden animate-in zoom-in-95 duration-150',
+          'relative w-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150',
           maxWidthStyles[maxWidth],
           className
         )}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-[var(--border-subtle)]">
-          <div>
-            {title && (
-              <h2 className="text-lg font-bold text-[var(--text-ink)] leading-snug">
-                {title}
-              </h2>
-            )}
-            {description && (
-              <p className="text-xs text-[var(--text-muted)] mt-0.5">
-                {description}
-              </p>
-            )}
-          </div>
+        {/* Floating close button when no header is shown */}
+        {!showHeader && (
           <button
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="w-9 h-9 rounded-full flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-ink)] hover:bg-[var(--bg-muted)] transition-colors active:scale-95"
+            className="absolute top-3.5 right-3.5 z-20 w-9 h-9 rounded-full bg-slate-900/10 hover:bg-slate-900/20 backdrop-blur-md flex items-center justify-center text-slate-700 hover:text-slate-950 transition active:scale-95 cursor-pointer shadow-xs"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 stroke-[2.5]" />
           </button>
-        </div>
+        )}
+
+        {/* Header */}
+        {showHeader && (
+          <div className="flex items-center justify-between p-5 border-b border-[var(--border-subtle)]">
+            <div>
+              {title && (
+                <h2 className="text-lg font-bold text-[var(--text-ink)] leading-snug">
+                  {title}
+                </h2>
+              )}
+              {description && (
+                <p className="text-xs text-[var(--text-muted)] mt-0.5">
+                  {description}
+                </p>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close dialog"
+              className="w-9 h-9 rounded-full flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-ink)] hover:bg-[var(--bg-muted)] transition-colors active:scale-95 cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        )}
 
         {/* Content */}
-        <div className="p-5 max-h-[80vh] overflow-y-auto">{children}</div>
+        <div className={cn('p-5 max-h-[85vh] overflow-y-auto', contentClassName)}>
+          {children}
+        </div>
       </div>
     </div>
   );
