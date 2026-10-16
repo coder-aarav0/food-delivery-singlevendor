@@ -136,10 +136,21 @@
 
 ---
 
+### Phase 9: Production Media Pipeline & Vercel Cloud Deployment
+- [x] **9.1 Dual-Mode Image Uploader** (`components/ui/ImageUploader.tsx` supporting device drag-and-drop / file selection and direct URL input with instant preview)
+- [x] **9.2 Cloudinary Direct Cloud Streaming** (`app/api/upload/route.ts` multipart endpoint streaming to Cloudinary cloud `z0l2isgx` with local disk fallback)
+- [x] **9.3 Admin Media Integration** (`FoodManager.tsx`, `CategoryManager.tsx`, `BannersManager.tsx` upgraded with dual-mode uploader)
+- [x] **9.4 Vercel Production Deployment** (Linked to `ink-pixels/food-delivery-singlevendor` under `workwithaarav0@gmail.com` with full Supabase & Cloudinary secrets)
+- [x] **9.5 Production Live Verification** (Verified HTTP 200 on `/`, `/download/rider`, and 307 auth guards on `/admin` and `/rider` on `https://food-delivery-singlevendor-nu.vercel.app`)
+
+---
+
 ## 🚧 3. Blockers & Technical Decisions Log
 
 | Date | Category | Decision / Resolution | Status |
 | :--- | :--- | :--- | :--- |
+| **2026-10-16** | **Cloud Deployment** | Successfully deployed Next.js 16 app to Vercel production under user account `workwithaarav0@gmail.com` with live Supabase & Cloudinary credentials. | ✅ Resolved |
+| **2026-10-16** | **Media Uploads** | Replaced plain URL text fields with dual-mode file uploader supporting both direct local device files (streaming to Cloudinary) and external image links. | ✅ Resolved |
 | **2026-10-15** | **UI/UX World-Class Polish** | Faithfully reverse-engineered all 34 reference images into 12 Admin screens, golden amber Customer PWA drawer & cards, and OLED dark Rider app with perforated ticket receipts. | ✅ Resolved |
 | **2026-10-14** | **Architecture** | Unified Next.js 16 app with route groups sharing Server Actions instead of 3 separate apps, cutting build times and keeping database models unified. | ✅ Resolved |
 | **2026-10-14** | **Frontend UI Design** | Faithfully replicated Enatega single-vendor reference design (`#febb2c` golden amber, `#fff1d4` warm yellow, `#00b9c6` cyan accent, Argon Dashboard metric cards) while retaining modern Next.js 16 Server Actions backend. | ✅ Resolved |
@@ -152,14 +163,14 @@
 
 ## 🤝 4. Session Handoff Notes
 
-> **Project Status:** Complete 34-Reference Image reverse engineering and world-class design system implementation finished with 100% fidelity and 0 TypeScript errors (`npx tsc --noEmit` verified).  
-> **Key Endpoints:**  
-> - Customer PWA: `/` (with golden drawer, visual category cards, and express cart)  
-> - Category Drilldown: `/category/[slug]` (horizontal food cards with amber prices)  
-> - Order Tracking: `/order/[id]` (organic fluid celebration banner, live rider map, and 4-digit handover OTP)  
-> - Store Owner Admin Station: `/admin` (Argon 2026 suite with 12 screens + diagonal auth `/admin/login`)  
-> - Delivery Rider Mobile App: `/rider` (OLED dark theme, segmented tab switcher, perforated ticket receipts, 4-digit OTP)  
-> - GraphQL API: `/api/graphql`  
-
-  
-
+> **Project Status:** Production deployment on Vercel is LIVE and verified with 0 errors. All 3 portals, database, and Cloudinary media pipeline are connected.  
+> **Production URLs:**  
+> - 🌐 **Live Production Domain:** [https://food-delivery-singlevendor-nu.vercel.app](https://food-delivery-singlevendor-nu.vercel.app)  
+> - 🌐 **Direct Immutable Deployment:** [https://food-delivery-singlevendor-kar2n5k55-ink-pixels.vercel.app](https://food-delivery-singlevendor-kar2n5k55-ink-pixels.vercel.app)  
+> - 🛠️ **Vercel Project Dashboard:** [https://vercel.com/ink-pixels/food-delivery-singlevendor](https://vercel.com/ink-pixels/food-delivery-singlevendor)  
+>  
+> **Key Live Routes:**  
+> - **Customer PWA Storefront:** `/` (Full catalog, instant voice search, cart drawer, express checkout)  
+> - **Store Owner Admin Panel:** `/admin` (Argon 2026 dashboard, live Kanban dispatch, catalog, banner manager)  
+> - **Rider Portal & App Download:** `/download/rider` (Direct mobile install & download hub)  
+> - **GraphQL Yoga API:** `/api/graphql` (Enatega Apollo SDL compatibility)  
