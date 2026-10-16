@@ -53,9 +53,9 @@ export function PhoneAuthModal({
   // Instant Guest / Demo Login for Local Development & Testing
   const handleDemoSignIn = () => {
     const demoUser = {
-      name: 'Aarav Soni',
-      email: 'aarav@freshmart.local',
-      phone: '+91 98765 43210',
+      name: 'FreshMart Customer',
+      email: 'customer@freshmart.local',
+      phone: '+91 98000 12345',
     };
     try {
       localStorage.setItem('freshmart_user_session_v1', JSON.stringify(demoUser));

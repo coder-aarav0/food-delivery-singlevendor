@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { StorefrontHeader } from '@/components/customer/StorefrontHeader';
 import { StorefrontFooter } from '@/components/customer/StorefrontFooter';
+import { supabase } from '@/lib/supabase/client';
 import {
   User,
   Phone,
@@ -22,16 +23,58 @@ import {
 } from 'lucide-react';
 
 export default function ProfilePage() {
-  const [fullName, setFullName] = useState('Aarav Soni');
-  const [phone, setPhone] = useState('+91 98765 43210');
-  const [email, setEmail] = useState('aarav.soni@example.com');
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
+
+  useEffect(() => {
+    async function loadUser() {
+      // 1. Check Supabase Auth
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setFullName(user.user_metadata?.full_name || user.user_metadata?.name || '');
+        setEmail(user.email || '');
+        setPhone(user.phone || '');
+        return;
+      }
+
+      // 2. Fallback to LocalStorage session
+      try {
+        const stored = localStorage.getItem('freshmart_user_session_v1');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          setFullName(parsed.name || '');
+          setEmail(parsed.email || '');
+          setPhone(parsed.phone || '');
+          return;
+        }
+      } catch {
+        // Ignore
+      }
+
+      // 3. Guest default
+      setFullName('Guest Customer');
+      setEmail('customer@freshmart.local');
+      setPhone('+91 98000 12345');
+    }
+
+    loadUser();
+  }, []);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     setIsEditing(false);
     setSavedSuccess(true);
+    try {
+      localStorage.setItem(
+        'freshmart_user_session_v1',
+        JSON.stringify({ name: fullName, email, phone })
+      );
+    } catch {
+      // Ignore
+    }
     setTimeout(() => setSavedSuccess(false), 3000);
   };
 

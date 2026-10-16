@@ -527,11 +527,11 @@ export async function saveRiderAction(payload: {
   zone?: string;
   available: boolean;
 }) {
-  const { id, name, username, phone, zone, available } = payload;
+  const { id, name, username, password, phone, zone, available } = payload;
   const email = username.includes('@') ? username : `${username.toLowerCase().replace(/[^a-z0-9]/g, '')}@rider.freshmart.local`;
 
   if (id) {
-    // Update existing
+    // Update existing profile
     const { error: pError } = await supabaseAdmin
       .from('profiles')
       .update({
@@ -552,17 +552,45 @@ export async function saveRiderAction(payload: {
       })
       .eq('id', id);
 
+    // If password provided, update Supabase Auth user password
+    if (password && password.trim().length >= 6) {
+      try {
+        await supabaseAdmin.auth.admin.updateUserById(id, {
+          password: password.trim(),
+          user_metadata: { role: 'rider', full_name: name, username },
+        });
+      } catch (authErr) {
+        console.warn('Could not update rider auth password:', authErr);
+      }
+    }
+
     revalidatePath('/admin/riders');
     return { success: true, id };
   } else {
-    // Generate rider UUID
-    const newId = crypto.randomUUID();
+    // Create new rider in Supabase Auth so they can log in
+    let riderId = crypto.randomUUID();
+    const riderPassword = password && password.trim().length >= 6 ? password.trim() : 'password123';
 
-    // Insert profile
+    try {
+      const { data: authUser } = await supabaseAdmin.auth.admin.createUser({
+        email,
+        password: riderPassword,
+        email_confirm: true,
+        user_metadata: { role: 'rider', full_name: name, username },
+      });
+
+      if (authUser?.user) {
+        riderId = authUser.user.id;
+      }
+    } catch (createErr) {
+      console.warn('Could not create auth user for rider:', createErr);
+    }
+
+    // Insert or upsert profile
     const { error: pError } = await supabaseAdmin
       .from('profiles')
-      .insert({
-        id: newId,
+      .upsert({
+        id: riderId,
         full_name: name,
         phone,
         email,
@@ -572,11 +600,11 @@ export async function saveRiderAction(payload: {
 
     if (pError) return { success: false, error: pError.message };
 
-    // Insert rider profile
+    // Insert or upsert rider profile
     const { error: rError } = await supabaseAdmin
       .from('rider_profiles')
-      .insert({
-        id: newId,
+      .upsert({
+        id: riderId,
         vehicle_type: 'Bike',
         vehicle_number: zone || 'Central Hub',
         is_online: available,
@@ -587,7 +615,7 @@ export async function saveRiderAction(payload: {
     if (rError) return { success: false, error: rError.message };
 
     revalidatePath('/admin/riders');
-    return { success: true, id: newId };
+    return { success: true, id: riderId };
   }
 }
 

@@ -8,6 +8,10 @@ import { Bike, Banknote, HelpCircle, Download } from 'lucide-react';
 export function RiderBottomNav() {
   const pathname = usePathname();
 
+  if (pathname?.startsWith('/rider/login')) {
+    return null;
+  }
+
   const navItems = [
     {
       label: 'Radar & Orders',

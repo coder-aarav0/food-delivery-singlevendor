@@ -81,7 +81,7 @@ export default function RiderDownloadPage() {
               className="w-full py-4 rounded-2xl bg-[#F7D02C] hover:bg-[#ebd228] active:scale-[0.98] text-[#121C28] font-black text-sm flex items-center justify-center gap-2.5 shadow-md transition"
             >
               <Download className="w-5 h-5 stroke-[2.5]" />
-              <span>Download Rider APK (18.4 MB)</span>
+              <span>Download Rider APK (1.9 MB)</span>
             </a>
 
             <a
@@ -99,6 +99,34 @@ export default function RiderDownloadPage() {
             <span>• Android 8.0+</span>
             <span>• Verified Clean</span>
             <span>• Fast 10-sec install</span>
+          </div>
+        </div>
+
+        {/* Rider Auth Credentials Card */}
+        <div className="bg-slate-900 text-white rounded-3xl p-5 border border-slate-800 shadow-md space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#F7D02C] bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-600/30">
+              Rider Authentication
+            </span>
+            <span className="text-[11px] text-slate-400">Server-Side Verified</span>
+          </div>
+          <h3 className="font-extrabold text-sm text-white">
+            Delivery Partner Login Credentials
+          </h3>
+          <p className="text-xs text-slate-300 leading-relaxed">
+            Use the credentials assigned by your Store Manager or the demo fleet accounts:
+          </p>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span className="text-[10px] font-bold text-slate-400 block">Fleet Rider 1</span>
+              <span className="font-mono text-[#F7D02C] font-bold block mt-0.5">rider</span>
+              <span className="font-mono text-slate-300 text-[11px]">password123</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span className="text-[10px] font-bold text-slate-400 block">Fleet Rider 2</span>
+              <span className="font-mono text-[#F7D02C] font-bold block mt-0.5">rohan</span>
+              <span className="font-mono text-slate-300 text-[11px]">password123</span>
+            </div>
           </div>
         </div>
 

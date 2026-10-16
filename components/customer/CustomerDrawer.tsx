@@ -12,8 +12,11 @@ import {
   MapPin,
   User,
   LogOut,
+  LogIn,
   ChevronRight,
   ShieldCheck,
+  Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 import { EnategaLogo } from '@/components/ui/EnategaLogo';
 import { supabase } from '@/lib/supabase/client';
@@ -23,13 +26,17 @@ export interface CustomerDrawerProps {
   onClose: () => void;
   userName?: string;
   userPhone?: string;
+  isLoggedIn?: boolean;
+  onOpenAuth?: () => void;
 }
 
 export function CustomerDrawer({
   isOpen,
   onClose,
-  userName = 'Aarav Soni',
-  userPhone = '+91 98765 43210',
+  userName,
+  userPhone,
+  isLoggedIn = false,
+  onOpenAuth,
 }: CustomerDrawerProps) {
   if (!isOpen) return null;
 
@@ -42,6 +49,11 @@ export function CustomerDrawer({
     }
     onClose();
     window.location.reload();
+  };
+
+  const handleSignInClick = () => {
+    onClose();
+    if (onOpenAuth) onOpenAuth();
   };
 
   // Exact 6 core items matching customer1.jpeg + Favorites
@@ -82,24 +94,52 @@ export function CustomerDrawer({
             </button>
           </div>
 
-          {/* User Profile Card matching customer1.jpeg Login/Profile Banner */}
-          <Link
-            href="/profile"
-            onClick={onClose}
-            className="flex items-center gap-4 p-4 rounded-2xl bg-black/10 hover:bg-black/15 transition backdrop-blur-xs border border-black/10 mb-6 block cursor-pointer"
-          >
-            <div className="size-12 rounded-full bg-black text-[#febb2c] font-black text-xl flex items-center justify-center shadow-md shrink-0">
-              {userName.charAt(0).toUpperCase()}
+          {/* User Profile Card vs Guest Sign In Prompt */}
+          {isLoggedIn && userName ? (
+            <Link
+              href="/profile"
+              onClick={onClose}
+              className="flex items-center gap-4 p-4 rounded-2xl bg-black/10 hover:bg-black/15 transition backdrop-blur-xs border border-black/10 mb-6 block cursor-pointer"
+            >
+              <div className="size-12 rounded-full bg-black text-[#febb2c] font-black text-xl flex items-center justify-center shadow-md shrink-0">
+                {userName.charAt(0).toUpperCase()}
+              </div>
+              <div className="min-w-0">
+                <h3 className="font-black text-gray-950 text-base leading-snug truncate">
+                  {userName}
+                </h3>
+                <p className="text-gray-800 text-xs font-mono font-medium truncate mt-0.5">
+                  {userPhone || 'Verified Customer'}
+                </p>
+              </div>
+            </Link>
+          ) : (
+            <div className="p-4 rounded-2xl bg-black/10 border border-black/10 mb-6 space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="size-11 rounded-full bg-black/15 text-gray-950 flex items-center justify-center font-black shrink-0">
+                  <User className="size-5" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="font-black text-gray-950 text-sm leading-tight">
+                    Welcome to FreshMart
+                  </h3>
+                  <p className="text-gray-800 text-[11px] font-medium leading-snug mt-0.5">
+                    Sign in for instant checkout & tracking
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleSignInClick}
+                className="w-full py-2.5 px-3 rounded-xl bg-black hover:bg-gray-900 active:scale-[0.98] text-[#febb2c] font-black text-xs flex items-center justify-center gap-2 shadow-sm transition cursor-pointer"
+              >
+                <Sparkles className="size-3.5 fill-[#febb2c]" />
+                <span>Sign In / Register</span>
+                <ArrowRight className="size-3.5 stroke-[2.5]" />
+              </button>
             </div>
-            <div className="min-w-0">
-              <h3 className="font-black text-gray-950 text-base leading-snug truncate">
-                {userName}
-              </h3>
-              <p className="text-gray-800 text-xs font-mono font-medium truncate mt-0.5">
-                {userPhone}
-              </p>
-            </div>
-          </Link>
+          )}
 
           {/* Navigation Links matching customer1.jpeg */}
           <nav className="space-y-1">
@@ -123,7 +163,7 @@ export function CustomerDrawer({
           </nav>
         </div>
 
-        {/* Footer with Portal Switchers & Logout */}
+        {/* Footer with Portal Switchers & Auth Actions */}
         <div className="p-6 border-t border-black/10 space-y-3 shrink-0">
           <div>
             <Link
@@ -137,14 +177,25 @@ export function CustomerDrawer({
           </div>
 
           <div className="flex items-center justify-between pt-1 text-xs font-bold text-gray-900">
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="flex items-center gap-1.5 hover:text-red-900 transition cursor-pointer"
-            >
-              <LogOut className="size-4" />
-              <span>Log Out</span>
-            </button>
+            {isLoggedIn ? (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="flex items-center gap-1.5 hover:text-red-900 transition cursor-pointer"
+              >
+                <LogOut className="size-4" />
+                <span>Log Out</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleSignInClick}
+                className="flex items-center gap-1.5 hover:text-black transition cursor-pointer"
+              >
+                <LogIn className="size-4" />
+                <span>Sign In</span>
+              </button>
+            )}
             <span className="px-2.5 py-0.5 rounded-full bg-black text-white text-[10px] font-mono font-bold">
               v2.4.0
             </span>

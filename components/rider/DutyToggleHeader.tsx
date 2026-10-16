@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { toggleRiderDutyAction, updateRiderLocationAction } from '@/actions/rider-actions';
 import { RiderDrawer } from './RiderDrawer';
 import {
@@ -46,6 +47,11 @@ interface NavigatorWithBattery extends Navigator {
 }
 
 export function DutyToggleHeader({ rider }: DutyToggleHeaderProps) {
+  const pathname = usePathname();
+  if (pathname?.startsWith('/rider/login')) {
+    return null;
+  }
+
   const [isOnline, setIsOnline] = useState(rider.isOnline);
   const [isToggling, setIsToggling] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);

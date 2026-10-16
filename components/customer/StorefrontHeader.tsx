@@ -172,6 +172,10 @@ export function StorefrontHeader() {
       <CustomerDrawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
+        userName={userSession?.name}
+        userPhone={userSession?.phone || userSession?.email}
+        isLoggedIn={!!userSession}
+        onOpenAuth={() => setIsAuthModalOpen(true)}
       />
 
       {/* Phone OTP Login Drawer */}

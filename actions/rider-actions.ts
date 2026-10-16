@@ -310,3 +310,79 @@ export async function verifyDeliveryOtpAction(
 
   return { success: true };
 }
+
+/**
+ * Server-Side Authentication for Delivery Riders.
+ * Authenticates with username/email and password, establishes SSR session cookies.
+ */
+export async function loginRiderAction(payload: {
+  usernameOrEmail: string;
+  password: string;
+}) {
+  const { usernameOrEmail, password } = payload;
+  if (!usernameOrEmail?.trim() || !password?.trim()) {
+    return { success: false, error: 'Please enter both username/email and password.' };
+  }
+
+  // 1. Resolve email from username or email input
+  let email = usernameOrEmail.trim();
+  if (!email.includes('@')) {
+    const cleanUsername = email.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const { data: matchingProfile } = await supabaseAdmin
+      .from('profiles')
+      .select('email')
+      .eq('role', 'rider')
+      .or(`email.ilike.%${cleanUsername}%,full_name.ilike.%${usernameOrEmail.trim()}%`)
+      .limit(1)
+      .maybeSingle();
+
+    if (matchingProfile?.email) {
+      email = matchingProfile.email;
+    } else {
+      email = `${cleanUsername}@rider.freshmart.local`;
+    }
+  }
+
+  // 2. Authenticate with Supabase via createServerClient to bind cookies to session
+  const supabase = await createServerClient();
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password: password.trim(),
+  });
+
+  if (error || !data.user) {
+    return {
+      success: false,
+      error: error?.message || 'Invalid username or password. Please verify your rider credentials.',
+    };
+  }
+
+  // 3. Verify user has role 'rider'
+  const { data: profile } = await supabaseAdmin
+    .from('profiles')
+    .select('role, full_name')
+    .eq('id', data.user.id)
+    .maybeSingle();
+
+  if (profile && profile.role !== 'rider') {
+    await supabase.auth.signOut();
+    return {
+      success: false,
+      error: 'Access denied: This account is not registered as a delivery rider.',
+    };
+  }
+
+  revalidatePath('/rider');
+  return { success: true, redirectUrl: '/rider' };
+}
+
+/**
+ * Server-Side Sign Out for Delivery Riders.
+ */
+export async function logoutRiderAction() {
+  const supabase = await createServerClient();
+  await supabase.auth.signOut();
+  revalidatePath('/rider');
+  return { success: true };
+}
+
