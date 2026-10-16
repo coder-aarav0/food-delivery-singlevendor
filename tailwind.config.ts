@@ -41,10 +41,13 @@ const config: Config = {
         sans: ['var(--font-body)', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
+        xs: 'var(--radius-xs)',
         sm: 'var(--radius-sm)',
         md: 'var(--radius-md)',
         lg: 'var(--radius-lg)',
         xl: 'var(--radius-xl)',
+        '2xl': 'var(--radius-2xl)',
+        '3xl': 'var(--radius-3xl)',
         full: 'var(--radius-full)',
       },
       boxShadow: {

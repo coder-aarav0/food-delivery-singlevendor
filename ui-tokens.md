@@ -104,11 +104,14 @@
   /* =========================================================================
      8. RADII & ELEVATIONS
      ========================================================================= */
-  --radius-sm: 6px;    /* Chips & Micro badges */
-  --radius-md: 10px;   /* Buttons, Form Inputs */
-  --radius-lg: 16px;   /* Product Cards, Containers */
-  --radius-xl: 24px;   /* Modals, Floating Bottom Sheets */
-  --radius-full: 9999px; /* Round Pills & Avatars */
+  --radius-xs: 4px;    /* Micro tags & tiny badges */
+  --radius-sm: 6px;    /* Chips & micro badges */
+  --radius-md: 8px;    /* Small buttons, status badges, counter steps */
+  --radius-lg: 10px;   /* Standard action buttons, text inputs */
+  --radius-xl: 14px;   /* Product cards, preview containers */
+  --radius-2xl: 18px;  /* Modals, bottom sheets, large feature cards */
+  --radius-3xl: 22px;  /* Hero banners, full dialogs */
+  --radius-full: 9999px; /* Status dots, pulses, circular avatars only */
 
   --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
