@@ -518,10 +518,10 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
             {/* Rider Assignment Control */}
             <div className="space-y-1.5 p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
               <span className="text-xs font-extrabold text-[#0b0b0b] uppercase tracking-wide block">
-                Rider
+                Rider Assignment
               </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
+                <div className="flex items-center gap-2 flex-1">
                   <select
                     value={selectedRiderId}
                     onChange={(e) => setSelectedRiderId(e.target.value)}
@@ -538,14 +538,14 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
                     type="button"
                     disabled={isMutating || !selectedRiderId}
                     onClick={handleAssignRider}
-                    className="px-4 py-2 rounded-xl text-xs font-bold bg-[#5e72e4] text-white hover:bg-[#485ec4]"
+                    className="px-4 py-2 rounded-xl text-xs font-black bg-[#5e72e4] text-white hover:bg-[#485ec4] shrink-0 disabled:opacity-50"
                   >
                     Assign
                   </button>
                 </div>
-                <div className="text-xs text-slate-500 font-semibold px-2">
-                  <span>Assigned To: </span>
-                  <span className="font-extrabold text-[#0b0b0b]">
+                <div className="text-xs text-slate-500 font-semibold sm:text-right shrink-0">
+                  <span className="text-slate-400">Assigned: </span>
+                  <span className="font-extrabold text-[#0b0b0b] px-2 py-0.5 rounded-md bg-white border border-slate-200">
                     {selectedOrder.rider_profile?.full_name ||
                       riders.find((r) => r.id === selectedOrder.rider_id)?.full_name ||
                       'Unassigned'}
@@ -559,8 +559,8 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
               <span className="text-xs font-extrabold text-[#0b0b0b] uppercase tracking-wide block">
                 Order Status
               </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
+                <div className="flex items-center gap-2 flex-1">
                   <select
                     value={newStatus}
                     onChange={(e) => setNewStatus(e.target.value)}
@@ -578,14 +578,14 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
                     type="button"
                     disabled={isMutating}
                     onClick={handleUpdateStatus}
-                    className="px-4 py-2 rounded-xl text-xs font-bold bg-[#5e72e4] text-white hover:bg-[#485ec4]"
+                    className="px-4 py-2 rounded-xl text-xs font-black bg-[#5e72e4] text-white hover:bg-[#485ec4] shrink-0 disabled:opacity-50"
                   >
-                    Assign
+                    Update Status
                   </button>
                 </div>
-                <div className="text-xs text-slate-500 font-semibold px-2">
-                  <span>Current Status: </span>
-                  <span className="font-extrabold text-[#0b0b0b]">
+                <div className="text-xs text-slate-500 font-semibold sm:text-right shrink-0">
+                  <span className="text-slate-400">Current: </span>
+                  <span className="font-extrabold text-indigo-700 px-2 py-0.5 rounded-md bg-indigo-50 border border-indigo-200">
                     {selectedOrder.status}
                   </span>
                 </div>
@@ -597,8 +597,8 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
               <span className="text-xs font-extrabold text-[#0b0b0b] uppercase tracking-wide block">
                 Payment Status
               </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
+                <div className="flex items-center gap-2 flex-1">
                   <select
                     value={newPaymentStatus}
                     onChange={(e) => setNewPaymentStatus(e.target.value)}
@@ -611,14 +611,18 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
                     type="button"
                     disabled={isMutating}
                     onClick={handleUpdatePaymentStatus}
-                    className="px-4 py-2 rounded-xl text-xs font-bold bg-[#5e72e4] text-white hover:bg-[#485ec4]"
+                    className="px-4 py-2 rounded-xl text-xs font-black bg-[#5e72e4] text-white hover:bg-[#485ec4] shrink-0 disabled:opacity-50"
                   >
-                    Assign
+                    Update Payment
                   </button>
                 </div>
-                <div className="text-xs text-slate-500 font-semibold px-2">
-                  <span>Current Status: </span>
-                  <span className="font-extrabold text-[#0b0b0b]">
+                <div className="text-xs text-slate-500 font-semibold sm:text-right shrink-0">
+                  <span className="text-slate-400">Current: </span>
+                  <span className={`font-extrabold px-2 py-0.5 rounded-md border ${
+                    selectedOrder.payment_status === 'PAID'
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                      : 'bg-amber-50 text-amber-700 border-amber-200'
+                  }`}>
                     {selectedOrder.payment_status || 'PENDING'}
                   </span>
                 </div>
@@ -645,27 +649,28 @@ export function OrdersManager({ initialOrders, riders }: OrdersManagerProps) {
                   <div>
                     <span className="text-slate-400 font-bold block">Name:</span>
                     <span className="font-extrabold text-[#0b0b0b]">
-                      {selectedOrder.profiles?.full_name || 'Farheen Ali'}
+                      {selectedOrder.profiles?.full_name || 'Guest Customer'}
                     </span>
                   </div>
                   <div>
                     <span className="text-slate-400 font-bold block">Phone:</span>
                     <span className="font-bold text-slate-700">
-                      {selectedOrder.profiles?.phone || '03482456527'}
+                      {selectedOrder.profiles?.phone || 'N/A'}
                     </span>
                   </div>
                   <div>
                     <span className="text-slate-400 font-bold block">Email:</span>
                     <span className="text-slate-600">
-                      {selectedOrder.profiles?.email || 'customer@gmail.com'}
+                      {selectedOrder.profiles?.email || 'N/A'}
                     </span>
                   </div>
                   <div>
                     <span className="text-slate-400 font-bold block">Address:</span>
                     <span className="text-slate-700">
                       {selectedOrder.delivery_address_snapshot?.address_line ||
+                        selectedOrder.delivery_address_snapshot?.address_line_1 ||
                         selectedOrder.delivery_address_snapshot?.street ||
-                        'Islamabad E-8 Capital Territory'}
+                        'Storefront Express Delivery'}
                     </span>
                   </div>
                 </div>
